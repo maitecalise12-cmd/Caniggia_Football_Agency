@@ -130,6 +130,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 4000);
   }
 
+  /* ---------- Caniggia: video de fondo ----------
+     Se reproduce solo mientras la sección está en pantalla. */
+  const video = document.getElementById("journeyVideo");
+  if (video) {
+    if (reducedMotion) {
+      video.removeAttribute("autoplay");
+      video.pause();
+    } else {
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      });
+      videoObserver.observe(journey);
+    }
+  }
+
   /* ---------- Filtro de jugadores por posición ---------- */
   const filters = document.querySelectorAll(".filter");
   const players = document.querySelectorAll(".player");
