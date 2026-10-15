@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Caniggia Football Agency</title>
-  <meta name="description" content="Caniggia Football Agency (CFA) – Professional football representation led by Claudio Caniggia. Player management, career planning and international transfers.">
-  <meta name="theme-color" content="#0F0F11">
+  <meta name="description" content="Caniggia Football Agency (CFA) – We take your talent to another speed. Player representation and career planning led by Claudio Caniggia.">
+  <meta name="theme-color" content="#4B5985">
 
   <!-- Favicon: isotipo CFA -->
   <link rel="icon" href="assests/img/isotipo-azul.png">
@@ -13,7 +13,7 @@
   <!-- Fuentes de respaldo (Futura y Nexa son comerciales: ver @font-face en styles.css) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Mulish:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Mulish:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -22,14 +22,10 @@
   <!-- ================= HEADER / MENÚ ================= -->
   <header class="header" id="header">
     <div class="container header__inner">
+      <!-- Isotipo al centro. Reemplazar por:
+           <img src="assests/img/isotipo-blanco.png" alt="Caniggia Football Agency"> -->
       <a href="#home" class="brand" aria-label="Caniggia Football Agency – Home">
-        <!-- Reemplazar por el logo horizontal blanco:
-             <img src="assests/img/logo-horizontal-blanco.png" alt="Caniggia Football Agency"> -->
         <span class="brand__mark">CFA</span>
-        <span class="brand__text">
-          <strong>CANIGGIA</strong>
-          <small>FOOTBALL AGENCY</small>
-        </span>
       </a>
 
       <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
@@ -38,12 +34,8 @@
 
       <nav class="nav" id="nav">
         <ul class="nav__list">
-          <li><a href="#home" class="nav__link">Home</a></li>
-          <li><a href="#about" class="nav__link">About Us</a></li>
-          <li><a href="#caniggia" class="nav__link">Claudio Caniggia</a></li>
-          <li><a href="#services" class="nav__link">Services</a></li>
-          <li><a href="#players" class="nav__link">Players</a></li>
-          <li><a href="#contact" class="nav__link nav__link--cta">Contact</a></li>
+          <li><a href="#services" class="nav__link">Our services</a></li>
+          <li><a href="#contact" class="nav__link">Let's talk</a></li>
         </ul>
       </nav>
     </div>
@@ -51,146 +43,114 @@
 
   <main>
 
-    <!-- ================= HOME ================= -->
+    <!-- ================= HERO ================= -->
     <section class="hero" id="home">
-      <div class="hero__bg" aria-hidden="true"></div>
+      <!-- Foto de Caniggia: reemplazar la imagen provisoria por la original en alta resolución -->
+      <div class="hero__media" aria-hidden="true"></div>
+
       <div class="container hero__content">
-        <!-- Isotipo al centro (reemplazar por assests/img/isotipo-blanco.png) -->
-        <div class="hero__isotipo" aria-hidden="true">
-          <span>CFA</span>
-        </div>
-        <p class="eyebrow">Caniggia Football Agency</p>
-        <h1 class="hero__title">Talent. Trust. <span class="accent">Legacy.</span></h1>
-        <p class="hero__lead">
-          A football agency built on the experience of a world-class career.
-          We represent, guide and connect players with clubs across the world.
-        </p>
-        <div class="hero__actions">
-          <a href="#players" class="btn btn--primary">Our Players</a>
-          <a href="#contact" class="btn btn--ghost">Get in Touch</a>
-        </div>
+        <h1 class="hero__title">
+          <span>We take your talent</span>
+          <span>to another</span>
+          <strong>Speed</strong>
+        </h1>
+        <a href="#about" class="btn btn--primary">Who we are</a>
       </div>
-      <a href="#about" class="hero__scroll" aria-label="Scroll to About Us"><span></span></a>
     </section>
 
-    <!-- ================= ABOUT US ================= -->
-    <section class="section section--light" id="about">
+    <!-- ================= ABOUT US · HOW WE WORK ================= -->
+    <section class="about" id="about">
       <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow eyebrow--blue">About Us</p>
-          <h2 class="section__title">More than an agency, a career partner</h2>
+        <header class="about__head reveal">
+          <h2 class="title">How we work</h2>
+          <p class="subtitle">
+            Few players, full dedication. Every player we represent<br class="br-desktop">
+            has a direct contact and a written career plan.
+          </p>
         </header>
-
-        <div class="about__grid">
-          <div class="about__story reveal">
-            <h3>Our Story</h3>
-            <p>
-              Caniggia Football Agency was born from a simple idea: players deserve the guidance
-              of people who truly understand the game. Led by Claudio Caniggia and a team of
-              experienced professionals, CFA combines first-hand knowledge of elite football with
-              a modern, transparent approach to player representation.
-            </p>
-            <h3>Our Mission</h3>
-            <p>
-              To help every player reach their full potential, on and off the pitch, by building
-              long-term careers and connecting talent with the right clubs worldwide.
-            </p>
-          </div>
-
-          <div class="about__values reveal">
-            <h3>Our Values</h3>
-            <ul class="values">
-              <li><strong>Trust</strong><span>Honest, long-term relationships with players, families and clubs.</span></li>
-              <li><strong>Professionalism</strong><span>Rigorous work in every negotiation and every decision.</span></li>
-              <li><strong>Excellence</strong><span>Premium standards inspired by the highest level of the game.</span></li>
-              <li><strong>Commitment</strong><span>We stay by our players' side at every stage of their careers.</span></li>
-            </ul>
-          </div>
-        </div>
       </div>
-    </section>
 
-    <!-- Experiencia: banda azul -->
-    <section class="band" id="experience" aria-label="Our experience">
-      <div class="container">
-        <div class="stats">
-          <div class="stat reveal"><span class="stat__num" data-count="50">0</span><span class="stat__label">Operations</span></div>
-          <div class="stat reveal"><span class="stat__num" data-count="30">0</span><span class="stat__label">Partner Clubs</span></div>
-          <div class="stat reveal"><span class="stat__num" data-count="10">0</span><span class="stat__label">Markets</span></div>
-          <div class="stat reveal"><span class="stat__num" data-count="20">0</span><span class="stat__label">Years in Football</span></div>
-        </div>
-        <p class="markets reveal">
-          Argentina · Italy · Spain · Portugal · Scotland · England · Mexico · USA · Middle East
-        </p>
-      </div>
-    </section>
-
-    <!-- Equipo -->
-    <section class="section section--light section--tight" id="team">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow eyebrow--blue">Our Team</p>
-          <h2 class="section__title">The people behind CFA</h2>
-        </header>
-
-        <div class="team">
-          <!-- Reemplazar nombres, cargos y fotos (assests/img/team/...) -->
-          <article class="member reveal">
-            <div class="member__photo" data-initials="CC"></div>
-            <h3 class="member__name">Claudio Caniggia</h3>
-            <p class="member__role">Founder &amp; President</p>
-          </article>
-          <article class="member reveal">
-            <div class="member__photo" data-initials="TM"></div>
-            <h3 class="member__name">Team Member</h3>
-            <p class="member__role">Director of Football Operations</p>
-          </article>
-          <article class="member reveal">
-            <div class="member__photo" data-initials="TM"></div>
-            <h3 class="member__name">Team Member</h3>
-            <p class="member__role">Head of Scouting</p>
-          </article>
-          <article class="member reveal">
-            <div class="member__photo" data-initials="TM"></div>
-            <h3 class="member__name">Team Member</h3>
-            <p class="member__role">Legal Advisor</p>
-          </article>
-        </div>
+      <!-- Tarjetas: imágenes en assests/img/about-1.jpg … about-4.jpg -->
+      <div class="cards">
+        <article class="card card--1 reveal">
+          <span class="card__num">01</span>
+          <div class="card__body">
+            <h3 class="card__title">Assessment</h3>
+            <p class="card__text">Video analysis, performance data and an interview with the player and his family.</p>
+          </div>
+        </article>
+        <article class="card card--2 reveal">
+          <span class="card__num">02</span>
+          <div class="card__body">
+            <h3 class="card__title">Career Plan</h3>
+            <p class="card__text">Clear goals at one, three and five years: leagues, clubs and concrete steps.</p>
+          </div>
+        </article>
+        <article class="card card--3 reveal">
+          <span class="card__num">03</span>
+          <div class="card__body">
+            <h3 class="card__title">Execution</h3>
+            <p class="card__text">We present, negotiate and close every deal with speed and precision.</p>
+          </div>
+        </article>
+        <article class="card card--4 reveal">
+          <span class="card__num">04</span>
+          <div class="card__body">
+            <h3 class="card__title">Follow-up</h3>
+            <p class="card__text">By the player's side through adaptation, the day-to-day and the next decision.</p>
+          </div>
+        </article>
       </div>
     </section>
 
     <!-- ================= CLAUDIO CANIGGIA ================= -->
-    <section class="section section--dark" id="caniggia">
-      <div class="container caniggia">
-        <div class="caniggia__media reveal">
-          <!-- Reemplazar por foto: <img src="assests/img/claudio-caniggia.jpg" alt="Claudio Caniggia"> -->
-          <div class="caniggia__photo" aria-hidden="true"><span>CC</span></div>
+    <!-- En escritorio, al hacer scroll la sección se desplaza en horizontal
+         y muestra la línea de tiempo. En celular se ve en vertical. -->
+    <section class="journey" id="caniggia">
+      <div class="journey__sticky">
+        <div class="journey__track" id="journeyTrack">
+
+          <!-- Panel 1: fundador + bio -->
+          <div class="journey__panel journey__intro">
+            <div class="founder">
+              <p class="eyebrow">Founder</p>
+              <!-- 3 fotos que se alternan: assests/img/caniggia-1.jpg, -2.jpg, -3.jpg -->
+              <div class="founder__photos" aria-label="Claudio Caniggia" role="img">
+                <div class="founder__photo founder__photo--1 is-active"></div>
+                <div class="founder__photo founder__photo--2"></div>
+                <div class="founder__photo founder__photo--3"></div>
+              </div>
+            </div>
+
+            <!-- Pendiente: que la agencia o Caniggia confirmen los datos de la bio -->
+            <p class="founder__bio">
+              Known worldwide as "The Son of the Wind", Claudio Caniggia made speed his signature.
+              A World Cup finalist with Argentina in 1990 and Copa América champion in 1991, he
+              played for River Plate, Roma, Benfica, Boca Juniors and Rangers. Today he brings that
+              experience to every player's career.
+            </p>
+          </div>
+
+          <!-- Panel 2: línea de tiempo (confirmar años con la agencia) -->
+          <div class="journey__panel journey__timeline">
+            <ol class="timeline">
+              <li class="timeline__item"><span class="timeline__year">1985</span><span class="timeline__text">Debut at River Plate</span></li>
+              <li class="timeline__item"><span class="timeline__year">1988</span><span class="timeline__text">Moves to Italy: Hellas Verona</span></li>
+              <li class="timeline__item"><span class="timeline__year">1989</span><span class="timeline__text">Atalanta</span></li>
+              <li class="timeline__item"><span class="timeline__year">1990</span><span class="timeline__text">World Cup finalist with Argentina</span></li>
+              <li class="timeline__item"><span class="timeline__year">1991</span><span class="timeline__text">Copa América champion</span></li>
+              <li class="timeline__item"><span class="timeline__year">1992</span><span class="timeline__text">AS Roma</span></li>
+              <li class="timeline__item"><span class="timeline__year">1994</span><span class="timeline__text">Benfica</span></li>
+              <li class="timeline__item"><span class="timeline__year">1995</span><span class="timeline__text">Boca Juniors</span></li>
+              <li class="timeline__item"><span class="timeline__year">2001</span><span class="timeline__text">Rangers</span></li>
+              <li class="timeline__item timeline__item--today"><span class="timeline__year">Today</span><span class="timeline__text">Caniggia Football Agency</span></li>
+            </ol>
+            <a href="#services" class="btn btn--primary journey__cta">Our services</a>
+          </div>
+
         </div>
 
-        <div class="caniggia__text reveal">
-          <p class="eyebrow">The Face of CFA</p>
-          <h2 class="section__title section__title--light">Claudio Caniggia</h2>
-          <p class="lead">
-            One of the most electrifying forwards of his generation, Claudio Caniggia played at
-            the highest level in Argentina and Europe and represented his country at three
-            FIFA World Cups.
-          </p>
-
-          <ol class="timeline">
-            <li><span>River Plate</span>Debut and rise in Argentine football.</li>
-            <li><span>Serie A</span>Hellas Verona, Atalanta and AS Roma.</li>
-            <li><span>Benfica &amp; Boca Juniors</span>Titles and unforgettable nights.</li>
-            <li><span>Scotland</span>Dundee and Rangers.</li>
-            <li><span>Argentina</span>1990 World Cup finalist and 1991 Copa América champion.</li>
-          </ol>
-
-          <h3 class="caniggia__subtitle">His role in the agency</h3>
-          <p>
-            Claudio leads CFA's vision and relationships. He personally mentors our players,
-            opens doors with clubs and directors around the world, and brings the perspective of
-            someone who has lived every moment of a professional career.
-          </p>
-        </div>
+        <p class="journey__word" aria-hidden="true">Caniggia</p>
       </div>
     </section>
 
@@ -198,9 +158,8 @@
     <section class="section section--light" id="services">
       <div class="container">
         <header class="section__head reveal">
-          <p class="eyebrow eyebrow--blue">Services</p>
-          <h2 class="section__title">What we do</h2>
-          <p class="section__intro">Comprehensive support for professional and youth players.</p>
+          <h2 class="title title--dark">Our services</h2>
+          <p class="subtitle subtitle--dark">Comprehensive support for professional and youth players.</p>
         </header>
 
         <div class="services">
@@ -242,8 +201,7 @@
     <section class="section section--dark" id="players">
       <div class="container">
         <header class="section__head reveal">
-          <p class="eyebrow">Players</p>
-          <h2 class="section__title section__title--light">Our Players</h2>
+          <h2 class="title">Our players</h2>
         </header>
 
         <div class="filters reveal" role="group" aria-label="Filter players by position">
@@ -323,9 +281,8 @@
     <section class="section section--light" id="contact">
       <div class="container contact">
         <div class="contact__info reveal">
-          <p class="eyebrow eyebrow--blue">Contact</p>
-          <h2 class="section__title">Let's talk football</h2>
-          <p>
+          <h2 class="title title--dark">Let's talk</h2>
+          <p class="subtitle subtitle--dark">
             Clubs, sporting directors, players, families, partners or press:
             we'd be glad to hear from you.
           </p>
@@ -387,7 +344,7 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="5" required></textarea>
           </div>
-          <button type="submit" class="btn btn--primary btn--block">Send Message</button>
+          <button type="submit" class="btn btn--primary btn--block">Send message</button>
           <p class="form__status" id="formStatus" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -398,12 +355,9 @@
   <!-- ================= FOOTER ================= -->
   <footer class="footer">
     <div class="container footer__inner">
-      <a href="#home" class="brand brand--footer">
+      <a href="#home" class="footer__brand">
         <span class="brand__mark">CFA</span>
-        <span class="brand__text">
-          <strong>CANIGGIA</strong>
-          <small>FOOTBALL AGENCY</small>
-        </span>
+        <span class="footer__name">Caniggia <small>Football Agency</small></span>
       </a>
       <p class="footer__copy">&copy; <span id="year"></span> Caniggia Football Agency. All rights reserved.</p>
     </div>

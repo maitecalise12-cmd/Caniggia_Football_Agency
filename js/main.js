@@ -9,13 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const nav = document.getElementById("nav");
   const navToggle = document.getElementById("navToggle");
   const navLinks = document.querySelectorAll(".nav__link");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Header con fondo al hacer scroll ---------- */
-  const onScroll = () => {
-    header.classList.toggle("is-scrolled", window.scrollY > 40);
+  /* ---------- Sombra del header al hacer scroll ---------- */
+  const onScrollHeader = () => {
+    header.classList.toggle("is-scrolled", window.scrollY > 10);
   };
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
+  onScrollHeader();
+  window.addEventListener("scroll", onScrollHeader, { passive: true });
 
   /* ---------- Menú móvil ---------- */
   const closeMenu = () => {
@@ -39,32 +40,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeMenu();
   });
 
-  /* ---------- Link activo según la sección visible ---------- */
-  const sections = document.querySelectorAll("main section[id]");
-  const sectionToLink = {
-    home: "home",
-    about: "about",
-    experience: "about",
-    team: "about",
-    caniggia: "caniggia",
-    services: "services",
-    players: "players",
-    contact: "contact",
-  };
+  /* ---------- Link activo del menú ---------- */
+  const linkedSections = ["services", "contact"]
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
 
   const sectionObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const target = sectionToLink[entry.target.id];
-        navLinks.forEach((link) => {
-          link.classList.toggle("is-active", link.getAttribute("href") === `#${target}`);
-        });
+        const link = document.querySelector(`.nav__link[href="#${entry.target.id}"]`);
+        if (link) link.classList.toggle("is-active", entry.isIntersecting);
       });
     },
     { rootMargin: "-45% 0px -50% 0px" }
   );
-  sections.forEach((s) => sectionObserver.observe(s));
+  linkedSections.forEach((s) => sectionObserver.observe(s));
 
   /* ---------- Aparición de elementos al hacer scroll ---------- */
   const revealObserver = new IntersectionObserver(
@@ -79,31 +69,66 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
-  /* ---------- Contadores de la banda de experiencia ---------- */
-  const animateCount = (el) => {
-    const target = Number(el.dataset.count);
-    const duration = 1600;
-    const start = performance.now();
-    const step = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(target * eased);
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
+  /* ---------- Caniggia: scroll horizontal ----------
+     En escritorio la sección queda fija y, al bajar con el scroll,
+     el contenido se desplaza hacia la izquierda mostrando la línea
+     de tiempo. En pantallas chicas se ve en vertical. */
+  const journey = document.getElementById("caniggia");
+  const track = document.getElementById("journeyTrack");
+  const word = journey.querySelector(".journey__word");
+  const desktop = window.matchMedia("(min-width: 901px)");
+  let distance = 0;
+
+  const setupJourney = () => {
+    const horizontal = desktop.matches && !reducedMotion;
+    journey.classList.toggle("is-horizontal", horizontal);
+
+    if (!horizontal) {
+      journey.style.height = "";
+      track.style.transform = "";
+      word.style.transform = "";
+      return;
+    }
+
+    const viewH = window.innerHeight - header.offsetHeight;
+    distance = Math.max(track.scrollWidth - window.innerWidth, 0);
+    journey.style.height = `${viewH + distance}px`;
+    updateJourney();
   };
 
-  const countObserver = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        animateCount(entry.target);
-        obs.unobserve(entry.target);
-      });
-    },
-    { threshold: 0.6 }
-  );
-  document.querySelectorAll("[data-count]").forEach((el) => countObserver.observe(el));
+  const updateJourney = () => {
+    if (!journey.classList.contains("is-horizontal")) return;
+    const start = journey.offsetTop - header.offsetHeight;
+    const progress = Math.min(Math.max((window.scrollY - start) / (distance || 1), 0), 1);
+    track.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
+    // La palabra CANIGGIA se mueve más lento (efecto de profundidad)
+    word.style.transform = `translate3d(${-progress * distance * 0.25}px, 0, 0)`;
+  };
+
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      updateJourney();
+      ticking = false;
+    });
+  }, { passive: true });
+
+  window.addEventListener("resize", setupJourney);
+  window.addEventListener("load", setupJourney);
+  setupJourney();
+
+  /* ---------- Caniggia: 3 fotos que se alternan ---------- */
+  const photos = document.querySelectorAll(".founder__photo");
+  if (photos.length > 1 && !reducedMotion) {
+    let current = 0;
+    setInterval(() => {
+      photos[current].classList.remove("is-active");
+      current = (current + 1) % photos.length;
+      photos[current].classList.add("is-active");
+    }, 4000);
+  }
 
   /* ---------- Filtro de jugadores por posición ---------- */
   const filters = document.querySelectorAll(".filter");

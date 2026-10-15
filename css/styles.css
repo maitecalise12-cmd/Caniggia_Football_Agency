@@ -10,6 +10,12 @@
    automáticamente. Si no están, se usan Jost (≈ Futura) y Mulish (≈ Nexa). */
 @font-face {
   font-family: "Futura CFA";
+  src: url("../assests/fonts/Futura-Book.woff2") format("woff2");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Futura CFA";
   src: url("../assests/fonts/Futura-Medium.woff2") format("woff2");
   font-weight: 500;
   font-display: swap;
@@ -42,23 +48,23 @@
 /* ---------- Variables ---------- */
 :root {
   --black: #0F0F11;
+  --black-pure: #000000;
   --black-2: #17171B;
-  --black-3: #202027;
   --white: #FFFFFF;
   --blue: #4B5985;
   --blue-light: #6E7DAD;
   --blue-dark: #39446A;
   --gray: #A4A8B5;
   --gray-light: #F3F4F7;
-  --line-dark: rgba(255, 255, 255, 0.1);
+  --line-dark: rgba(255, 255, 255, 0.12);
   --line-light: rgba(15, 15, 17, 0.1);
 
   --font-title: "Futura CFA", "Futura PT", "Futura", "Jost", "Century Gothic", sans-serif;
   --font-text: "Nexa CFA", "Nexa", "Mulish", "Segoe UI", sans-serif;
 
-  --container: 1200px;
-  --header-h: 80px;
-  --radius: 4px;
+  --container: 1240px;
+  --header-h: 64px;
+  --radius: 0;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
@@ -79,9 +85,9 @@ html {
 body {
   font-family: var(--font-text);
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.6;
   color: var(--white);
-  background: var(--black);
+  background: var(--black-pure);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -111,26 +117,50 @@ textarea {
 
 h1, h2, h3 {
   font-family: var(--font-title);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
+  line-height: 1.1;
 }
 
 .container {
   width: 100%;
   max-width: var(--container);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 40px;
 }
 
-.accent {
-  color: var(--blue-light);
+/* =========================================================
+   ESTILOS DE TEXTO (según maqueta)
+   Título: Futura Bold, mayúsculas, centrado en secciones
+   Bajada: Nexa Regular, 2 líneas
+   Botón: azul CFA, texto blanco en mayúsculas
+   ========================================================= */
+.title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4.6vw, 4rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--white);
 }
 
-/* ---------- Componentes comunes ---------- */
+.title--dark {
+  color: var(--black);
+}
+
+.subtitle {
+  font-family: var(--font-text);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 1.4rem;
+}
+
+.subtitle--dark {
+  color: #4A4D58;
+}
+
 .eyebrow {
   font-family: var(--font-title);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.8rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -138,22 +168,18 @@ h1, h2, h3 {
   margin-bottom: 1rem;
 }
 
-.eyebrow--blue {
-  color: var(--blue);
-}
-
 .btn {
   display: inline-block;
   font-family: var(--font-title);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.85rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 1rem 2.2rem;
+  padding: 0.85rem 1.9rem;
   border: 1px solid transparent;
   border-radius: var(--radius);
   cursor: pointer;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.3s var(--ease);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease);
 }
 
 .btn:hover {
@@ -169,18 +195,12 @@ h1, h2, h3 {
   background: var(--blue-light);
 }
 
-.btn--ghost {
-  border-color: rgba(255, 255, 255, 0.5);
-  color: var(--white);
-}
-
-.btn--ghost:hover {
-  background: var(--white);
-  color: var(--black);
-}
-
 .btn--block {
   width: 100%;
+}
+
+.br-desktop {
+  display: inline;
 }
 
 /* ---------- Header ---------- */
@@ -188,80 +208,64 @@ h1, h2, h3 {
   position: fixed;
   inset: 0 0 auto 0;
   height: var(--header-h);
+  background: var(--blue);
   z-index: 100;
-  transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  transition: box-shadow 0.3s var(--ease);
 }
 
 .header.is-scrolled {
-  background: rgba(15, 15, 17, 0.92);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 1px 0 var(--line-dark);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 
 .header__inner {
+  position: relative;
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
+/* Isotipo centrado */
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .brand img {
-  height: 44px;
+  height: 40px;
   width: auto;
 }
 
 .brand__mark {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 2px solid var(--white);
+  background: var(--white);
+  color: var(--blue);
   display: grid;
   place-items: center;
   font-family: var(--font-title);
   font-weight: 700;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-}
-
-.brand__text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  font-family: var(--font-title);
-}
-
-.brand__text strong {
-  font-size: 1.1rem;
-  letter-spacing: 0.2em;
-}
-
-.brand__text small {
-  font-size: 0.6rem;
-  letter-spacing: 0.32em;
-  color: var(--gray);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
 }
 
 .nav__list {
   display: flex;
   align-items: center;
-  gap: 2.2rem;
+  gap: 2rem;
 }
 
 .nav__link {
   position: relative;
   font-family: var(--font-title);
   font-weight: 500;
-  font-size: 0.8rem;
-  letter-spacing: 0.15em;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 0.4rem 0;
-  transition: color 0.3s;
+  padding: 0.3rem 0;
 }
 
 .nav__link::after {
@@ -270,8 +274,8 @@ h1, h2, h3 {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 2px;
-  background: var(--blue-light);
+  height: 1px;
+  background: var(--white);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s var(--ease);
@@ -280,20 +284,6 @@ h1, h2, h3 {
 .nav__link:hover::after,
 .nav__link.is-active::after {
   transform: scaleX(1);
-}
-
-.nav__link--cta {
-  background: var(--blue);
-  padding: 0.6rem 1.3rem;
-  border-radius: var(--radius);
-}
-
-.nav__link--cta::after {
-  display: none;
-}
-
-.nav__link--cta:hover {
-  background: var(--blue-light);
 }
 
 .nav-toggle {
@@ -321,115 +311,71 @@ h1, h2, h3 {
 .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
 .nav-toggle.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-/* ---------- Hero / Home ---------- */
+/* ---------- Hero ---------- */
 .hero {
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
+  padding-top: var(--header-h);
+  background: var(--black-pure);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  align-items: flex-end;
   overflow: hidden;
 }
 
-/* Portada: estadio nocturno con reflectores.
-   Colocar la imagen en assests/img/hero-estadio.jpg */
-.hero__bg {
+/* Foto a la derecha, fundida con el negro de la izquierda */
+.hero__media {
   position: absolute;
-  inset: 0;
+  top: var(--header-h);
+  right: 0;
+  bottom: 0;
+  width: 58%;
   background:
-    linear-gradient(180deg, rgba(15, 15, 17, 0.55) 0%, rgba(15, 15, 17, 0.75) 60%, var(--black) 100%),
-    radial-gradient(ellipse at 20% 0%, rgba(110, 125, 173, 0.45), transparent 50%),
-    radial-gradient(ellipse at 80% 0%, rgba(110, 125, 173, 0.45), transparent 50%),
-    url("../assests/img/hero-estadio.jpg") center / cover no-repeat,
-    var(--black);
-  transform: scale(1.05);
-  animation: heroZoom 18s ease-out forwards;
+    linear-gradient(90deg, var(--black-pure) 0%, rgba(0, 0, 0, 0) 30%),
+    url("../assests/img/hero-caniggia.jpg") center / cover no-repeat,
+    url("../assests/img/hero-caniggia-provisional.jpg") center / cover no-repeat,
+    #1a1a1f;
+  animation: heroIn 1.4s var(--ease) both;
 }
 
-@keyframes heroZoom {
-  to { transform: scale(1); }
+@keyframes heroIn {
+  from { opacity: 0; transform: scale(1.06); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .hero__content {
   position: relative;
   z-index: 1;
-  padding-top: var(--header-h);
-  padding-bottom: 4rem;
-}
-
-.hero__isotipo {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 2rem;
-  border-radius: 50%;
-  border: 3px solid var(--white);
-  display: grid;
-  place-items: center;
-  font-family: var(--font-title);
-  font-weight: 700;
-  font-size: 1.8rem;
-  letter-spacing: 0.08em;
-  box-shadow: 0 0 60px rgba(110, 125, 173, 0.5);
-  animation: fadeUp 1s var(--ease) both;
-}
-
-.hero .eyebrow {
-  animation: fadeUp 1s 0.15s var(--ease) both;
+  padding-bottom: clamp(3rem, 9vh, 6rem);
 }
 
 .hero__title {
-  font-size: clamp(2.6rem, 7vw, 5.5rem);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 1.5rem;
-  animation: fadeUp 1s 0.3s var(--ease) both;
-}
-
-.hero__lead {
-  max-width: 620px;
-  margin: 0 auto 2.5rem;
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  animation: fadeUp 1s 0.45s var(--ease) both;
-}
-
-.hero__actions {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  animation: fadeUp 1s 0.6s var(--ease) both;
+  flex-direction: column;
+  font-family: var(--font-title);
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 1.12;
+  text-transform: uppercase;
+  margin-bottom: 1.8rem;
 }
 
-.hero__scroll {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 26px;
-  height: 42px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-radius: 14px;
-  z-index: 1;
+.hero__title span {
+  font-weight: 300;
+  animation: fadeUp 0.9s var(--ease) both;
 }
 
-.hero__scroll span {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 4px;
-  height: 8px;
-  margin-left: -2px;
-  background: var(--white);
-  border-radius: 2px;
-  animation: scrollDot 1.8s infinite;
+.hero__title span:nth-child(2) {
+  animation-delay: 0.12s;
 }
 
-@keyframes scrollDot {
-  0% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(14px); }
+/* Última palabra destacada */
+.hero__title strong {
+  font-weight: 700;
+  animation: fadeUp 0.9s 0.24s var(--ease) both;
+}
+
+.hero .btn {
+  animation: fadeUp 0.9s 0.4s var(--ease) both;
 }
 
 @keyframes fadeUp {
@@ -437,13 +383,288 @@ h1, h2, h3 {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- Secciones ---------- */
-.section {
-  padding: 7rem 0;
+/* ---------- About · How we work ---------- */
+.about {
+  background: var(--blue);
+  padding-top: clamp(4rem, 9vw, 6.5rem);
 }
 
-.section--tight {
-  padding-top: 5rem;
+.about__head {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto clamp(3rem, 6vw, 4.5rem);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 0 6px;
+}
+
+.card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  background-color: var(--blue-dark);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Imagen + capa oscura para leer el texto */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--card-img);
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1);
+  transition: transform 0.8s var(--ease);
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 15, 17, 0.1) 30%, rgba(15, 15, 17, 0.9) 100%),
+              linear-gradient(0deg, rgba(75, 89, 133, 0.35), rgba(75, 89, 133, 0.35));
+}
+
+.card:hover::before {
+  transform: scale(1.06);
+}
+
+.card--1 { --card-img: url("../assests/img/about-1.jpg"); }
+.card--2 { --card-img: url("../assests/img/about-2.jpg"); }
+.card--3 { --card-img: url("../assests/img/about-3.jpg"); }
+.card--4 { --card-img: url("../assests/img/about-4.jpg"); }
+
+.card__num {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  z-index: 1;
+  min-width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: var(--white);
+  color: var(--blue);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.card__body {
+  position: relative;
+  z-index: 1;
+  padding: 1.6rem 1.4rem 1.8rem;
+}
+
+.card__title {
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+
+.card__text {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 30ch;
+  min-height: calc(3 * 1.45em); /* títulos alineados aunque la bajada sea más corta */
+}
+
+/* ---------- Claudio Caniggia · scroll horizontal ---------- */
+.journey {
+  position: relative;
+  background: var(--black-pure);
+}
+
+.journey__sticky {
+  position: relative;
+  overflow: hidden;
+}
+
+.journey__track {
+  display: flex;
+  align-items: stretch;
+  will-change: transform;
+}
+
+.journey__panel {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.journey__intro {
+  width: 100vw;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding: clamp(4rem, 8vh, 6rem) 6vw clamp(9rem, 20vw, 16rem);
+}
+
+.founder {
+  flex: 0 0 auto;
+}
+
+.founder .eyebrow {
+  color: var(--white);
+  letter-spacing: 0.25em;
+}
+
+.founder__photos {
+  position: relative;
+  width: clamp(280px, 34vw, 480px);
+  aspect-ratio: 5 / 4;
+  background: linear-gradient(160deg, #26262c, var(--blue-dark));
+  overflow: hidden;
+}
+
+.founder__photos::before {
+  content: "CC";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 4rem;
+  color: rgba(255, 255, 255, 0.12);
+}
+
+.founder__photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+}
+
+.founder__photo.is-active {
+  opacity: 1;
+}
+
+.founder__photo--1 { background-image: url("../assests/img/caniggia-1.jpg"); }
+.founder__photo--2 { background-image: url("../assests/img/caniggia-2.jpg"); }
+.founder__photo--3 { background-image: url("../assests/img/caniggia-3.jpg"); }
+
+.founder__bio {
+  max-width: 34ch;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 2.2rem;
+}
+
+/* Línea de tiempo */
+.journey__timeline {
+  position: relative;
+  padding: 0 8vw clamp(9rem, 20vw, 16rem) 2vw;
+  gap: 5rem;
+}
+
+.timeline {
+  position: relative;
+  display: flex;
+  gap: 0;
+  padding-top: 2.5rem;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2.5rem;
+  height: 2px;
+  background: var(--white);
+}
+
+.timeline__item {
+  position: relative;
+  width: 210px;
+  flex-shrink: 0;
+  padding: 1.8rem 1.5rem 0 0;
+}
+
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -6px;
+  width: 2px;
+  height: 14px;
+  background: var(--white);
+}
+
+.timeline__year {
+  display: block;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 0.6rem;
+}
+
+.timeline__text {
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.timeline__item--today .timeline__year {
+  color: var(--blue-light);
+}
+
+.journey__cta {
+  flex-shrink: 0;
+  align-self: center;
+  margin-top: 2.5rem;
+}
+
+/* Palabra gigante, cortada por el borde inferior */
+.journey__word {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 16.5vw;
+  line-height: 0.74;
+  letter-spacing: 0.03em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--white);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 0.62em;
+  will-change: transform;
+}
+
+/* Modo escritorio: la sección queda fija y el contenido se desplaza en horizontal */
+.journey.is-horizontal .journey__sticky {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+}
+
+.journey.is-horizontal .journey__track {
+  height: 100%;
+}
+
+/* ---------- Secciones genéricas ---------- */
+.section {
+  padding: clamp(4.5rem, 9vw, 7rem) 0;
 }
 
 .section--light {
@@ -457,274 +678,9 @@ h1, h2, h3 {
 }
 
 .section__head {
-  max-width: 720px;
-  margin-bottom: 3.5rem;
-}
-
-.section__title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  text-transform: uppercase;
-  color: var(--black);
-}
-
-.section__title--light {
-  color: var(--white);
-}
-
-.section__intro {
-  margin-top: 1rem;
-  font-size: 1.1rem;
-  color: #555865;
-}
-
-.lead {
-  font-size: 1.15rem;
-  margin-bottom: 2rem;
-}
-
-/* ---------- About ---------- */
-.about__grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 4rem;
-}
-
-.about__story h3,
-.about__values h3 {
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--blue);
-  margin-bottom: 0.8rem;
-}
-
-.about__story p {
-  color: #3A3C45;
-  margin-bottom: 2rem;
-}
-
-.values li {
-  display: flex;
-  flex-direction: column;
-  padding: 1.1rem 0 1.1rem 1.2rem;
-  border-left: 3px solid var(--blue);
-  margin-bottom: 0.8rem;
-  background: var(--gray-light);
-}
-
-.values strong {
-  font-family: var(--font-title);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.values span {
-  color: #555865;
-  font-size: 0.95rem;
-  padding-right: 1rem;
-}
-
-/* ---------- Banda azul / experiencia ---------- */
-.band {
-  background: var(--blue);
-  padding: 4.5rem 0;
   text-align: center;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stat__num {
-  font-family: var(--font-title);
-  font-weight: 700;
-  font-size: clamp(2.5rem, 5vw, 3.8rem);
-  line-height: 1;
-}
-
-.stat__num::after {
-  content: "+";
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.stat__label {
-  margin-top: 0.6rem;
-  font-family: var(--font-title);
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.markets {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-family: var(--font-title);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-}
-
-/* ---------- Equipo ---------- */
-.team {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-}
-
-.member {
-  text-align: center;
-}
-
-.member__photo,
-.player__photo {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  background:
-    linear-gradient(160deg, var(--blue) 0%, var(--blue-dark) 100%);
-  background-size: cover;
-  background-position: center top;
-  overflow: hidden;
-}
-
-/* Iniciales como marcador de posición hasta tener las fotos */
-.member__photo::before,
-.player__photo::before {
-  content: attr(data-initials);
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-title);
-  font-weight: 700;
-  font-size: 3rem;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.35);
-}
-
-.member__photo img,
-.player__photo img {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-}
-
-.member__photo {
-  margin-bottom: 1.2rem;
-  filter: grayscale(1);
-  transition: filter 0.4s var(--ease);
-}
-
-.member:hover .member__photo {
-  filter: grayscale(0);
-}
-
-.member__name {
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.member__role {
-  color: var(--blue);
-  font-size: 0.9rem;
-}
-
-/* ---------- Claudio Caniggia ---------- */
-.caniggia {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 5rem;
-  align-items: center;
-}
-
-.caniggia__media {
-  position: relative;
-}
-
-.caniggia__media::before {
-  content: "";
-  position: absolute;
-  inset: 24px -24px -24px 24px;
-  border: 2px solid var(--blue);
-}
-
-.caniggia__photo,
-.caniggia__media img {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  width: 100%;
-  object-fit: cover;
-  background: linear-gradient(160deg, var(--black-3), var(--blue-dark));
-  display: grid;
-  place-items: center;
-}
-
-.caniggia__photo span {
-  font-family: var(--font-title);
-  font-weight: 700;
-  font-size: 5rem;
-  color: rgba(255, 255, 255, 0.15);
-}
-
-.caniggia__text .lead {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.timeline {
-  border-left: 2px solid var(--blue);
-  margin-bottom: 2.5rem;
-}
-
-.timeline li {
-  position: relative;
-  padding: 0 0 1.1rem 1.6rem;
-  color: var(--gray);
-}
-
-.timeline li::before {
-  content: "";
-  position: absolute;
-  left: -7px;
-  top: 0.45rem;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--black);
-  border: 2px solid var(--blue-light);
-}
-
-.timeline span {
-  display: block;
-  font-family: var(--font-title);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--white);
-}
-
-.caniggia__subtitle {
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--blue-light);
-  margin-bottom: 0.8rem;
-}
-
-.caniggia__text > p:last-child {
-  color: rgba(255, 255, 255, 0.8);
+  max-width: 760px;
+  margin: 0 auto 3.5rem;
 }
 
 /* ---------- Services ---------- */
@@ -758,9 +714,9 @@ h1, h2, h3 {
 }
 
 .service h3 {
-  font-size: 1.15rem;
+  font-weight: 700;
+  font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   margin-bottom: 0.7rem;
 }
 
@@ -773,6 +729,7 @@ h1, h2, h3 {
 .filters {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.6rem;
   margin-bottom: 2.5rem;
 }
@@ -781,10 +738,9 @@ h1, h2, h3 {
   background: transparent;
   border: 1px solid var(--line-dark);
   padding: 0.55rem 1.3rem;
-  border-radius: 999px;
   font-family: var(--font-title);
-  font-size: 0.78rem;
-  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.3s, border-color 0.3s;
@@ -821,20 +777,48 @@ h1, h2, h3 {
   display: none;
 }
 
+.player__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(160deg, var(--blue) 0%, var(--blue-dark) 100%);
+  overflow: hidden;
+}
+
+.player__photo::before {
+  content: attr(data-initials);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.player__photo img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
 .player__body {
   padding: 1.4rem;
 }
 
 .player__position {
   font-family: var(--font-title);
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--blue-light);
 }
 
 .player__name {
-  font-size: 1.25rem;
+  font-weight: 700;
+  font-size: 1.3rem;
   text-transform: uppercase;
   margin: 0.2rem 0 1rem;
 }
@@ -864,9 +848,8 @@ h1, h2, h3 {
   align-items: start;
 }
 
-.contact__info > p {
-  color: #3A3C45;
-  margin: 1rem 0 2rem;
+.contact__info .subtitle {
+  margin-bottom: 2rem;
 }
 
 .contact__list li {
@@ -879,7 +862,7 @@ h1, h2, h3 {
 .contact__label {
   font-family: var(--font-title);
   font-size: 0.75rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--blue);
 }
@@ -949,7 +932,7 @@ h1, h2, h3 {
 .field label {
   font-family: var(--font-title);
   font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gray);
   margin-bottom: 0.4rem;
@@ -960,7 +943,6 @@ h1, h2, h3 {
 .field textarea {
   background: var(--black-2);
   border: 1px solid var(--line-dark);
-  border-radius: var(--radius);
   padding: 0.85rem 1rem;
   outline: none;
   transition: border-color 0.3s;
@@ -996,9 +978,8 @@ h1, h2, h3 {
 
 /* ---------- Footer ---------- */
 .footer {
-  background: var(--black);
-  border-top: 1px solid var(--line-dark);
-  padding: 2.5rem 0;
+  background: var(--blue);
+  padding: 2rem 0;
 }
 
 .footer__inner {
@@ -1009,12 +990,32 @@ h1, h2, h3 {
   flex-wrap: wrap;
 }
 
-.footer__copy {
-  font-size: 0.85rem;
-  color: var(--gray);
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
-/* ---------- Animación al hacer scroll ---------- */
+.footer__name {
+  font-family: var(--font-title);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.95rem;
+}
+
+.footer__name small {
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  opacity: 0.8;
+}
+
+.footer__copy {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ---------- Aparición al hacer scroll ---------- */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
@@ -1026,7 +1027,6 @@ h1, h2, h3 {
   transform: none;
 }
 
-/* Sin JS, mostrar todo */
 .no-js .reveal {
   opacity: 1;
   transform: none;
@@ -1034,8 +1034,8 @@ h1, h2, h3 {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
-  .players,
-  .team {
+  .cards,
+  .players {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1043,18 +1043,13 @@ h1, h2, h3 {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .caniggia,
-  .contact,
-  .about__grid {
+  .contact {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
-
-  .caniggia__media {
-    max-width: 420px;
-  }
 }
 
+/* Celular y tablet: menú hamburguesa y Caniggia en vertical */
 @media (max-width: 900px) {
   .nav-toggle {
     display: flex;
@@ -1063,7 +1058,7 @@ h1, h2, h3 {
   .nav {
     position: fixed;
     inset: 0;
-    background: var(--black);
+    background: var(--blue);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1079,34 +1074,112 @@ h1, h2, h3 {
 
   .nav__list {
     flex-direction: column;
-    gap: 1.8rem;
+    gap: 2rem;
   }
 
   .nav__link {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 
   body.menu-open {
     overflow: hidden;
   }
+
+  .hero__media {
+    width: 100%;
+    background:
+      linear-gradient(0deg, var(--black-pure) 5%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0.1) 100%),
+      url("../assests/img/hero-caniggia.jpg") 65% center / cover no-repeat,
+      url("../assests/img/hero-caniggia-provisional.jpg") 65% center / cover no-repeat,
+      #1a1a1f;
+  }
+
+  .journey__track {
+    flex-direction: column;
+  }
+
+  .journey__intro {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4.5rem 24px 2rem;
+  }
+
+  .founder {
+    width: 100%;
+  }
+
+  .founder__photos {
+    width: 100%;
+  }
+
+  .founder__bio {
+    margin-top: 0;
+    max-width: none;
+  }
+
+  .journey__timeline {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 24px 34vw;
+    gap: 2.5rem;
+  }
+
+  .timeline {
+    flex-direction: column;
+    padding: 0 0 0 1.8rem;
+  }
+
+  .timeline::before {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+
+  .timeline__item {
+    width: auto;
+    padding: 0 0 1.6rem;
+  }
+
+  .timeline__item::before {
+    left: calc(-1.8rem - 6px);
+    top: 0.55rem;
+    width: 14px;
+    height: 2px;
+  }
+
+  .timeline__year {
+    font-size: 1.6rem;
+  }
+
+  .journey__cta {
+    align-self: flex-start;
+    margin-top: 0;
+  }
 }
 
 @media (max-width: 640px) {
   :root {
-    --header-h: 68px;
+    --header-h: 58px;
   }
 
   .container {
     padding: 0 16px;
   }
 
-  .section {
-    padding: 5rem 0;
+  .br-desktop {
+    display: none;
   }
 
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem 1rem;
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    aspect-ratio: 4 / 3;
   }
 
   .services,
@@ -1123,31 +1196,14 @@ h1, h2, h3 {
     aspect-ratio: 4 / 3;
   }
 
-  .caniggia__photo,
-  .caniggia__media img {
-    aspect-ratio: 4 / 5;
-  }
-
-  .team {
-    gap: 1.2rem;
-  }
-
   .form {
     padding: 1.6rem;
   }
 
-  .brand__text strong {
-    font-size: 0.95rem;
-  }
-
-  .hero__isotipo {
-    width: 96px;
-    height: 96px;
-    font-size: 1.4rem;
-  }
-
-  .caniggia__media::before {
-    inset: 14px -12px -14px 12px;
+  .journey__intro,
+  .journey__timeline {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .footer__inner {
