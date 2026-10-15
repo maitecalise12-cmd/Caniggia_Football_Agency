@@ -151,22 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ---------- Filtro de jugadores por posición ---------- */
-  const filters = document.querySelectorAll(".filter");
-  const players = document.querySelectorAll(".player");
-
-  filters.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const value = btn.dataset.filter;
-      filters.forEach((b) => b.classList.toggle("is-active", b === btn));
-      players.forEach((p) => {
-        const show = value === "all" || p.dataset.position === value;
-        p.classList.toggle("is-hidden", !show);
-        if (show) p.classList.add("is-visible");
-      });
-    });
-  });
-
   /* ---------- Formulario de contacto ----------
      Sin servidor: valida los campos y abre el cliente de correo
      con el mensaje armado. Para enviar desde la web directamente,
