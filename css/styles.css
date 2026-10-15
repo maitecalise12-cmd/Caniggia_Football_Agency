@@ -526,7 +526,7 @@ h1, h2, h3 {
 .journey__intro {
   width: 100vw;
   gap: clamp(2rem, 4vw, 3.5rem);
-  padding: clamp(4rem, 8vh, 6rem) 6vw clamp(9rem, 20vw, 16rem);
+  padding: clamp(4rem, 8vh, 6rem) 6vw clamp(7rem, 13vw, 11rem);
 }
 
 .founder {
@@ -586,7 +586,7 @@ h1, h2, h3 {
 /* Línea de tiempo */
 .journey__timeline {
   position: relative;
-  padding: 0 8vw clamp(9rem, 20vw, 16rem) 2vw;
+  padding: 0 8vw clamp(7rem, 13vw, 11rem) 2vw;
   gap: 5rem;
 }
 
@@ -650,16 +650,17 @@ h1, h2, h3 {
   margin-top: 2.5rem;
 }
 
-/* Palabra gigante, cortada por el borde inferior */
+/* "CLAUDIO CANIGGIA" gigante, fijo y cortado por el borde inferior.
+   El JS ajusta el tamaño para que ocupe todo el ancho (con 6vw de margen). */
 .journey__word {
   position: absolute;
   z-index: 1;
-  left: 0;
-  right: 0;
+  left: 6vw;
+  right: 6vw;
   bottom: 0;
   font-family: var(--font-title);
   font-weight: 500;
-  font-size: 16.5vw;
+  font-size: 9vw;
   line-height: 0.74;
   letter-spacing: 0.03em;
   text-align: center;
@@ -669,7 +670,6 @@ h1, h2, h3 {
   white-space: nowrap;
   overflow: hidden;
   height: 0.62em;
-  will-change: transform;
 }
 
 /* Modo escritorio: la sección queda fija y el contenido se desplaza en horizontal */
@@ -1025,7 +1025,7 @@ h1, h2, h3 {
   .journey__timeline {
     flex-direction: column;
     align-items: flex-start;
-    padding: 1rem 24px 34vw;
+    padding: 1rem 24px 18vw;
     gap: 2.5rem;
   }
 

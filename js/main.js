@@ -76,17 +76,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const journey = document.getElementById("caniggia");
   const track = document.getElementById("journeyTrack");
   const word = journey.querySelector(".journey__word");
+  const wordText = document.getElementById("journeyWord");
   const desktop = window.matchMedia("(min-width: 901px)");
   let distance = 0;
 
+  // "CLAUDIO CANIGGIA" ocupa todo el ancho disponible, sea cual sea la tipografía
+  const fitWord = () => {
+    word.style.fontSize = "100px";
+    const textWidth = wordText.getBoundingClientRect().width;
+    if (textWidth > 0) {
+      word.style.fontSize = `${(word.clientWidth / textWidth) * 100}px`;
+    }
+  };
+
   const setupJourney = () => {
+    fitWord();
     const horizontal = desktop.matches && !reducedMotion;
     journey.classList.toggle("is-horizontal", horizontal);
 
     if (!horizontal) {
       journey.style.height = "";
       track.style.transform = "";
-      word.style.transform = "";
       return;
     }
 
@@ -101,8 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const start = journey.offsetTop - header.offsetHeight;
     const progress = Math.min(Math.max((window.scrollY - start) / (distance || 1), 0), 1);
     track.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
-    // La palabra CANIGGIA se mueve más lento (efecto de profundidad)
-    word.style.transform = `translate3d(${-progress * distance * 0.25}px, 0, 0)`;
   };
 
   let ticking = false;
@@ -117,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("resize", setupJourney);
   window.addEventListener("load", setupJourney);
+  if (document.fonts) document.fonts.ready.then(setupJourney);
   setupJourney();
 
   /* ---------- Caniggia: 3 fotos que se alternan ---------- */
