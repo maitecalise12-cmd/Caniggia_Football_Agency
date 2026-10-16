@@ -75,22 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
      de tiempo. En pantallas chicas se ve en vertical. */
   const journey = document.getElementById("caniggia");
   const track = document.getElementById("journeyTrack");
-  const word = journey.querySelector(".journey__word");
-  const wordText = document.getElementById("journeyWord");
   const desktop = window.matchMedia("(min-width: 901px)");
   let distance = 0;
 
-  // "CLAUDIO CANIGGIA" ocupa todo el ancho disponible, sea cual sea la tipografía
-  const fitWord = () => {
-    word.style.fontSize = "100px";
-    const textWidth = wordText.getBoundingClientRect().width;
-    if (textWidth > 0) {
-      word.style.fontSize = `${(word.clientWidth / textWidth) * 100}px`;
-    }
-  };
-
   const setupJourney = () => {
-    fitWord();
     const horizontal = desktop.matches && !reducedMotion;
     journey.classList.toggle("is-horizontal", horizontal);
 

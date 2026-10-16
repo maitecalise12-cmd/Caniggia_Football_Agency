@@ -378,13 +378,17 @@ h1, h2, h3 {
 }
 
 .hero__title span:nth-child(2) {
-  animation-delay: 0.12s;
+  animation-delay: 0.1s;
+}
+
+.hero__title span:nth-child(3) {
+  animation-delay: 0.2s;
 }
 
 /* Última palabra destacada */
 .hero__title strong {
   font-weight: 700;
-  animation: fadeUp 0.9s 0.24s var(--ease) both;
+  animation: fadeUp 0.9s 0.3s var(--ease) both;
 }
 
 .hero .btn {
@@ -793,8 +797,7 @@ h1, h2, h3 {
   margin-top: 2.5rem;
 }
 
-/* "CLAUDIO CANIGGIA" gigante, fijo y cortado por el borde inferior.
-   El JS ajusta el tamaño para que ocupe todo el ancho (con 6vw de margen). */
+/* "CANIGGIA" gigante, fijo, alineado a la izquierda y cortado por el borde inferior */
 .journey__word {
   position: absolute;
   z-index: 1;
@@ -803,10 +806,10 @@ h1, h2, h3 {
   bottom: 0;
   font-family: var(--font-title);
   font-weight: 500;
-  font-size: 9vw;
+  font-size: 9.3vw;
   line-height: 0.74;
   letter-spacing: 0.03em;
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
   color: var(--white);
   pointer-events: none;
