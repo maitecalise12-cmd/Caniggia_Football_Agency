@@ -608,10 +608,12 @@ h1, h2, h3 {
 }
 
 .timeline {
+  --crest: 64px;          /* tamaño del escudo */
+  --crest-space: 88px;    /* espacio arriba de la línea para el escudo */
   position: relative;
   display: flex;
   gap: 0;
-  padding-top: 2.5rem;
+  padding-top: var(--crest-space);
 }
 
 .timeline::before {
@@ -619,16 +621,16 @@ h1, h2, h3 {
   position: absolute;
   left: 0;
   right: 0;
-  top: 2.5rem;
+  top: var(--crest-space);
   height: 2px;
   background: var(--white);
 }
 
 .timeline__item {
   position: relative;
-  width: 210px;
+  width: 240px;
   flex-shrink: 0;
-  padding: 1.8rem 1.5rem 0 0;
+  padding: 1.6rem 1.8rem 0 0;
 }
 
 .timeline__item::before {
@@ -641,24 +643,148 @@ h1, h2, h3 {
   background: var(--white);
 }
 
+/* Escudo: arriba de la línea, alineado a la izquierda con el año */
+.timeline__crest {
+  position: absolute;
+  left: 0;
+  top: calc(-1 * var(--crest-space) + 4px);
+  width: var(--crest);
+  height: var(--crest);
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(255, 255, 255, 0.25); /* marcador mientras falta el escudo */
+  border-radius: 50%;
+}
+
+.timeline__crest:has(img:not([hidden])) {
+  border: 0;
+  border-radius: 0;
+}
+
+.timeline__crest img,
+.national__crest img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  color: transparent; /* no mostrar el texto alternativo si el escudo no carga */
+  font-size: 0;
+}
+
+.timeline__title {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 0.35rem;
+}
+
 .timeline__year {
-  display: block;
   font-family: var(--font-title);
   font-weight: 700;
-  font-size: 2rem;
-  line-height: 1;
+  font-size: 1.7rem;
+  line-height: 1.05;
   margin-bottom: 0.6rem;
+  white-space: nowrap;
 }
 
 .timeline__text {
-  display: block;
   font-size: 0.92rem;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
 }
 
-.timeline__item--today .timeline__year {
+/* Cuadro aparte: Selección Argentina */
+.national {
+  flex-shrink: 0;
+  align-self: center;
+  width: 460px;
+  padding: 1.6rem 1.8rem;
+  background: rgba(15, 15, 17, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 3px solid var(--blue-light);
+  backdrop-filter: blur(6px);
+}
+
+.national__head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.national__crest {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+}
+
+.national__crest:has(img:not([hidden])) {
+  border: 0;
+  border-radius: 0;
+}
+
+.national .timeline__title {
+  margin-bottom: 0.1rem;
+}
+
+.national__years {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.national__text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 1.1rem;
+}
+
+.national__stats {
+  display: flex;
+  gap: 2.5rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--line-dark);
+  border-bottom: 1px solid var(--line-dark);
+  margin-bottom: 0.9rem;
+}
+
+.national__stats div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.national__stats dd {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.national__stats dt,
+.national__list dt {
+  font-family: var(--font-title);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--blue-light);
+}
+
+.national__list div + div {
+  margin-top: 0.6rem;
+}
+
+.national__list dd {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .journey__cta {
@@ -1067,13 +1193,26 @@ h1, h2, h3 {
 
   .timeline__item::before {
     left: calc(-1.8rem - 6px);
-    top: 0.55rem;
+    top: 1.6rem;
     width: 14px;
     height: 2px;
   }
 
+  /* En vertical el escudo va arriba del título, dentro del ítem */
+  .timeline__crest {
+    position: static;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 0.8rem;
+  }
+
   .timeline__year {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
+  }
+
+  .national {
+    width: 100%;
+    align-self: stretch;
   }
 
   .journey__cta {
