@@ -67,97 +67,105 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     { threshold: 0.15 }
   );
-  document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+  // .svc-block: bloques de la página Services (el número sube y los ítems entran desde la derecha)
+  document.querySelectorAll(".reveal, .svc-block").forEach((el) => revealObserver.observe(el));
 
-  /* ---------- Caniggia: scroll horizontal ----------
+  /* ---------- Caniggia: scroll horizontal (solo en el Home) ----------
      En escritorio la sección queda fija y, al bajar con el scroll,
      el contenido se desplaza hacia la izquierda mostrando la línea
      de tiempo. En pantallas chicas se ve en vertical. */
   const journey = document.getElementById("caniggia");
   const track = document.getElementById("journeyTrack");
-  // Igual que en styles.css: horizontal solo en pantallas anchas Y con suficiente alto
-  const desktop = window.matchMedia("(min-width: 901px) and (min-height: 620px)");
-  let distance = 0;
+  if (journey && track) {
+    // Igual que en styles.css: horizontal solo en pantallas anchas Y con suficiente alto
+    const desktop = window.matchMedia("(min-width: 901px) and (min-height: 620px)");
+    let distance = 0;
 
-  const setupJourney = () => {
-    const horizontal = desktop.matches && !reducedMotion;
-    journey.classList.toggle("is-horizontal", horizontal);
+    const setupJourney = () => {
+      const horizontal = desktop.matches && !reducedMotion;
+      journey.classList.toggle("is-horizontal", horizontal);
 
-    if (!horizontal) {
-      journey.style.height = "";
-      track.style.transform = "";
-      return;
-    }
+      if (!horizontal) {
+        journey.style.height = "";
+        track.style.transform = "";
+        return;
+      }
 
-    const viewH = window.innerHeight - header.offsetHeight;
-    distance = Math.max(track.scrollWidth - window.innerWidth, 0);
-    journey.style.height = `${viewH + distance}px`;
-    updateJourney();
-  };
-
-  const updateJourney = () => {
-    if (!journey.classList.contains("is-horizontal")) return;
-    const start = journey.offsetTop - header.offsetHeight;
-    const progress = Math.min(Math.max((window.scrollY - start) / (distance || 1), 0), 1);
-    track.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
-  };
-
-  let ticking = false;
-  window.addEventListener("scroll", () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
+      const viewH = window.innerHeight - header.offsetHeight;
+      distance = Math.max(track.scrollWidth - window.innerWidth, 0);
+      journey.style.height = `${viewH + distance}px`;
       updateJourney();
-      ticking = false;
-    });
-  }, { passive: true });
+    };
 
-  window.addEventListener("resize", setupJourney);
-  window.addEventListener("load", setupJourney);
-  if (document.fonts) document.fonts.ready.then(setupJourney);
-  setupJourney();
+    const updateJourney = () => {
+      if (!journey.classList.contains("is-horizontal")) return;
+      const start = journey.offsetTop - header.offsetHeight;
+      const progress = Math.min(Math.max((window.scrollY - start) / (distance || 1), 0), 1);
+      track.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
+    };
 
-  /* ---------- Caniggia: 3 fotos que se alternan ---------- */
-  const photos = document.querySelectorAll(".founder__photo");
-  if (photos.length > 1 && !reducedMotion) {
-    let current = 0;
-    setInterval(() => {
-      photos[current].classList.remove("is-active");
-      current = (current + 1) % photos.length;
-      photos[current].classList.add("is-active");
-    }, 4000);
-  }
-
-  /* ---------- Caniggia: video de fondo ----------
-     Se reproduce solo mientras la sección está en pantalla. */
-  const video = document.getElementById("journeyVideo");
-  if (video) {
-    if (reducedMotion) {
-      video.removeAttribute("autoplay");
-      video.pause();
-    } else {
-      const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            video.play().catch(() => {});
-          } else {
-            video.pause();
-          }
-        });
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateJourney();
+        ticking = false;
       });
-      videoObserver.observe(journey);
+    }, { passive: true });
+
+    window.addEventListener("resize", setupJourney);
+    window.addEventListener("load", setupJourney);
+    if (document.fonts) document.fonts.ready.then(setupJourney);
+    setupJourney();
+
+    /* ---------- Caniggia: 3 fotos que se alternan ---------- */
+    const photos = document.querySelectorAll(".founder__photo");
+    if (photos.length > 1 && !reducedMotion) {
+      let current = 0;
+      setInterval(() => {
+        photos[current].classList.remove("is-active");
+        current = (current + 1) % photos.length;
+        photos[current].classList.add("is-active");
+      }, 4000);
     }
-  }
+
+    /* ---------- Caniggia: video de fondo ----------
+       Se reproduce solo mientras la sección está en pantalla. */
+    const video = document.getElementById("journeyVideo");
+    if (video) {
+      if (reducedMotion) {
+        video.removeAttribute("autoplay");
+        video.pause();
+      } else {
+        const videoObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        });
+        videoObserver.observe(journey);
+      }
+    }
+  } // fin sección Caniggia
 
   /* ---------- Formulario de contacto ----------
      Sin servidor: valida los campos y abre el cliente de correo
      con el mensaje armado. Para enviar desde la web directamente,
-     conectar un servicio como Formspree o un backend propio. */
+     conectar un servicio como Formspree o un backend propio.
+     Los mensajes salen en el idioma de la página (<html lang>). */
   const form = document.getElementById("contactForm");
   const status = document.getElementById("formStatus");
   const CONTACT_EMAIL = "info@caniggiafootballagency.com";
+  const es = document.documentElement.lang === "es";
+  const msg = es
+    ? { error: "Completá todos los campos obligatorios con datos válidos.", ok: "¡Gracias! Se va a abrir tu correo para enviar el mensaje.", subject: "Consulta desde la web" }
+    : { error: "Please complete all required fields with valid information.", ok: "Thank you! Your email app will open to send the message.", subject: "Website enquiry" };
 
-  form.addEventListener("submit", (e) => {
+  if (form) form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     let valid = true;
@@ -171,13 +179,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (!valid) {
-      status.textContent = "Please complete all required fields with valid information.";
+      status.textContent = msg.error;
       status.className = "form__status is-error";
       return;
     }
 
     const data = new FormData(form);
-    const subject = `Website enquiry – ${data.get("profile")}`;
+    const subject = `${msg.subject} – ${data.get("profile")}`;
     const body =
       `Name: ${data.get("name")}\n` +
       `Email: ${data.get("email")}\n` +
@@ -188,11 +196,12 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href =
       `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    status.textContent = "Thank you! Your email app will open to send the message.";
+    status.textContent = msg.ok;
     status.className = "form__status is-ok";
     form.reset();
   });
 
   /* ---------- Año del footer ---------- */
-  document.getElementById("year").textContent = new Date().getFullYear();
+  const year = document.getElementById("year");
+  if (year) year.textContent = new Date().getFullYear();
 });

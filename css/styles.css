@@ -852,46 +852,540 @@ h1, h2, h3 {
   margin: 0 auto 3.5rem;
 }
 
-/* ---------- Services ---------- */
-.services {
+/* =========================================================
+   SERVICES · HOME — franjas diagonales (referencia Six3Nine)
+   ========================================================= */
+.svc-home {
+  --skew: -16deg;
+  --strips-h: clamp(460px, 82vh, 760px);
+  position: relative;
+  display: flex;
+  height: var(--strips-h);
+  background: var(--black-pure);
+  overflow: hidden;
+}
+
+.svc-home__intro {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 clamp(270px, 30vw, 420px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* a la derecha deja lugar para la diagonal de la primera franja */
+  padding: 3rem calc(1.5rem + 0.15 * var(--strips-h)) 3rem 6vw;
+}
+
+.svc-home__intro .title {
+  font-size: clamp(2rem, 3.4vw, 3.2rem);
+}
+
+.svc-home__lead {
+  max-width: 32ch;
+  margin: 1rem 0 1.8rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.svc-home__more {
+  align-self: flex-start;
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--blue-light);
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.svc-home__more:hover {
+  color: var(--blue-light);
+}
+
+.svc-strips {
+  flex: 1;
+  display: flex;
+  /* la última franja sale del cuadro por la derecha, sin dejar triángulos vacíos */
+  margin-right: calc(-0.16 * var(--strips-h));
+}
+
+.svc-strip {
+  position: relative;
+  flex: 1 1 0;
+  overflow: hidden;
+  transform: skewX(var(--skew));
+  border-left: 4px solid var(--black-pure);
+  transition: flex-grow 0.5s var(--ease);
+}
+
+/* La imagen se "des-inclina" para verse derecha dentro de la franja */
+.svc-strip__img {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -45%;
+  right: -45%;
+  transform: skewX(calc(var(--skew) * -1));
+  background: var(--strip-img) center / cover no-repeat, #1b1b20;
+  transition: transform 0.8s var(--ease);
+}
+
+/* Oscurecido base + capa azul que aparece al pasar el mouse */
+.svc-strip::before,
+.svc-strip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.svc-strip::before {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.35) 100%);
+}
+
+.svc-strip::after {
+  background: linear-gradient(0deg, rgba(75, 89, 133, 0.95) 0%, rgba(75, 89, 133, 0.6) 40%, rgba(75, 89, 133, 0) 80%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.svc-strip__label {
+  position: absolute;
+  z-index: 2;
+  left: 1.4rem;
+  right: 0.5rem;
+  bottom: 18%;
+  display: flex;
+  flex-direction: column;
+  transform: skewX(calc(var(--skew) * -1));
+  transition: transform 0.4s var(--ease);
+}
+
+.svc-strip__num {
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 4.6vw, 4.4rem);
+  line-height: 0.95;
+}
+
+.svc-strip__name {
+  font-family: var(--font-title);
+  font-weight: 300;
+  font-size: clamp(0.95rem, 1.5vw, 1.45rem);
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.svc-strip:hover,
+.svc-strip:focus-visible {
+  flex-grow: 1.5;
+}
+
+.svc-strip:hover::after,
+.svc-strip:focus-visible::after {
+  opacity: 1;
+}
+
+.svc-strip:hover .svc-strip__img {
+  transform: skewX(calc(var(--skew) * -1)) scale(1.05);
+}
+
+.svc-strip:hover .svc-strip__label,
+.svc-strip:focus-visible .svc-strip__label {
+  transform: skewX(calc(var(--skew) * -1)) translateY(-8px);
+}
+
+.svc-strip:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: -6px;
+}
+
+/* La última franja sale en parte de la pantalla: un poco más ancha y con el texto dentro de lo visible */
+.svc-strip:last-child {
+  flex-grow: 1.35;
+}
+
+.svc-strip:last-child:hover,
+.svc-strip:last-child:focus-visible {
+  flex-grow: 1.85;
+}
+
+.svc-strip:last-child .svc-strip__label {
+  right: calc(0.16 * var(--strips-h) + 0.5rem);
+}
+
+/* Imágenes: la propia de cada servicio y, si falta, la provisoria */
+.svc-strip--1 { --strip-img: url("../assests/img/servicio-01.jpg"), url("../assests/img/assessment.jpg"); }
+.svc-strip--2 { --strip-img: url("../assests/img/servicio-02.jpg"), url("../assests/img/career_plan.jpg"); }
+.svc-strip--3 { --strip-img: url("../assests/img/servicio-03.jpg"), url("../assests/img/execution.jpg"); }
+.svc-strip--4 { --strip-img: url("../assests/img/servicio-04.jpg"), url("../assests/img/follow-up.jpg"); }
+
+/* =========================================================
+   PÁGINA DETALLE · SERVICES
+   ========================================================= */
+.page-services {
+  background: var(--black-pure);
+}
+
+/* Hero: primer tercio de la pantalla, corta recto contra el negro */
+.svc-hero {
+  position: relative;
+  margin-top: var(--header-h);
+  height: clamp(220px, 38vh, 440px);
+  overflow: hidden;
+  background: var(--black-pure);
+}
+
+.svc-hero__img {
+  position: absolute;
+  inset: 0;
+  background:
+    url("../assests/img/services-hero.jpg") center 35% / cover no-repeat,
+    url("../assests/img/hero.jpeg") 72% 30% / cover no-repeat;
+  filter: grayscale(1) contrast(1.05); /* B&N, como pide el documento */
+  animation: heroIn 1.4s var(--ease) both;
+}
+
+.svc-intro {
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(1rem, 3vw, 2rem);
+}
+
+.svc-intro__title {
+  font-size: clamp(2.6rem, 6vw, 5rem);
+}
+
+.svc-intro__lead {
+  max-width: 52ch;
+}
+
+.svc-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.8rem;
+  margin-top: 2rem;
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.svc-index a {
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.svc-index a span {
+  color: var(--blue-light);
+  margin-right: 0.3rem;
+}
+
+.svc-index a:hover {
+  border-color: var(--white);
+}
+
+/* Módulo de cada servicio: nombre + número gigante apoyado en la línea + 2 ítems en diagonal */
+.svc-list {
+  padding-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.svc-block {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  column-gap: clamp(1.5rem, 4vw, 3rem);
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 2px solid var(--white); /* la línea que corta el número */
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+.svc-block__head {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.svc-block__name {
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+  margin-bottom: -0.1em;
+}
+
+/* Número cortado por la línea: solo se ve la parte de arriba */
+.svc-block__num {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: clamp(6.5rem, 17vw, 15rem);
+  line-height: 1;
+  height: 0.66em;
+  overflow: hidden;
+}
+
+.svc-block__num span {
+  display: block;
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, var(--white) 25%, var(--blue) 85%); /* de blanco a azul hacia abajo */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transform: translateY(100%);
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.svc-block__items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(1rem, 3vw, 2.5rem);
+  row-gap: 0.4rem;
+  align-self: end;
+  padding-bottom: clamp(1.2rem, 2.5vw, 2rem);
+}
+
+/* Escalonado: el primero arriba a la izquierda, el segundo más abajo a la derecha */
+.svc-item:nth-child(1) { grid-column: 1; grid-row: 1; }
+.svc-item:nth-child(2) { grid-column: 2; grid-row: 2; }
+
+.svc-item {
+  opacity: 0;
+  transform: translateX(48px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+.svc-item__title {
+  font-weight: 700;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  line-height: 1.25;
+}
+
+.svc-item__n {
+  font-weight: 400;
+  color: var(--blue-light);
+  margin-right: 0.2rem;
+}
+
+.svc-item__text {
+  margin-top: 0.35rem;
+  max-width: 34ch;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* Entrada al hacer scroll: el número sube desde la línea y los ítems entran desde la derecha */
+.svc-block.is-visible .svc-block__num span {
+  transform: none;
+}
+
+.svc-block.is-visible .svc-item {
+  opacity: 1;
+  transform: none;
+}
+
+.svc-block.is-visible .svc-item:nth-child(1) { transition-delay: 0.15s; }
+.svc-block.is-visible .svc-item:nth-child(2) { transition-delay: 0.3s; }
+
+.no-js .svc-block__num span,
+.no-js .svc-item {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Jugadores (página Services) ---------- */
+.players {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
 }
 
-.service {
-  padding: 2.5rem 2rem;
-  background: var(--gray-light);
-  border-bottom: 3px solid transparent;
-  transition: background 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s var(--ease), transform 0.35s var(--ease);
+.player {
+  background: var(--black-2);
+  border: 1px solid var(--line-dark);
+  overflow: hidden;
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
 }
 
-.service:hover {
-  background: var(--black);
-  color: var(--white);
-  border-color: var(--blue);
+.player:hover {
   transform: translateY(-6px);
+  border-color: var(--blue);
 }
 
-.service__num {
-  display: block;
+.player__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(160deg, var(--blue) 0%, var(--blue-dark) 100%);
+  overflow: hidden;
+}
+
+.player__photo::before {
+  content: attr(data-initials);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
   font-family: var(--font-title);
   font-weight: 700;
-  font-size: 2rem;
-  color: var(--blue);
-  margin-bottom: 1rem;
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.35);
 }
 
-.service h3 {
-  font-weight: 700;
-  font-size: 1.2rem;
+.player__photo img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player__body {
+  padding: 1.4rem;
+}
+
+.player__position {
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: 0.7rem;
+  color: var(--blue-light);
 }
 
-.service p {
-  font-size: 0.95rem;
-  opacity: 0.8;
+.player__name {
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  margin: 0.2rem 0 1rem;
+}
+
+.player__data div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--line-dark);
+  font-size: 0.88rem;
+}
+
+.player__data dt {
+  color: var(--gray);
+}
+
+.player__data dd {
+  font-weight: 700;
+  text-align: right;
+}
+
+/* ---------- Services: responsive ---------- */
+@media (max-width: 1100px) {
+  .players {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  /* Home: las franjas pasan a bandas apiladas */
+  .svc-home {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .svc-home__intro {
+    flex: none;
+    padding: 4rem 24px 2rem;
+  }
+
+  .svc-strips {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .svc-strip {
+    flex: none;
+    height: clamp(120px, 26vw, 180px);
+    transform: none;
+    border-left: 0;
+    border-top: 4px solid var(--black-pure);
+  }
+
+  .svc-strip__img {
+    left: 0;
+    right: 0;
+    transform: none;
+  }
+
+  .svc-strip:last-child .svc-strip__label {
+    right: 0.5rem;
+  }
+
+  .svc-strip:hover .svc-strip__img {
+    transform: scale(1.05);
+  }
+
+  .svc-strip__label,
+  .svc-strip:hover .svc-strip__label,
+  .svc-strip:focus-visible .svc-strip__label {
+    left: 24px;
+    bottom: 50%;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.9rem;
+    transform: translateY(50%);
+  }
+
+  /* Detalle: un servicio debajo del otro; la línea queda debajo del número */
+  .svc-block {
+    grid-template-columns: 1fr;
+    border-bottom: 0;
+  }
+
+  .svc-block__head {
+    border-bottom: 2px solid var(--white);
+  }
+
+  .svc-block__items {
+    grid-template-columns: 1fr;
+    row-gap: 1.4rem;
+    padding: 1.6rem 0 0.5rem;
+  }
+
+  .svc-item:nth-child(1),
+  .svc-item:nth-child(2) {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  /* se mantiene la diagonal: el segundo ítem corrido a la derecha */
+  .svc-item:nth-child(2) {
+    margin-left: 18%;
+  }
+}
+
+@media (max-width: 640px) {
+  .svc-home__intro {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .svc-strip__label,
+  .svc-strip:hover .svc-strip__label,
+  .svc-strip:focus-visible .svc-strip__label {
+    left: 16px;
+  }
+
+  .svc-item:nth-child(2) {
+    margin-left: 10%;
+  }
+
+  .players {
+    grid-template-columns: 1fr;
+  }
+
+  .player__photo {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 /* ---------- Contact ---------- */
@@ -1092,10 +1586,6 @@ h1, h2, h3 {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .services {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .contact {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -1282,7 +1772,6 @@ h1, h2, h3 {
     grid-template-columns: 1fr;
   }
 
-  .services,
   .form__row {
     grid-template-columns: 1fr;
   }
