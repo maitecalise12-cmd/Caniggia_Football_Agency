@@ -498,6 +498,8 @@ h1, h2, h3 {
 
 /* ---------- Claudio Caniggia · scroll horizontal ---------- */
 .journey {
+  /* espacio que se reserva abajo para la palabra CANIGGIA (alto visible de la palabra + aire) */
+  --word-space: calc(5.8vw + 2.5rem);
   position: relative;
   background: var(--black-pure);
 }
@@ -547,7 +549,7 @@ h1, h2, h3 {
 .journey__intro {
   width: 100vw;
   gap: clamp(2rem, 4vw, 3.5rem);
-  padding: clamp(4rem, 8vh, 6rem) 6vw clamp(7rem, 13vw, 11rem);
+  padding: clamp(2.5rem, 7vh, 6rem) 6vw var(--word-space);
 }
 
 .founder {
@@ -561,7 +563,7 @@ h1, h2, h3 {
 
 .founder__photos {
   position: relative;
-  width: clamp(280px, 34vw, 480px);
+  width: clamp(240px, min(34vw, 55vh), 480px); /* se achica en pantallas bajas */
   aspect-ratio: 5 / 4;
   background: linear-gradient(160deg, #26262c, var(--blue-dark));
   overflow: hidden;
@@ -607,7 +609,7 @@ h1, h2, h3 {
 /* Línea de tiempo */
 .journey__timeline {
   position: relative;
-  padding: 0 8vw clamp(7rem, 13vw, 11rem) 2vw;
+  padding: 0 8vw var(--word-space) 2vw;
   gap: 5rem;
 }
 
@@ -1100,6 +1102,36 @@ h1, h2, h3 {
   }
 }
 
+/* Notebooks con pantalla baja: cuadro de Argentina más compacto para que entre en el alto */
+@media (min-width: 901px) and (max-height: 760px) {
+  .national {
+    padding: 1.1rem 1.4rem;
+  }
+
+  .national__head {
+    margin-bottom: 0.6rem;
+  }
+
+  .national__text {
+    font-size: 0.84rem;
+    line-height: 1.45;
+    margin-bottom: 0.7rem;
+  }
+
+  .national__stats {
+    padding: 0.6rem 0;
+    margin-bottom: 0.6rem;
+  }
+
+  .national__stats dd {
+    font-size: 1.8rem;
+  }
+
+  .national__list dd {
+    font-size: 0.8rem;
+  }
+}
+
 /* Celular y tablet: menú hamburguesa y Caniggia en vertical */
 @media (max-width: 900px) {
   .nav-toggle {
@@ -1143,7 +1175,12 @@ h1, h2, h3 {
       url("../assests/img/hero.jpeg") 72% center / cover no-repeat,
       var(--black-pure);
   }
+}
 
+/* Caniggia en vertical: pantallas angostas (celular, tablet vertical) y también
+   pantallas anchas pero bajas (celular acostado), donde no entra el scroll horizontal.
+   Debe coincidir con la condición "horizontal" de main.js */
+@media (max-width: 900px), (max-height: 619px) {
   .journey__track {
     flex-direction: column;
   }
@@ -1161,11 +1198,12 @@ h1, h2, h3 {
 
   .founder__photos {
     width: 100%;
+    max-width: 560px;
   }
 
   .founder__bio {
     margin-top: 0;
-    max-width: none;
+    max-width: 60ch;
   }
 
   .journey__timeline {
@@ -1215,7 +1253,8 @@ h1, h2, h3 {
 
   .national {
     width: 100%;
-    align-self: stretch;
+    max-width: 560px;
+    align-self: flex-start;
   }
 
   .journey__cta {
@@ -1229,8 +1268,10 @@ h1, h2, h3 {
     --header-h: 58px;
   }
 
+  /* Solo los costados: no pisar el padding de arriba/abajo de cada bloque */
   .container {
-    padding: 0 16px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .br-desktop {

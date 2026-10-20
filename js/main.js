@@ -75,7 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
      de tiempo. En pantallas chicas se ve en vertical. */
   const journey = document.getElementById("caniggia");
   const track = document.getElementById("journeyTrack");
-  const desktop = window.matchMedia("(min-width: 901px)");
+  // Igual que en styles.css: horizontal solo en pantallas anchas Y con suficiente alto
+  const desktop = window.matchMedia("(min-width: 901px) and (min-height: 620px)");
   let distance = 0;
 
   const setupJourney = () => {
