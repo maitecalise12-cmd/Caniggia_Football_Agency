@@ -67,8 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     { threshold: 0.15 }
   );
-  // .svc-block: bloques de la página Services (el número sube y los ítems entran desde la derecha)
-  document.querySelectorAll(".reveal, .svc-block").forEach((el) => revealObserver.observe(el));
+  document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
   /* ---------- Caniggia: scroll horizontal (solo en el Home) ----------
      En escritorio la sección queda fija y, al bajar con el scroll,
