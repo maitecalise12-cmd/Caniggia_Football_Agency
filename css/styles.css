@@ -938,7 +938,7 @@ h1, h2, h3 {
   left: -45%;
   right: -45%;
   transform: skewX(calc(var(--skew) * -1));
-  background: var(--strip-img) center / cover no-repeat, #1b1b20;
+  background: linear-gradient(160deg, #26262c 0%, #121216 100%); /* sin fotos por ahora */
   transition: transform 0.8s var(--ease);
 }
 
@@ -1026,12 +1026,6 @@ h1, h2, h3 {
 .svc-strip:last-child .svc-strip__label {
   right: calc(0.16 * var(--strips-h) + 0.5rem);
 }
-
-/* Imágenes: la propia de cada servicio y, si falta, la provisoria */
-.svc-strip--1 { --strip-img: url("../assests/img/servicio-01.jpg"), url("../assests/img/assessment.jpg"); }
-.svc-strip--2 { --strip-img: url("../assests/img/servicio-02.jpg"), url("../assests/img/career_plan.jpg"); }
-.svc-strip--3 { --strip-img: url("../assests/img/servicio-03.jpg"), url("../assests/img/execution.jpg"); }
-.svc-strip--4 { --strip-img: url("../assests/img/servicio-04.jpg"), url("../assests/img/follow-up.jpg"); }
 
 /* ---------- Services: responsive ---------- */
 @media (max-width: 900px) {
