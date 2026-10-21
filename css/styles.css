@@ -1221,96 +1221,7 @@ h1, h2, h3 {
   transform: none;
 }
 
-/* ---------- Jugadores (página Services) ---------- */
-.players {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-}
-
-.player {
-  background: var(--black-2);
-  border: 1px solid var(--line-dark);
-  overflow: hidden;
-  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
-}
-
-.player:hover {
-  transform: translateY(-6px);
-  border-color: var(--blue);
-}
-
-.player__photo {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  background: linear-gradient(160deg, var(--blue) 0%, var(--blue-dark) 100%);
-  overflow: hidden;
-}
-
-.player__photo::before {
-  content: attr(data-initials);
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-title);
-  font-weight: 700;
-  font-size: 3rem;
-  color: rgba(255, 255, 255, 0.35);
-}
-
-.player__photo img {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.player__body {
-  padding: 1.4rem;
-}
-
-.player__position {
-  font-family: var(--font-title);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--blue-light);
-}
-
-.player__name {
-  font-weight: 700;
-  font-size: 1.3rem;
-  text-transform: uppercase;
-  margin: 0.2rem 0 1rem;
-}
-
-.player__data div {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.45rem 0;
-  border-top: 1px solid var(--line-dark);
-  font-size: 0.88rem;
-}
-
-.player__data dt {
-  color: var(--gray);
-}
-
-.player__data dd {
-  font-weight: 700;
-  text-align: right;
-}
-
 /* ---------- Services: responsive ---------- */
-@media (max-width: 1100px) {
-  .players {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 900px) {
   /* Home: las franjas pasan a bandas apiladas */
   .svc-home {
@@ -1403,14 +1314,6 @@ h1, h2, h3 {
 
   .svc-item:nth-child(2) {
     margin-left: 10%;
-  }
-
-  .players {
-    grid-template-columns: 1fr;
-  }
-
-  .player__photo {
-    aspect-ratio: 4 / 3;
   }
 }
 
