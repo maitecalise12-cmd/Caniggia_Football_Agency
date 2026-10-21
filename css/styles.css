@@ -965,7 +965,6 @@ h1, h2, h3 {
 /* Etiqueta de la franja: número + nombre a la izquierda; al abrirse, el detalle aparece al costado */
 .svc-strip__label {
   --detail-w: clamp(220px, 21vw, 310px);
-  --step: 1rem; /* escalonado del texto siguiendo la diagonal */
   position: absolute;
   z-index: 2;
   left: 2.6rem; /* margen extra: al abrirse el contenido crece y el borde diagonal se corre */
@@ -996,7 +995,7 @@ h1, h2, h3 {
   font-size: clamp(0.95rem, 1.5vw, 1.45rem);
   line-height: 1.15;
   text-transform: uppercase;
-  white-space: nowrap;
+  max-width: 6.5em; /* "IMAGE & BRAND" y "LEGAL & FINANCE" en dos líneas: no se cortan en franjas angostas */
 }
 
 /* Detalle del servicio: oculto (ancho 0) hasta pasar el cursor.
@@ -1015,9 +1014,8 @@ h1, h2, h3 {
   width: var(--detail-w);
 }
 
-/* Escalonado en diagonal: lo de arriba más a la derecha, lo de abajo más a la izquierda */
+/* Título del servicio y los dos ítems alineados a la izquierda */
 .svc-strip__service {
-  margin-left: calc(var(--step) * 2);
   padding-bottom: 0.7rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.35);
   font-family: var(--font-title);
@@ -1032,10 +1030,6 @@ h1, h2, h3 {
   font-size: 0.86rem;
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.85);
-}
-
-.svc-strip__items li:nth-child(1) {
-  margin-left: var(--step);
 }
 
 .svc-strip__items strong {
@@ -1179,7 +1173,7 @@ h1, h2, h3 {
   .svc-strip__name {
     grid-column: 2;
     grid-row: 1;
-    white-space: normal;
+    max-width: none;
   }
 
   .svc-strip__detail,
@@ -1195,11 +1189,6 @@ h1, h2, h3 {
 
   .svc-strip__detail-inner {
     width: auto;
-  }
-
-  .svc-strip__service,
-  .svc-strip__items li:nth-child(1) {
-    margin-left: 0;
   }
 }
 
