@@ -982,11 +982,12 @@ h1, h2, h3 {
 }
 
 /* =========================================================
-   SERVICES · HOME — franjas diagonales (referencia Six3Nine)
+   SERVICES · HOME — filas horizontales con borde diagonal
+   Al pasar el cursor la fila se agranda y muestra la información.
    ========================================================= */
 .svc-home {
-  --skew: -16deg;
   --strips-h: clamp(460px, 82vh, 760px);
+  --slant: calc(0.25 * var(--strips-h)); /* cuánto se inclina el borde izquierdo del bloque */
   position: relative;
   display: flex;
   height: var(--strips-h);
@@ -1001,8 +1002,7 @@ h1, h2, h3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* a la derecha deja lugar para la diagonal de la primera franja */
-  padding: 3rem calc(1.5rem + 0.15 * var(--strips-h)) 3rem 6vw;
+  padding: 3rem 2vw 3rem 6vw;
 }
 
 .svc-home__intro .title {
@@ -1017,99 +1017,81 @@ h1, h2, h3 {
   color: rgba(255, 255, 255, 0.75);
 }
 
+/* Bloque de filas: borde izquierdo en diagonal (arriba más a la derecha) */
 .svc-strips {
   flex: 1;
   display: flex;
-  /* la última franja sale del cuadro por la derecha, sin dejar triángulos vacíos */
-  margin-right: calc(-0.16 * var(--strips-h));
+  flex-direction: column;
+  clip-path: polygon(var(--slant) 0, 100% 0, 100% 100%, 0 100%);
+  background: #121216;
 }
 
 .svc-strip {
   position: relative;
   flex: 1 1 0;
+  min-height: 0;
   overflow: hidden;
-  transform: skewX(var(--skew));
-  border-left: 4px solid var(--black-pure);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: default;
+  outline: none;
   transition: flex-grow 0.5s var(--ease);
 }
 
-/* La imagen se "des-inclina" para verse derecha dentro de la franja */
-.svc-strip__img {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -45%;
-  right: -45%;
-  transform: skewX(calc(var(--skew) * -1));
-  background: linear-gradient(160deg, #26262c 0%, #121216 100%); /* sin fotos por ahora */
-  transition: transform 0.8s var(--ease);
+.svc-strip:first-child {
+  border-top: 0;
 }
 
-/* Oscurecido base + capa azul que aparece al pasar el mouse */
-.svc-strip::before,
+.svc-strip__img {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, #26262c 0%, #141418 100%); /* sin fotos por ahora */
+}
+
+/* Capa azul que aparece al pasar el cursor */
 .svc-strip::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-}
-
-.svc-strip::before {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.35) 100%);
-}
-
-.svc-strip::after {
-  background: linear-gradient(0deg, rgba(75, 89, 133, 0.95) 0%, rgba(75, 89, 133, 0.6) 40%, rgba(75, 89, 133, 0) 80%);
+  background: linear-gradient(90deg, rgba(75, 89, 133, 0.95) 0%, rgba(75, 89, 133, 0.75) 55%, rgba(75, 89, 133, 0.45) 100%);
   opacity: 0;
   transition: opacity 0.4s var(--ease);
 }
 
-/* Etiqueta de la franja: número + nombre a la izquierda; al abrirse, el detalle aparece al costado */
+/* Contenido de la fila: nombre a la izquierda, información a la derecha.
+   Arranca a la derecha de la diagonal para que nada quede cortado. */
 .svc-strip__label {
-  --detail-w: clamp(220px, 21vw, 310px);
   position: absolute;
+  inset: 0;
   z-index: 2;
-  left: 2.6rem; /* margen extra: al abrirse el contenido crece y el borde diagonal se corre */
-  bottom: 14%;
-  display: grid;
-  grid-template-columns: auto auto;
-  align-items: end;
-  column-gap: 0;
-  transform: skewX(calc(var(--skew) * -1));
-  transition: transform 0.4s var(--ease), column-gap 0.45s var(--ease);
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding: 0 4vw 0 calc(var(--slant) + 2rem);
 }
 
 .svc-strip__name {
-  grid-column: 1;
-  grid-row: 2;
+  flex: 0 0 clamp(9rem, 15vw, 15rem);
   font-family: var(--font-title);
   font-weight: 300;
-  font-size: clamp(0.95rem, 1.5vw, 1.45rem);
-  line-height: 1.15;
+  font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+  line-height: 1.1;
   text-transform: uppercase;
-  max-width: 6.5em; /* "IMAGE & BRAND" y "LEGAL & FINANCE" en dos líneas: no se cortan en franjas angostas */
 }
 
-/* Detalle del servicio: oculto (ancho 0) hasta pasar el cursor.
-   El contenido tiene ancho fijo para que no se reacomode mientras se abre. */
+/* Información del servicio: oculta hasta pasar el cursor */
 .svc-strip__detail {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  align-self: end;
-  width: 0;
+  flex: 1;
+  max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: width 0.45s var(--ease), opacity 0.25s var(--ease);
+  transform: translateY(12px);
+  transition: max-height 0.5s var(--ease), opacity 0.3s var(--ease), transform 0.4s var(--ease);
 }
 
-.svc-strip__detail-inner {
-  width: var(--detail-w);
-}
-
-/* Título del servicio y los dos ítems alineados a la izquierda */
 .svc-strip__service {
-  padding-bottom: 0.7rem;
+  padding-bottom: 0.6rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.35);
   font-family: var(--font-title);
   font-weight: 700;
@@ -1118,11 +1100,18 @@ h1, h2, h3 {
   text-transform: uppercase;
 }
 
+/* los dos ítems uno al lado del otro */
+.svc-strip__items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
 .svc-strip__items li {
   margin-top: 0.8rem;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .svc-strip__items strong {
@@ -1130,7 +1119,7 @@ h1, h2, h3 {
   margin-bottom: 0.15rem;
   font-family: var(--font-title);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   color: var(--white);
 }
 
@@ -1140,14 +1129,9 @@ h1, h2, h3 {
 }
 
 /* Estado abierto: cursor encima, o foco (teclado / toque en pantallas táctiles) */
-.svc-strip {
-  cursor: default;
-  outline: none;
-}
-
 .svc-strip:hover,
 .svc-strip:focus {
-  flex-grow: 3.4;
+  flex-grow: 3.2;
 }
 
 .svc-strip:hover::after,
@@ -1155,57 +1139,35 @@ h1, h2, h3 {
   opacity: 1;
 }
 
-.svc-strip:hover .svc-strip__img,
-.svc-strip:focus .svc-strip__img {
-  transform: skewX(calc(var(--skew) * -1)) scale(1.05);
-}
-
-.svc-strip:hover .svc-strip__label,
-.svc-strip:focus .svc-strip__label {
-  column-gap: 1.8rem;
-}
-
-/* el detalle aparece al costado */
 .svc-strip:hover .svc-strip__detail,
 .svc-strip:focus .svc-strip__detail {
-  width: var(--detail-w);
+  max-height: 20rem;
   opacity: 1;
-  transition-delay: 0.05s, 0.2s;
+  transform: none;
+  transition-delay: 0s, 0.15s, 0.1s;
 }
 
 .svc-strip:focus-visible {
   outline: 2px solid var(--white);
-  outline-offset: -6px;
-}
-
-/* La última franja sale en parte de la pantalla: un poco más ancha */
-.svc-strip:last-child {
-  flex-grow: 1.35;
-}
-
-.svc-strip:last-child:hover,
-.svc-strip:last-child:focus {
-  flex-grow: 4;
-}
-
-/* Pantallas medianas: la última franja necesita más ancho para que el detalle entre */
-@media (max-width: 1300px) {
-  .svc-strip:last-child:hover,
-  .svc-strip:last-child:focus {
-    flex-grow: 6;
-  }
-}
-
-@media (max-width: 1000px) {
-  .svc-strip:last-child:hover,
-  .svc-strip:last-child:focus {
-    flex-grow: 7.5;
-  }
+  outline-offset: -4px;
 }
 
 /* ---------- Services: responsive ---------- */
+@media (max-width: 1100px) {
+  /* menos ancho: los dos ítems uno debajo del otro */
+  .svc-strip__items {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .svc-strip:hover,
+  .svc-strip:focus {
+    flex-grow: 4;
+  }
+}
+
 @media (max-width: 900px) {
-  /* Home: las franjas pasan a bandas apiladas, con el detalle siempre visible */
+  /* Celular / tablet vertical: filas apiladas con la información siempre visible */
   .svc-home {
     flex-direction: column;
     height: auto;
@@ -1217,59 +1179,42 @@ h1, h2, h3 {
   }
 
   .svc-strips {
-    flex-direction: column;
-    margin: 0;
+    clip-path: none;
   }
 
   .svc-strip,
-  .svc-strip:last-child {
+  .svc-strip:hover,
+  .svc-strip:focus {
     flex: none;
-    transform: none;
-    border-left: 0;
     border-top: 4px solid var(--black-pure);
   }
 
-  .svc-strip__img,
-  .svc-strip:hover .svc-strip__img,
-  .svc-strip:focus .svc-strip__img {
-    left: 0;
-    right: 0;
-    transform: none;
-  }
-
-  /* número y nombre en una fila; el detalle abajo, siempre visible */
-  .svc-strip__label,
-  .svc-strip:hover .svc-strip__label,
-  .svc-strip:focus .svc-strip__label {
+  .svc-strip__label {
     position: relative;
-    left: auto;
-    bottom: auto;
-    grid-template-columns: auto 1fr;
-    align-items: baseline;
-    column-gap: 0.9rem;
+    inset: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
     padding: 1.8rem 24px 2rem;
-    transform: none;
   }
 
   .svc-strip__name {
-    grid-column: 1 / -1;
-    grid-row: 1;
-    max-width: none;
+    flex: none;
   }
 
   .svc-strip__detail,
   .svc-strip:hover .svc-strip__detail,
   .svc-strip:focus .svc-strip__detail {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: auto;
+    width: 100%;
     max-width: 560px;
-    margin-top: 1.2rem;
+    max-height: none;
     opacity: 1;
+    transform: none;
   }
 
-  .svc-strip__detail-inner {
-    width: auto;
+  .svc-strip__items {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
   }
 }
 
@@ -1279,10 +1224,14 @@ h1, h2, h3 {
     padding-right: 16px;
   }
 
-  .svc-strip__label,
-  .svc-strip:last-child .svc-strip__label {
+  .svc-strip__label {
     padding-left: 16px;
     padding-right: 16px;
+  }
+
+  .svc-strip__items {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 }
 
