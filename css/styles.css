@@ -391,6 +391,21 @@ h1, h2, h3 {
   animation: fadeUp 0.9s 0.3s var(--ease) both;
 }
 
+/* TALENT y SPEED, más grandes que el resto del título */
+.hero__title .hero__big,
+.hero__title strong {
+  font-size: 1.6em;
+  line-height: 1;
+}
+
+/* Pantallas bajas (celular acostado): título más chico para que no toque la barra */
+@media (max-height: 560px) {
+  .hero__title {
+    font-size: clamp(1.6rem, 7vh, 2.4rem);
+    margin-bottom: 1.2rem;
+  }
+}
+
 .hero .btn {
   animation: fadeUp 0.9s 0.4s var(--ease) both;
 }
