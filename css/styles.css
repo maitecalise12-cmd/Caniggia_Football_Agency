@@ -479,11 +479,6 @@ h1, h2, h3 {
   background-image: var(--card-img);
   background-size: cover;
   background-position: center;
-  transition: transform 0.8s var(--ease);
-}
-
-.card:hover::before {
-  transform: scale(1.06);
 }
 
 .card--1 { --card-img: url("../assests/img/assessment.jpg"); }
@@ -503,17 +498,15 @@ h1, h2, h3 {
   pointer-events: none;
 }
 
+/* Número chico, justo encima del título */
 .card__num {
-  position: absolute;
-  top: 1rem;
-  left: 1.4rem;
-  z-index: 1;
+  display: block;
+  margin-bottom: 0.4rem;
   color: var(--white);
   font-family: var(--font-title);
   font-weight: 700;
-  font-size: clamp(2.6rem, 4vw, 3.6rem);
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
   line-height: 1;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
 }
 
 .card__body {
