@@ -404,16 +404,31 @@ h1, h2, h3 {
 .who {
   background: var(--black-pure);
   padding: clamp(4.5rem, 10vw, 8rem) 0;
-  text-align: center;
 }
 
+/* mismo margen izquierdo que "Founder" y CANIGGIA */
 .who__inner {
-  max-width: 900px;
+  padding: 0 6vw;
+}
+
+/* Título gigante, a la izquierda, en dos líneas (ref. "THE LEADING / FOOTBALL AGENCY") */
+.who__title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 7vw, 8.5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.who__title span {
+  display: block;
 }
 
 .who__text {
-  max-width: 68ch;
-  margin: clamp(1.5rem, 3vw, 2.2rem) auto 0;
+  max-width: 62ch;
+  margin-top: clamp(1.8rem, 4vw, 3rem);
 }
 
 .who__text p {
