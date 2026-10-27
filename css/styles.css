@@ -701,7 +701,7 @@ h1, h2, h3 {
 /* Escudo: arriba de la línea, alineado a la izquierda con el año */
 .timeline__crest {
   position: absolute;
-  left: 0;
+  left: calc(1px - var(--crest) / 2); /* centrado sobre la marca de la línea (2px de ancho) */
   top: calc(-1 * var(--crest-space) + 4px);
   width: var(--crest);
   height: var(--crest);
