@@ -1080,16 +1080,6 @@ h1, h2, h3 {
   transition: transform 0.4s var(--ease), column-gap 0.45s var(--ease);
 }
 
-.svc-strip__num {
-  grid-column: 1;
-  grid-row: 1;
-  font-family: var(--font-title);
-  font-weight: 300;
-  font-size: clamp(2.6rem, 4.6vw, 4.4rem);
-  line-height: 0.9;
-  transition: font-size 0.45s var(--ease);
-}
-
 .svc-strip__name {
   grid-column: 1;
   grid-row: 2;
@@ -1173,12 +1163,6 @@ h1, h2, h3 {
 .svc-strip:hover .svc-strip__label,
 .svc-strip:focus .svc-strip__label {
   column-gap: 1.8rem;
-}
-
-/* el número se agranda */
-.svc-strip:hover .svc-strip__num,
-.svc-strip:focus .svc-strip__num {
-  font-size: clamp(4.4rem, 8vw, 8.5rem);
 }
 
 /* el detalle aparece al costado */
@@ -1267,14 +1251,8 @@ h1, h2, h3 {
     transform: none;
   }
 
-  .svc-strip__num,
-  .svc-strip:hover .svc-strip__num,
-  .svc-strip:focus .svc-strip__num {
-    font-size: clamp(2.6rem, 9vw, 3.6rem);
-  }
-
   .svc-strip__name {
-    grid-column: 2;
+    grid-column: 1 / -1;
     grid-row: 1;
     max-width: none;
   }
