@@ -541,6 +541,10 @@ h1, h2, h3 {
 .journey {
   /* espacio que se reserva abajo para la palabra CANIGGIA (alto visible de la palabra + aire) */
   --word-space: calc(5.8vw + 2.5rem);
+  /* ancho de la foto del fundador (se achica en pantallas bajas) */
+  --photo-w: clamp(240px, min(34vw, 55vh), 480px);
+  /* avance del zoom de la foto + ficha (0 a 1), lo actualiza main.js al scrollear */
+  --z: 0;
   position: relative;
   background: var(--black-pure);
 }
@@ -604,7 +608,7 @@ h1, h2, h3 {
 
 .founder__photos {
   position: relative;
-  width: clamp(240px, min(34vw, 55vh), 480px); /* se achica en pantallas bajas */
+  width: var(--photo-w);
   aspect-ratio: 5 / 4;
   background: linear-gradient(160deg, #26262c, var(--blue-dark));
   overflow: hidden;
@@ -645,6 +649,102 @@ h1, h2, h3 {
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.9);
   margin-top: 2.2rem;
+}
+
+/* Ficha del fundador (ref. "Claudio Caniggia – un perfil GRIT") */
+.profile {
+  max-width: 520px;
+  padding: 1.8rem 2rem;
+  background: rgba(15, 15, 17, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 3px solid var(--blue-light);
+  backdrop-filter: blur(6px);
+}
+
+.profile__name {
+  font-weight: 700;
+  font-size: clamp(2rem, 3.4vw, 3.4rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.profile__name span {
+  display: block;
+}
+
+.profile__tagline {
+  margin-top: 1rem;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.3;
+}
+
+.profile__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.5rem;
+  margin-top: 1.4rem;
+}
+
+/* ítems con tilde dentro de un círculo */
+.profile__list li {
+  position: relative;
+  min-height: 1.6rem;
+  padding-left: 2.2rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.profile__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1.5px solid var(--blue-light);
+  border-radius: 50%;
+}
+
+.profile__list li::after {
+  content: "";
+  position: absolute;
+  left: 0.58rem;
+  top: 0.32rem;
+  width: 0.38rem;
+  height: 0.7rem;
+  border-right: 2px solid var(--white);
+  border-bottom: 2px solid var(--white);
+  transform: rotate(45deg);
+}
+
+/* Escritorio (scroll horizontal): al empezar a scrollear la foto se amplía, la bio se
+   desvanece y la ficha aparece al costado. Después todo se corre a la izquierda. */
+.journey.is-horizontal .journey__intro {
+  position: relative;
+}
+
+.journey.is-horizontal .founder {
+  transform: scale(calc(1 + var(--z) * 0.25));
+  transform-origin: left center;
+}
+
+.journey.is-horizontal .founder__bio {
+  opacity: calc(1 - var(--z) * 2.5);
+  transform: translateX(calc(var(--z) * 60px));
+}
+
+.journey.is-horizontal .profile {
+  --profile-left: calc(6vw + var(--photo-w) * 1.25 + 3vw);
+  position: absolute;
+  left: var(--profile-left);
+  width: min(520px, calc(100vw - var(--profile-left) - 6vw));
+  /* centrada en el alto disponible entre el padding de arriba y la palabra CANIGGIA */
+  top: calc((100% + clamp(2.5rem, 7vh, 6rem) - var(--word-space)) / 2);
+  opacity: calc((var(--z) - 0.3) * 1.6);
+  transform: translateY(calc(-50% + (1 - var(--z)) * 50px));
 }
 
 /* Línea de tiempo */
@@ -1528,6 +1628,11 @@ h1, h2, h3 {
     max-width: 60ch;
   }
 
+  .profile {
+    width: 100%;
+    max-width: 560px;
+  }
+
   .journey__timeline {
     flex-direction: column;
     align-items: flex-start;
@@ -1620,6 +1725,14 @@ h1, h2, h3 {
   .journey__timeline {
     padding-left: 16px;
     padding-right: 16px;
+  }
+
+  .profile {
+    padding: 1.5rem 1.3rem;
+  }
+
+  .profile__list {
+    grid-template-columns: 1fr;
   }
 
   .footer__inner {

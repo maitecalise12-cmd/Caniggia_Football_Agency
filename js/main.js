@@ -69,37 +69,45 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
-  /* ---------- Caniggia: scroll horizontal (solo en el Home) ----------
-     En escritorio la sección queda fija y, al bajar con el scroll,
-     el contenido se desplaza hacia la izquierda mostrando la línea
-     de tiempo. En pantallas chicas se ve en vertical. */
+  /* ---------- Caniggia: zoom + scroll horizontal (solo en el Home) ----------
+     En escritorio la sección queda fija y, al bajar con el scroll:
+       1) la foto del fundador se amplía y aparece la ficha (--z de 0 a 1),
+       2) después todo se desplaza hacia la izquierda mostrando la línea de tiempo.
+     El movimiento sigue al scroll del usuario. En pantallas chicas se ve en vertical. */
   const journey = document.getElementById("caniggia");
   const track = document.getElementById("journeyTrack");
   if (journey && track) {
     // Igual que en styles.css: horizontal solo en pantallas anchas Y con suficiente alto
     const desktop = window.matchMedia("(min-width: 901px) and (min-height: 620px)");
     let distance = 0;
+    let zoomDistance = 0;
 
     const setupJourney = () => {
-      const horizontal = desktop.matches && !reducedMotion;
+      const horizontal = desktop.matches;
       journey.classList.toggle("is-horizontal", horizontal);
 
       if (!horizontal) {
         journey.style.height = "";
+        journey.style.removeProperty("--z");
         track.style.transform = "";
         return;
       }
 
       const viewH = window.innerHeight - header.offsetHeight;
       distance = Math.max(track.scrollWidth - window.innerWidth, 0);
-      journey.style.height = `${viewH + distance}px`;
+      zoomDistance = Math.round(viewH * 0.8); // tramo de scroll dedicado al zoom + ficha
+      journey.style.height = `${viewH + zoomDistance + distance}px`;
       updateJourney();
     };
 
+    const clamp01 = (n) => Math.min(Math.max(n, 0), 1);
+
     const updateJourney = () => {
       if (!journey.classList.contains("is-horizontal")) return;
-      const start = journey.offsetTop - header.offsetHeight;
-      const progress = Math.min(Math.max((window.scrollY - start) / (distance || 1), 0), 1);
+      const scrolled = window.scrollY - (journey.offsetTop - header.offsetHeight);
+      const zoom = clamp01(scrolled / (zoomDistance || 1));
+      const progress = clamp01((scrolled - zoomDistance) / (distance || 1));
+      journey.style.setProperty("--z", zoom.toFixed(3));
       track.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
     };
 
