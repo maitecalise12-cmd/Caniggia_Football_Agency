@@ -439,12 +439,33 @@ h1, h2, h3 {
 
 /* ---------- Quiénes somos (versión corta) ---------- */
 .who {
+  position: relative;
+  overflow: hidden;
   background: var(--black-pure);
   padding: clamp(4.5rem, 10vw, 8rem) 0;
 }
 
+/* Fondo: pizarra táctica dibujada en tiza, a la derecha y suave para no competir con el texto */
+.who::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assests/img/pizarra-tactica.svg") right center / auto 100% no-repeat;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* en celular el texto ocupa todo el ancho: pizarra más suave */
+@media (max-width: 640px) {
+  .who::before {
+    opacity: 0.25;
+  }
+}
+
 /* mismo margen izquierdo que "Founder" y CANIGGIA */
 .who__inner {
+  position: relative;
+  z-index: 1;
   padding: 0 6vw;
 }
 

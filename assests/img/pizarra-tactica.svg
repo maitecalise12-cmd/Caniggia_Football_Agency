@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Pizarra táctica (fondo de la sección "Where talent meets opportunity").
+       Dibujo propio de CFA: cancha inclinada + marcas tácticas con textura de tiza. -->
+  <defs>
+    <!-- textura de tiza: bordes irregulares y trazo con huecos -->
+    <filter id="tiza" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="3" xChannelSelector="R" yChannelSelector="G" result="desplazado"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="3" result="grano"/>
+      <feColorMatrix in="grano" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -1.6 1.25" result="mascara"/>
+      <feComposite in="desplazado" in2="mascara" operator="in"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#tiza)">
+    <!-- Cancha inclinada: línea lateral, mitad de cancha, círculo central y área -->
+    <g transform="rotate(-30 720 300)" stroke-width="4">
+      <line x1="470" y1="-260" x2="470" y2="880"/>
+      <line x1="470" y1="300" x2="1350" y2="300"/>
+      <circle cx="720" cy="300" r="88"/>
+      <circle cx="720" cy="300" r="4" fill="#fff"/>
+      <path d="M470 700 H640 V860"/>
+      <path d="M470 760 H560 V860"/>
+      <path d="M470 -120 H640 V-280"/>
+    </g>
+
+    <!-- Marcas tácticas (trazo un poco más fino, como hecho a mano) -->
+    <g stroke-width="3.2">
+      <!-- jugadores: círculos -->
+      <circle cx="610" cy="155" r="15"/>
+      <circle cx="760" cy="430" r="15"/>
+      <circle cx="955" cy="165" r="15"/>
+      <circle cx="880" cy="545" r="15"/>
+
+      <!-- rivales: cruces -->
+      <path d="M715 70 l24 24 M739 70 l-24 24"/>
+      <path d="M662 290 l22 22 M684 290 l-22 22"/>
+      <path d="M918 330 l24 24 M942 330 l-24 24"/>
+      <path d="M560 470 l22 22 M582 470 l-22 22"/>
+
+      <!-- flechas curvas de pase / desmarque -->
+      <path d="M598 -10 C 575 40, 572 85, 590 120"/>
+      <path d="M572 100 L590 122 L612 104"/>
+
+      <path d="M625 175 C 660 250, 700 330, 742 400"/>
+      <path d="M716 392 L744 404 L746 374"/>
+
+      <path d="M840 -10 C 790 120, 780 250, 772 400"/>
+      <path d="M752 380 L771 404 L794 384"/>
+
+      <path d="M782 452 C 820 470, 850 490, 868 522"/>
+      <path d="M844 515 L870 526 L874 498"/>
+
+      <!-- flecha punteada (conducción) -->
+      <path d="M952 185 C 945 240, 935 290, 928 318" stroke-dasharray="10 12"/>
+      <path d="M912 298 L928 322 L948 302"/>
+
+      <!-- flecha larga hacia el área -->
+      <path d="M612 175 C 600 300, 630 420, 700 520"/>
+      <path d="M676 512 L702 524 L706 496"/>
+    </g>
+  </g>
+</svg>
