@@ -348,8 +348,8 @@ h1, h2, h3 {
   right: 0;
   bottom: 0;
   left: 0;
-  /* PRUEBA: imagen nueva. Para volver a la anterior, cambiar por ../assests/img/hero.jpeg (también abajo, en la versión celular) */
-  background: url("../assests/img/caniggia elementos de fondo.jpg") right center / cover no-repeat, var(--black-pure);
+  /* Foto del hero: caniggia byn encuadre.jpg (fondo gris en B&N, la izquierda queda libre para el título) */
+  background: url("../assests/img/caniggia byn encuadre.jpg") right center / cover no-repeat, var(--black-pure);
   animation: heroIn 1.4s var(--ease) both;
 }
 
@@ -1518,7 +1518,7 @@ h1, h2, h3 {
   .hero__media {
     background:
       linear-gradient(0deg, var(--black-pure) 5%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 100%),
-      url("../assests/img/caniggia elementos de fondo.jpg") 72% center / cover no-repeat,
+      url("../assests/img/caniggia byn encuadre.jpg") 72% center / cover no-repeat,
       var(--black-pure);
   }
 }
