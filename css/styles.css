@@ -1031,7 +1031,8 @@ h1, h2, h3 {
 .svc-home {
   position: relative;
   display: flex;
-  height: clamp(460px, 82vh, 760px);
+  --h: clamp(460px, 82vh, 760px); /* alto de la sección (lo usa también la rueda) */
+  height: var(--h);
   background: var(--black-pure);
   overflow: hidden;
 }
@@ -1062,8 +1063,8 @@ h1, h2, h3 {
    Los números están sobre un arco; el activo queda al centro (ángulo 0) y a su derecha
    se muestra el texto. Al hacer clic, main.js cambia --active y la rueda gira. */
 .svc-wheel {
-  --R: clamp(190px, 30vh, 320px);   /* radio del arco */
-  --step: 24deg;                    /* separación entre números */
+  --R: calc(var(--h) * 0.62);       /* radio del arco: más grande que media sección, así la circunferencia llega arriba y abajo */
+  --step: 20deg;                    /* separación entre números */
   --cx: calc(var(--R) * -0.55);     /* centro del círculo (a la izquierda, fuera de vista) */
   position: relative;
   flex: 1;
