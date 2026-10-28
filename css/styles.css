@@ -208,7 +208,8 @@ h1, h2, h3 {
   position: fixed;
   inset: 0 0 auto 0;
   height: var(--header-h);
-  background: var(--blue);
+  background: var(--black-pure);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* separa la barra de las secciones negras */
   z-index: 100;
   transition: box-shadow 0.3s var(--ease);
 }
