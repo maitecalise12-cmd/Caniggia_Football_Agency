@@ -407,8 +407,29 @@ h1, h2, h3 {
   }
 }
 
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 .hero .btn {
   animation: fadeUp 0.9s 0.4s var(--ease) both;
+}
+
+.hero .btn--ghost {
+  animation-delay: 0.5s;
+}
+
+/* Botón secundario: transparente con borde blanco */
+.btn--ghost {
+  border-color: rgba(255, 255, 255, 0.85);
+  color: var(--white);
+}
+
+.btn--ghost:hover {
+  background: var(--white);
+  color: var(--black);
 }
 
 @keyframes fadeUp {
