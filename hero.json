@@ -1,0 +1,18 @@
+{
+  "_ayuda": "Contenido del HERO. Editá solo los valores entre comillas. 'grande': true agranda la línea; 'negrita': true la pone en bold. 'estilo' del botón: 'principal' (azul) o 'borde' (transparente con borde blanco). 'link': '#services', '#who-we-are', '#about', '#caniggia', '#contact' o una dirección web. 'imagen': ruta de la foto dentro de assests/img/. 'imagenCelular' es opcional: si queda vacía se usa la misma foto.",
+
+  "titulo": [
+    { "texto": "We take your", "grande": false, "negrita": false },
+    { "texto": "talent",       "grande": true,  "negrita": false },
+    { "texto": "to another",   "grande": false, "negrita": false },
+    { "texto": "Speed",        "grande": true,  "negrita": true }
+  ],
+
+  "botones": [
+    { "texto": "Services", "link": "#services",   "estilo": "principal" },
+    { "texto": "About us", "link": "#who-we-are", "estilo": "borde" }
+  ],
+
+  "imagen": "assests/img/editable vini.jpg",
+  "imagenCelular": ""
+}

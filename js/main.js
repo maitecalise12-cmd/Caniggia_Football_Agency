@@ -5,6 +5,55 @@
 document.documentElement.classList.remove("no-js");
 
 document.addEventListener("DOMContentLoaded", () => {
+  /* ---------- Hero editable: contenido desde hero.json ----------
+     Título, botones e imagen se leen de hero.json. Si el archivo no carga
+     (por ejemplo, abriendo index.html con doble clic), queda el contenido
+     de respaldo que está escrito en el HTML. */
+  const heroTitle = document.getElementById("heroTitle");
+  const heroActions = document.getElementById("heroActions");
+  const heroMedia = document.getElementById("heroMedia");
+
+  if (heroTitle && heroActions && heroMedia) {
+    fetch("hero.json", { cache: "no-cache" })
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then((hero) => {
+        if (Array.isArray(hero.titulo) && hero.titulo.length) {
+          heroTitle.replaceChildren(
+            ...hero.titulo.map((linea, i) => {
+              const el = document.createElement(linea.negrita ? "strong" : "span");
+              el.textContent = linea.texto || "";
+              if (linea.grande) el.classList.add("hero__big");
+              el.style.animationDelay = `${i * 0.1}s`;
+              return el;
+            })
+          );
+        }
+
+        if (Array.isArray(hero.botones) && hero.botones.length) {
+          heroActions.replaceChildren(
+            ...hero.botones.map((boton, i) => {
+              const a = document.createElement("a");
+              a.textContent = boton.texto || "";
+              a.href = boton.link || "#";
+              a.className = `btn ${boton.estilo === "borde" ? "btn--ghost" : "btn--primary"}`;
+              a.style.animationDelay = `${0.4 + i * 0.1}s`;
+              if (/^https?:\/\//.test(a.getAttribute("href"))) {
+                a.target = "_blank";
+                a.rel = "noopener";
+              }
+              return a;
+            })
+          );
+        }
+
+        // dirección completa: así el navegador no la interpreta relativa a la carpeta css/
+        const cssUrl = (ruta) => `url("${new URL(ruta, document.baseURI).href}")`;
+        if (hero.imagen) heroMedia.style.setProperty("--hero-img", cssUrl(hero.imagen));
+        if (hero.imagenCelular) heroMedia.style.setProperty("--hero-img-mobile", cssUrl(hero.imagenCelular));
+      })
+      .catch(() => { /* sin hero.json: se queda el contenido de respaldo del HTML */ });
+  }
+
   const header = document.getElementById("header");
   const nav = document.getElementById("nav");
   const navToggle = document.getElementById("navToggle");

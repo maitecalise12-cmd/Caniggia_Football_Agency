@@ -348,8 +348,8 @@ h1, h2, h3 {
   right: 0;
   bottom: 0;
   left: 0;
-  /* Foto del hero: caniggia byn encuadre.jpg (fondo gris en B&N, la izquierda queda libre para el título) */
-  background: url("../assests/img/caniggia byn encuadre.jpg") right center / cover no-repeat, var(--black-pure);
+  /* La foto se define en hero.json (main.js la pasa en --hero-img). Esta es la de respaldo. */
+  background: var(--hero-img, url("../assests/img/editable vini.jpg")) right center / cover no-repeat, var(--black-pure);
   animation: heroIn 1.4s var(--ease) both;
 }
 
@@ -393,9 +393,8 @@ h1, h2, h3 {
   animation: fadeUp 0.9s 0.3s var(--ease) both;
 }
 
-/* TALENT y SPEED, más grandes que el resto del título */
-.hero__title .hero__big,
-.hero__title strong {
+/* Líneas marcadas como "grande" en hero.json (por defecto TALENT y SPEED) */
+.hero__title .hero__big {
   font-size: 1.6em;
   line-height: 1;
 }
@@ -1518,7 +1517,7 @@ h1, h2, h3 {
   .hero__media {
     background:
       linear-gradient(0deg, var(--black-pure) 5%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 100%),
-      url("../assests/img/caniggia byn encuadre.jpg") 72% center / cover no-repeat,
+      var(--hero-img-mobile, var(--hero-img, url("../assests/img/editable vini.jpg"))) 72% center / cover no-repeat,
       var(--black-pure);
   }
 }

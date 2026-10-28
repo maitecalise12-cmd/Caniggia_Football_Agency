@@ -42,19 +42,21 @@
 
   <main>
 
-    <!-- ================= HERO ================= -->
+    <!-- ================= HERO =================
+         EL CONTENIDO SE EDITA EN hero.json (título, botones e imagen).
+         Lo de acá abajo es la versión de respaldo: se ve si hero.json no carga
+         (por ejemplo, al abrir el archivo con doble clic sin servidor). -->
     <section class="hero" id="home">
-      <!-- Foto del hero: assests/img/hero.jpeg -->
-      <div class="hero__media" aria-hidden="true"></div>
+      <div class="hero__media" id="heroMedia" aria-hidden="true"></div>
 
       <div class="container hero__content">
-        <h1 class="hero__title">
+        <h1 class="hero__title" id="heroTitle">
           <span>We take your</span>
           <span class="hero__big">talent</span>
           <span>to another</span>
-          <strong>Speed</strong>
+          <strong class="hero__big">Speed</strong>
         </h1>
-        <div class="hero__actions">
+        <div class="hero__actions" id="heroActions">
           <a href="#services" class="btn btn--primary">Services</a>
           <a href="#who-we-are" class="btn btn--ghost">About us</a>
         </div>
