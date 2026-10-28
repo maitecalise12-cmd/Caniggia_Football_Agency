@@ -1025,15 +1025,12 @@ h1, h2, h3 {
 }
 
 /* =========================================================
-   SERVICES · HOME — filas horizontales con borde diagonal
-   Al pasar el cursor la fila se agranda y muestra la información.
+   SERVICES · HOME — intro a la izquierda + rueda de servicios
    ========================================================= */
 .svc-home {
-  --strips-h: clamp(460px, 82vh, 760px);
-  --slant: calc(0.25 * var(--strips-h)); /* cuánto se inclina el borde izquierdo del bloque */
   position: relative;
   display: flex;
-  height: var(--strips-h);
+  height: clamp(460px, 82vh, 760px);
   background: var(--black-pure);
   overflow: hidden;
 }
@@ -1060,121 +1057,139 @@ h1, h2, h3 {
   color: rgba(255, 255, 255, 0.75);
 }
 
-/* Bloque de filas: borde izquierdo en diagonal (arriba más a la derecha) */
-.svc-strips {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  clip-path: polygon(var(--slant) 0, 100% 0, 100% 100%, 0 100%);
-  background: #121216;
-}
-
-.svc-strip {
+/* Rueda de servicios (ref. "Wove — Wheel Menu").
+   Los números están sobre un arco; el activo queda al centro (ángulo 0) y a su derecha
+   se muestra el texto. Al hacer clic, main.js cambia --active y la rueda gira. */
+.svc-wheel {
+  --R: clamp(190px, 30vh, 320px);   /* radio del arco */
+  --step: 24deg;                    /* separación entre números */
+  --cx: calc(var(--R) * -0.55);     /* centro del círculo (a la izquierda, fuera de vista) */
   position: relative;
-  flex: 1 1 0;
-  min-height: 0;
+  flex: 1;
   overflow: hidden;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  cursor: default;
-  outline: none;
-  transition: flex-grow 0.5s var(--ease);
 }
 
-.svc-strip:first-child {
-  border-top: 0;
-}
-
-.svc-strip__img {
+/* el arco */
+.svc-wheel__ring {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(100deg, #26262c 0%, #141418 100%); /* sin fotos por ahora */
+  left: calc(var(--cx) - var(--R));
+  top: calc(50% - var(--R));
+  width: calc(var(--R) * 2);
+  height: calc(var(--R) * 2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
-/* Capa azul que aparece al pasar el cursor */
-.svc-strip::after {
+/* cada número gira alrededor del centro según su distancia al activo.
+   El botón ocupa solo el número: se ubica sobre el arco con rotate + translateX
+   tomando como eje el centro del círculo (su borde izquierdo). */
+.svc-wheel__num {
+  position: absolute;
+  left: var(--cx);
+  top: 50%;
+  height: 3rem;
+  margin-top: -1.5rem;
+  padding: 0 0.4rem;
+  transform-origin: 0 50%;
+  transform: rotate(calc((var(--i) - var(--active)) * var(--step))) translateX(calc(var(--R) + 1.2rem));
+  background: none;
+  border: 0;
+  color: var(--white);
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  text-align: left;
+  opacity: 0.35;
+  cursor: pointer;
+  transition: transform 0.7s var(--ease), opacity 0.4s var(--ease), font-size 0.4s var(--ease);
+}
+
+/* punto sobre el arco */
+.svc-wheel__num::before {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(90deg, rgba(75, 89, 133, 0.95) 0%, rgba(75, 89, 133, 0.75) 55%, rgba(75, 89, 133, 0.45) 100%);
-  opacity: 0;
-  transition: opacity 0.4s var(--ease);
+  left: calc(-1.2rem - 4px); /* sobre el arco */
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.4s var(--ease), transform 0.4s var(--ease);
 }
 
-/* Contenido de la fila: nombre a la izquierda, información a la derecha.
-   Arranca a la derecha de la diagonal para que nada quede cortado. */
-.svc-strip__label {
+.svc-wheel__num:hover {
+  opacity: 0.75;
+}
+
+.svc-wheel__num.is-active {
+  font-weight: 700;
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  opacity: 1;
+  cursor: default;
+}
+
+.svc-wheel__num.is-active::before {
+  background: var(--blue-light);
+  transform: scale(1.6);
+}
+
+/* los que quedan lejos del centro se esfuman */
+.svc-wheel__num.is-far {
+  opacity: 0.12;
+}
+
+.svc-wheel__num:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+/* textos: a la derecha del número activo, todos en la misma celda y solo uno visible */
+.svc-wheel__panels {
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: clamp(1.5rem, 3vw, 3rem);
-  padding: 0 4vw 0 calc(var(--slant) + 2rem);
+  left: calc(var(--cx) + var(--R) + 1.4rem + clamp(4.5rem, 6vw, 6.5rem));
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
 }
 
-.svc-strip__name {
-  flex: 0 0 clamp(9rem, 15vw, 15rem);
-  font-family: var(--font-title);
-  font-weight: 300;
-  font-size: clamp(1.1rem, 1.8vw, 1.8rem);
-  line-height: 1.1;
+.svc-wheel__panel {
+  grid-area: 1 / 1;
+  align-self: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease), visibility 0s 0.4s;
+}
+
+.svc-wheel__panel.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.5s 0.2s var(--ease), transform 0.6s 0.2s var(--ease), visibility 0s;
+}
+
+.svc-wheel__title {
+  font-weight: 700;
+  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+  line-height: 1.05;
   text-transform: uppercase;
 }
 
-/* Información del servicio: oculta hasta pasar el cursor */
-.svc-strip__detail {
-  flex: 1;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: max-height 0.5s var(--ease), opacity 0.3s var(--ease), transform 0.4s var(--ease);
-}
-
-/* Descripción del servicio: un solo párrafo */
-.svc-strip__text {
-  max-width: 52ch;
-  font-size: clamp(0.92rem, 1.1vw, 1.05rem);
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Estado abierto: cursor encima, o foco (teclado / toque en pantallas táctiles) */
-.svc-strip:hover,
-.svc-strip:focus {
-  flex-grow: 3.2;
-}
-
-.svc-strip:hover::after,
-.svc-strip:focus::after {
-  opacity: 1;
-}
-
-.svc-strip:hover .svc-strip__detail,
-.svc-strip:focus .svc-strip__detail {
-  max-height: 20rem;
-  opacity: 1;
-  transform: none;
-  transition-delay: 0s, 0.15s, 0.1s;
-}
-
-.svc-strip:focus-visible {
-  outline: 2px solid var(--white);
-  outline-offset: -4px;
+.svc-wheel__text {
+  margin-top: 1.1rem;
+  max-width: 46ch;
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 /* ---------- Services: responsive ---------- */
-@media (max-width: 1100px) {
-  .svc-strip:hover,
-  .svc-strip:focus {
-    flex-grow: 4;
-  }
-}
-
 @media (max-width: 900px) {
-  /* Celular / tablet vertical: filas apiladas con la información siempre visible */
+  /* Celular / tablet vertical: sin rueda, los 4 servicios apilados */
   .svc-home {
     flex-direction: column;
     height: auto;
@@ -1182,41 +1197,36 @@ h1, h2, h3 {
 
   .svc-home__intro {
     flex: none;
-    padding: 4rem 24px 2rem;
+    padding: 4rem 24px 1rem;
   }
 
-  .svc-strips {
-    clip-path: none;
+  .svc-wheel {
+    overflow: visible;
+    padding: 0 24px 4rem;
   }
 
-  .svc-strip,
-  .svc-strip:hover,
-  .svc-strip:focus {
-    flex: none;
-    border-top: 4px solid var(--black-pure);
+  .svc-wheel__ring,
+  .svc-wheel__list {
+    display: none;
   }
 
-  .svc-strip__label {
-    position: relative;
-    inset: auto;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.2rem;
-    padding: 1.8rem 24px 2rem;
-  }
-
-  .svc-strip__name {
-    flex: none;
-  }
-
-  .svc-strip__detail,
-  .svc-strip:hover .svc-strip__detail,
-  .svc-strip:focus .svc-strip__detail {
-    width: 100%;
-    max-width: 560px;
-    max-height: none;
-    opacity: 1;
+  .svc-wheel__panels {
+    position: static;
     transform: none;
+    display: block;
+  }
+
+  .svc-wheel__panel,
+  .svc-wheel__panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    padding: 1.8rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .svc-wheel__title {
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
   }
 }
 
@@ -1226,7 +1236,7 @@ h1, h2, h3 {
     padding-right: 16px;
   }
 
-  .svc-strip__label {
+  .svc-wheel {
     padding-left: 16px;
     padding-right: 16px;
   }

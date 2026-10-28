@@ -275,7 +275,7 @@
       </div>
     </section>
 
-    <!-- ================= SERVICES (filas con borde diagonal) =================
+    <!-- ================= SERVICES (rueda de servicios) =================
          (La página detalle services.html se sacó por ahora; está guardada en git, commit 97be6d9.) -->
     <section class="svc-home" id="services">
       <div class="svc-home__intro reveal">
@@ -287,58 +287,50 @@
         </p>
       </div>
 
-      <!-- Al pasar el cursor (o tocar, en pantallas táctiles) la fila se amplía
-           y muestra la descripción del servicio. En celular se ve siempre. -->
-      <div class="svc-strips">
-        <div class="svc-strip svc-strip--1" tabindex="0">
-          <span class="svc-strip__img" aria-hidden="true"></span>
-          <div class="svc-strip__label">
-            <span class="svc-strip__name">Contract Negotiation</span>
-            <div class="svc-strip__detail">
-              <p class="svc-strip__text">
-                Terms built on real market data, so every contract reflects what the player is truly
-                worth. Every clause is reviewed in detail and every renewal planned well before it
-                becomes urgent.
-              </p>
-            </div>
-          </div>
+      <!-- Rueda de servicios (ref. "Wove — Wheel Menu"): al hacer clic en un número,
+           la rueda gira, ese servicio queda al centro y se muestra su texto.
+           En celular se ven los 4 servicios apilados. -->
+      <div class="svc-wheel" id="svcWheel" style="--active: 0">
+        <div class="svc-wheel__ring" aria-hidden="true"></div>
+
+        <div class="svc-wheel__list" role="tablist" aria-label="Services">
+          <button class="svc-wheel__num is-active" style="--i: 0" role="tab" id="svc-tab-1" aria-controls="svc-panel-1" aria-selected="true">01</button>
+          <button class="svc-wheel__num" style="--i: 1" role="tab" id="svc-tab-2" aria-controls="svc-panel-2" aria-selected="false" tabindex="-1">02</button>
+          <button class="svc-wheel__num" style="--i: 2" role="tab" id="svc-tab-3" aria-controls="svc-panel-3" aria-selected="false" tabindex="-1">03</button>
+          <button class="svc-wheel__num" style="--i: 3" role="tab" id="svc-tab-4" aria-controls="svc-panel-4" aria-selected="false" tabindex="-1">04</button>
         </div>
-        <div class="svc-strip svc-strip--2" tabindex="0">
-          <span class="svc-strip__img" aria-hidden="true"></span>
-          <div class="svc-strip__label">
-            <span class="svc-strip__name">International Transfers</span>
-            <div class="svc-strip__detail">
-              <p class="svc-strip__text">
-                Direct relationships with clubs across South America, Europe, the MLS and the Middle
-                East. We present the player, lead the negotiation and see every deal through to
-                signature.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="svc-strip svc-strip--3" tabindex="0">
-          <span class="svc-strip__img" aria-hidden="true"></span>
-          <div class="svc-strip__label">
-            <span class="svc-strip__name">Image &amp; Sponsorship</span>
-            <div class="svc-strip__detail">
-              <p class="svc-strip__text">
-                A strong, consistent public profile, on and off the pitch, and brand partnerships that
-                fit the player and grow with their career.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="svc-strip svc-strip--4" tabindex="0">
-          <span class="svc-strip__img" aria-hidden="true"></span>
-          <div class="svc-strip__label">
-            <span class="svc-strip__name">Legal &amp; Financial Advisory</span>
-            <div class="svc-strip__detail">
-              <p class="svc-strip__text">
-                Expert tax and investment guidance from specialists we trust, so what a player builds
-                over a career is protected for life after football.
-              </p>
-            </div>
-          </div>
+
+        <div class="svc-wheel__panels">
+          <article class="svc-wheel__panel is-active" id="svc-panel-1" role="tabpanel" aria-labelledby="svc-tab-1">
+            <h3 class="svc-wheel__title">Contract Negotiation</h3>
+            <p class="svc-wheel__text">
+              Terms built on real market data, so every contract reflects what the player is truly
+              worth. Every clause is reviewed in detail and every renewal planned well before it
+              becomes urgent.
+            </p>
+          </article>
+          <article class="svc-wheel__panel" id="svc-panel-2" role="tabpanel" aria-labelledby="svc-tab-2">
+            <h3 class="svc-wheel__title">International Transfers</h3>
+            <p class="svc-wheel__text">
+              Direct relationships with clubs across South America, Europe, the MLS and the Middle
+              East. We present the player, lead the negotiation and see every deal through to
+              signature.
+            </p>
+          </article>
+          <article class="svc-wheel__panel" id="svc-panel-3" role="tabpanel" aria-labelledby="svc-tab-3">
+            <h3 class="svc-wheel__title">Image &amp; Sponsorship</h3>
+            <p class="svc-wheel__text">
+              A strong, consistent public profile, on and off the pitch, and brand partnerships that
+              fit the player and grow with their career.
+            </p>
+          </article>
+          <article class="svc-wheel__panel" id="svc-panel-4" role="tabpanel" aria-labelledby="svc-tab-4">
+            <h3 class="svc-wheel__title">Legal &amp; Financial Advisory</h3>
+            <p class="svc-wheel__text">
+              Expert tax and investment guidance from specialists we trust, so what a player builds
+              over a career is protected for life after football.
+            </p>
+          </article>
         </div>
       </div>
     </section>

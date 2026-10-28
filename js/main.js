@@ -151,6 +151,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   } // fin sección Caniggia
 
+  /* ---------- Services: rueda ----------
+     Al hacer clic en un número, la rueda gira (--active) para dejarlo al centro
+     y se muestra el texto de ese servicio. También funciona con las flechas del teclado. */
+  const wheel = document.getElementById("svcWheel");
+  if (wheel) {
+    const tabs = [...wheel.querySelectorAll(".svc-wheel__num")];
+    const panels = [...wheel.querySelectorAll(".svc-wheel__panel")];
+
+    const selectService = (index, focus = false) => {
+      wheel.style.setProperty("--active", index);
+      tabs.forEach((tab, i) => {
+        const active = i === index;
+        tab.classList.toggle("is-active", active);
+        tab.classList.toggle("is-far", Math.abs(i - index) >= 2);
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+      });
+      panels.forEach((panel, i) => panel.classList.toggle("is-active", i === index));
+      if (focus) tabs[index].focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => selectService(i));
+      tab.addEventListener("keydown", (e) => {
+        const next = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (!next) return;
+        e.preventDefault();
+        selectService((i + next + tabs.length) % tabs.length, true);
+      });
+    });
+
+    selectService(0);
+  }
+
   /* ---------- Formulario de contacto ----------
      Sin servidor: valida los campos y abre el cliente de correo
      con el mensaje armado. Para enviar desde la web directamente,
