@@ -1065,6 +1065,7 @@ h1, h2, h3 {
   --R: calc(var(--h) * 0.62);       /* radio del arco: más grande que media sección, así la circunferencia llega arriba y abajo */
   --step: 20deg;                    /* separación entre números */
   --cx: calc(var(--R) * -0.55);     /* centro del círculo (a la izquierda, fuera de vista) */
+  --title-size: clamp(1.6rem, 2.8vw, 2.8rem); /* tamaño del título del servicio */
   position: relative;
   flex: 1;
   overflow: hidden;
@@ -1089,8 +1090,10 @@ h1, h2, h3 {
   position: absolute;
   left: var(--cx);
   top: 50%;
-  height: 3rem;
-  margin-top: -1.5rem;
+  /* alto = una línea del número, centrado sobre el eje (igual que la primera línea del título) */
+  height: 1.05em;
+  line-height: 1.05;
+  margin-top: -0.525em;
   padding: 0 0.4rem;
   transform-origin: 0 50%;
   transform: rotate(calc((var(--i) - var(--active)) * var(--step))) translateX(calc(var(--R) + 1.2rem));
@@ -1127,7 +1130,7 @@ h1, h2, h3 {
 
 .svc-wheel__num.is-active {
   font-weight: 700;
-  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  font-size: var(--title-size); /* mismo tamaño que el título: así quedan alineados */
   opacity: 1;
   cursor: default;
 }
@@ -1153,13 +1156,14 @@ h1, h2, h3 {
   left: calc(var(--cx) + var(--R) + 1.4rem + clamp(4.5rem, 6vw, 6.5rem));
   right: 5vw;
   top: 50%;
-  transform: translateY(-50%);
+  /* la primera línea del título queda a la altura del número activo (centro de la rueda) */
+  transform: translateY(calc(var(--title-size) * -0.525));
   display: grid;
 }
 
 .svc-wheel__panel {
   grid-area: 1 / 1;
-  align-self: center;
+  align-self: start;
   opacity: 0;
   visibility: hidden;
   transform: translateY(16px);
@@ -1175,7 +1179,7 @@ h1, h2, h3 {
 
 .svc-wheel__title {
   font-weight: 700;
-  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+  font-size: var(--title-size);
   line-height: 1.05;
   text-transform: uppercase;
 }
