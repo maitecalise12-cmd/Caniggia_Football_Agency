@@ -1039,7 +1039,7 @@ h1, h2, h3 {
 .svc-home__intro {
   position: relative;
   z-index: 2;
-  flex: 0 0 clamp(270px, 30vw, 420px);
+  flex: 0 0 clamp(320px, 34vw, 560px); /* ancho suficiente para "WHAT WE DO" en una línea */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1048,6 +1048,7 @@ h1, h2, h3 {
 
 .svc-home__intro .title {
   font-size: clamp(2rem, 3.4vw, 3.2rem);
+  white-space: nowrap; /* "WHAT WE DO" en una sola línea */
 }
 
 .svc-home__lead {
