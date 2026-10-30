@@ -201,59 +201,76 @@ document.addEventListener("DOMContentLoaded", () => {
   } // fin sección Caniggia
 
   /* ---------- Services: rueda ----------
-     La rueda gira cambiando --active. Se puede mover de tres formas:
+     Rueda infinita: después del 04 viene el 01 (y antes del 01, el 04).
+     Se gira de varias formas:
+       · flecha ↑ (o tecla ↑): pasa al número anterior, el que está arriba,
+       · flecha ↓ (o tecla ↓): pasa al número siguiente, el que está abajo,
        · clic en un número,
-       · agarrando y arrastrando la rueda hacia arriba o abajo (mouse o dedo);
-         al soltar, se acomoda en el servicio más cercano,
-       · con las flechas (botones) o las flechas del teclado. */
+       · agarrando y arrastrando la rueda (mouse o dedo); al soltar se acomoda
+         en el servicio más cercano.
+     Cada número recibe --offset: su distancia (con vuelta) al activo. */
   const wheel = document.getElementById("svcWheel");
   if (wheel) {
     const tabs = [...wheel.querySelectorAll(".svc-wheel__num")];
     const panels = [...wheel.querySelectorAll(".svc-wheel__panel")];
     const ring = wheel.querySelector(".svc-wheel__ring");
     const dragZone = wheel.querySelector(".svc-wheel__drag");
-    const counter = document.getElementById("svcCurrent");
-    const last = tabs.length - 1;
-    let current = 0;
+    const total = tabs.length;
+    const wrap = (n) => ((n % total) + total) % total;
+    let position = 0; // posición de la rueda (sin límites: 4 = otra vez el 01)
 
-    // marca el servicio activo (número, texto y contador); "position" puede tener decimales mientras se arrastra
-    const highlight = (position) => {
-      const index = Math.min(Math.max(Math.round(position), 0), last);
+    // ubica cada número sobre el arco y marca el activo
+    const render = (pos) => {
+      const index = wrap(Math.round(pos));
       tabs.forEach((tab, i) => {
+        let offset = wrap(i - pos);
+        if (offset > total / 2) offset -= total;
+        // si el número "da la vuelta" por atrás de la rueda, se reubica sin animación
+        const prev = parseFloat(tab.style.getPropertyValue("--offset"));
+        if (!Number.isNaN(prev) && Math.abs(offset - prev) > total / 2) {
+          tab.style.transition = "none";
+          requestAnimationFrame(() => requestAnimationFrame(() => (tab.style.transition = "")));
+        }
+        tab.style.setProperty("--offset", offset.toFixed(3));
         const active = i === index;
         tab.classList.toggle("is-active", active);
-        tab.classList.toggle("is-far", Math.abs(i - position) >= 1.6);
+        tab.classList.toggle("is-far", Math.abs(offset) >= 1.6);
         tab.setAttribute("aria-selected", String(active));
         tab.tabIndex = active ? 0 : -1;
       });
       panels.forEach((panel, i) => panel.classList.toggle("is-active", i === index));
-      if (counter) counter.textContent = String(index + 1).padStart(2, "0");
       return index;
     };
 
-    const selectService = (index, focus = false) => {
-      current = (index + tabs.length) % tabs.length;
-      wheel.style.setProperty("--active", current);
-      highlight(current);
-      if (focus) tabs[current].focus();
+    const goTo = (pos, focus = false) => {
+      position = pos;
+      const index = render(position);
+      if (focus) tabs[index].focus();
+    };
+
+    // ir a un número por el camino más corto (ej.: del 04 al 01 avanza un paso)
+    const goToIndex = (i, focus) => {
+      let diff = wrap(i - position);
+      if (diff > total / 2) diff -= total;
+      goTo(Math.round(position + diff), focus);
     };
 
     tabs.forEach((tab, i) => {
       tab.addEventListener("click", (e) => {
         if (wheel.dataset.justDragged) { e.preventDefault(); return; } // fue un arrastre, no un clic
-        selectService(i);
+        goToIndex(i);
       });
       tab.addEventListener("keydown", (e) => {
-        const next = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1 }[e.key]; // igual que las flechas en pantalla
-        if (!next) return;
+        const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (!step) return;
         e.preventDefault();
-        selectService(i + next, true);
+        goTo(Math.round(position) + step, true);
       });
     });
 
-    // Flechas
+    // Flechas: ↑ anterior, ↓ siguiente (dan la vuelta completa)
     wheel.querySelectorAll(".svc-wheel__arrow").forEach((arrow) => {
-      arrow.addEventListener("click", () => selectService(current + Number(arrow.dataset.dir)));
+      arrow.addEventListener("click", () => goTo(Math.round(position) + Number(arrow.dataset.dir)));
     });
 
     // Arrastrar: el desplazamiento vertical se convierte en giro a lo largo del arco
@@ -263,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.button !== undefined && e.button !== 0) return;
       const radius = ring.offsetWidth / 2;
       const step = parseFloat(getComputedStyle(wheel).getPropertyValue("--step")) || 20;
-      drag = { startY: e.clientY, start: current, pxPerItem: radius * (step * Math.PI / 180), moved: false, id: e.pointerId };
+      drag = { startY: e.clientY, start: position, pxPerItem: radius * (step * Math.PI / 180), moved: false, id: e.pointerId };
     };
 
     const onMove = (e) => {
@@ -275,21 +292,16 @@ document.addEventListener("DOMContentLoaded", () => {
         wheel.classList.add("is-dragging");
         wheel.setPointerCapture?.(e.pointerId);
       }
-      // arrastrar hacia abajo trae el servicio anterior; con resistencia en los extremos
-      let position = drag.start - dy / drag.pxPerItem;
-      if (position < 0) position *= 0.35;
-      if (position > last) position = last + (position - last) * 0.35;
-      wheel.style.setProperty("--active", position.toFixed(3));
-      highlight(position);
+      // arrastrar hacia abajo trae el número de arriba (el anterior)
+      goTo(drag.start - dy / drag.pxPerItem);
       e.preventDefault();
     };
 
     const onUp = (e) => {
       if (!drag || e.pointerId !== drag.id) return;
       if (drag.moved) {
-        const position = parseFloat(wheel.style.getPropertyValue("--active")) || 0;
         wheel.classList.remove("is-dragging");
-        selectService(Math.min(Math.max(Math.round(position), 0), last));
+        goTo(Math.round(position));
         // evita que el "click" que llega al soltar cambie la selección
         wheel.dataset.justDragged = "1";
         setTimeout(() => delete wheel.dataset.justDragged, 0);
@@ -302,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
     wheel.addEventListener("pointerup", onUp);
     wheel.addEventListener("pointercancel", onUp);
 
-    selectService(0);
+    goTo(0);
   }
 
   /* ---------- Formulario de contacto ----------

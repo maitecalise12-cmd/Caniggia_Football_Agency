@@ -1103,7 +1103,8 @@ h1, h2, h3 {
   margin-top: -0.525em;
   padding: 0 0.4rem;
   transform-origin: 0 50%;
-  transform: rotate(calc((var(--i) - var(--active)) * var(--step))) translateX(calc(var(--R) + 1.2rem));
+  /* --offset = distancia (con vuelta) al número activo; la calcula main.js */
+  transform: rotate(calc(var(--offset, 0) * var(--step))) translateX(calc(var(--R) + 1.2rem));
   background: none;
   border: 0;
   color: var(--white);
