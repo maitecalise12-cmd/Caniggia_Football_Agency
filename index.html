@@ -338,16 +338,13 @@
           </article>
         </div>
 
-        <!-- Flechas para girar la rueda -->
-        <div class="svc-wheel__controls">
-          <button class="svc-wheel__arrow" type="button" data-dir="-1" aria-label="Previous service">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
-          </button>
-          <span class="svc-wheel__count"><span id="svcCurrent">01</span> / 04</span>
-          <button class="svc-wheel__arrow" type="button" data-dir="1" aria-label="Next service">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-        </div>
+        <!-- Flechas para girar la rueda: arriba y abajo del número activo -->
+        <button class="svc-wheel__arrow svc-wheel__arrow--prev" type="button" data-dir="-1" aria-label="Previous service">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+        </button>
+        <button class="svc-wheel__arrow svc-wheel__arrow--next" type="button" data-dir="1" aria-label="Next service">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
       </div>
     </section>
 

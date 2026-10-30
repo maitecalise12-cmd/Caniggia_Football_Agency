@@ -1065,11 +1065,12 @@ h1, h2, h3 {
 .svc-wheel {
   --R: calc(var(--h) * 0.62);       /* radio del arco: más grande que media sección, así la circunferencia llega arriba y abajo */
   --step: 20deg;                    /* separación entre números */
-  --cx: calc(var(--R) * -0.55);     /* centro del círculo (a la izquierda, fuera de vista) */
+  /* centro del círculo, a la izquierda: el arco arranca cerca del título "What we do" */
+  --cx: calc(var(--R) * -0.55 - clamp(60px, 8vw, 160px));
   --title-size: clamp(1.6rem, 2.8vw, 2.8rem); /* tamaño del título del servicio */
   position: relative;
   flex: 1;
-  overflow: hidden;
+  overflow: visible; /* el arco se ve también hacia la izquierda; lo recorta la sección */
 }
 
 /* el arco */
@@ -1079,7 +1080,7 @@ h1, h2, h3 {
   top: calc(50% - var(--R));
   width: calc(var(--R) * 2);
   height: calc(var(--R) * 2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3); /* línea más gruesa */
   border-radius: 50%;
   pointer-events: none;
 }
@@ -1179,39 +1180,54 @@ h1, h2, h3 {
   transition: opacity 0.2s var(--ease), font-size 0.2s var(--ease);
 }
 
-/* Flechas + contador, debajo del texto del servicio */
-.svc-wheel__controls {
-  position: absolute;
-  left: calc(var(--cx) + var(--R) + 1.4rem + clamp(4.5rem, 6vw, 6.5rem));
-  bottom: clamp(1.5rem, 6vh, 3.5rem);
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
+/* Flechas sutiles arriba y abajo del número activo (el número queda en el medio) */
 .svc-wheel__arrow {
-  width: 44px;
-  height: 44px;
+  --num-left: calc(var(--cx) + var(--R) + 1.2rem + 0.4rem); /* donde empieza el número activo */
+  position: absolute;
+  z-index: 3;
+  left: var(--num-left);
+  width: calc(var(--title-size) * 1.3); /* ~ ancho del número: la flecha queda centrada sobre él */
+  height: 28px;
   display: grid;
   place-items: center;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
+  padding: 0;
+  background: none;
+  border: 0;
   color: var(--white);
+  opacity: 0.45;
   cursor: pointer;
-  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.svc-wheel__arrow--prev {
+  top: calc(50% - var(--title-size) * 0.525 - 34px);
+}
+
+.svc-wheel__arrow--next {
+  top: calc(50% + var(--title-size) * 0.525 + 6px);
 }
 
 .svc-wheel__arrow:hover,
 .svc-wheel__arrow:focus-visible {
-  background: var(--blue);
-  border-color: var(--blue);
+  opacity: 1;
+}
+
+.svc-wheel__arrow--prev:hover {
+  transform: translateY(-3px);
+}
+
+.svc-wheel__arrow--next:hover {
+  transform: translateY(3px);
+}
+
+.svc-wheel__arrow:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
 }
 
 .svc-wheel__arrow svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -1219,31 +1235,8 @@ h1, h2, h3 {
   stroke-linejoin: round;
 }
 
-.svc-wheel__count {
-  min-width: 4.5em;
-  text-align: center;
-  font-family: var(--font-title);
-  font-weight: 500;
-  font-size: 0.9rem;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.svc-wheel__count span {
-  color: var(--white);
-}
-
-/* Pantallas bajas (celular acostado): flechas y texto más compactos para que no se toquen */
+/* Pantallas bajas (celular acostado): texto más compacto */
 @media (max-height: 560px) {
-  .svc-wheel__controls {
-    bottom: 0.9rem;
-  }
-
-  .svc-wheel__arrow {
-    width: 36px;
-    height: 36px;
-  }
-
   .svc-wheel__text {
     margin-top: 0.6rem;
     font-size: 0.88rem;
@@ -1314,7 +1307,7 @@ h1, h2, h3 {
   .svc-wheel__ring,
   .svc-wheel__list,
   .svc-wheel__drag,
-  .svc-wheel__controls {
+  .svc-wheel__arrow {
     display: none;
   }
 
