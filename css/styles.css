@@ -54,6 +54,7 @@
   --blue: #4B5985;
   --blue-light: #6E7DAD;
   --blue-dark: #39446A;
+  --celeste: #75AADB; /* celeste de la camiseta argentina */
   --gray: #A4A8B5;
   --gray-light: #F3F4F7;
   --line-dark: rgba(255, 255, 255, 0.12);
@@ -1085,7 +1086,7 @@ h1, h2, h3 {
   top: calc(50% - var(--R));
   width: calc(var(--R) * 2);
   height: calc(var(--R) * 2);
-  border: 2px solid rgba(255, 255, 255, 0.3); /* línea más gruesa */
+  border: 2px solid var(--celeste); /* línea gruesa en celeste */
   border-radius: 50%;
   pointer-events: none;
 }
