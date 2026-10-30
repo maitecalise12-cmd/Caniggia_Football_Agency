@@ -289,11 +289,14 @@
         </p>
       </div>
 
-      <!-- Rueda de servicios (ref. "Wove — Wheel Menu"): al hacer clic en un número,
-           la rueda gira, ese servicio queda al centro y se muestra su texto.
+      <!-- Rueda de servicios (ref. "Wove — Wheel Menu"). Se gira de tres formas:
+           clic en un número, arrastrando la rueda (mouse o dedo) o con las flechas.
+           El servicio que queda al centro muestra su texto.
            En celular se ven los 4 servicios apilados. -->
       <div class="svc-wheel" id="svcWheel" style="--active: 0">
         <div class="svc-wheel__ring" aria-hidden="true"></div>
+        <!-- zona para agarrar y arrastrar la rueda -->
+        <div class="svc-wheel__drag" aria-hidden="true"></div>
 
         <div class="svc-wheel__list" role="tablist" aria-label="Services">
           <button class="svc-wheel__num is-active" style="--i: 0" role="tab" id="svc-tab-1" aria-controls="svc-panel-1" aria-selected="true">01</button>
@@ -333,6 +336,17 @@
               over a career is protected for life after football.
             </p>
           </article>
+        </div>
+
+        <!-- Flechas para girar la rueda -->
+        <div class="svc-wheel__controls">
+          <button class="svc-wheel__arrow" type="button" data-dir="-1" aria-label="Previous service">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+          </button>
+          <span class="svc-wheel__count"><span id="svcCurrent">01</span> / 04</span>
+          <button class="svc-wheel__arrow" type="button" data-dir="1" aria-label="Next service">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
         </div>
       </div>
     </section>

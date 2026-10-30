@@ -1151,6 +1151,106 @@ h1, h2, h3 {
   outline-offset: 2px;
 }
 
+/* Zona para agarrar la rueda: desde el borde izquierdo hasta el número activo */
+.svc-wheel__drag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--cx) + var(--R) + 1.2rem + clamp(4.5rem, 6vw, 6.5rem));
+  cursor: grab;
+  touch-action: none; /* en pantallas táctiles el dedo gira la rueda en vez de scrollear */
+}
+
+.svc-wheel__num {
+  z-index: 2;
+  touch-action: none;
+}
+
+/* mientras se arrastra, la rueda sigue al cursor sin demora */
+.svc-wheel.is-dragging,
+.svc-wheel.is-dragging .svc-wheel__drag,
+.svc-wheel.is-dragging .svc-wheel__num {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.svc-wheel.is-dragging .svc-wheel__num {
+  transition: opacity 0.2s var(--ease), font-size 0.2s var(--ease);
+}
+
+/* Flechas + contador, debajo del texto del servicio */
+.svc-wheel__controls {
+  position: absolute;
+  left: calc(var(--cx) + var(--R) + 1.4rem + clamp(4.5rem, 6vw, 6.5rem));
+  bottom: clamp(1.5rem, 6vh, 3.5rem);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.svc-wheel__arrow {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.svc-wheel__arrow:hover,
+.svc-wheel__arrow:focus-visible {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.svc-wheel__arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.svc-wheel__count {
+  min-width: 4.5em;
+  text-align: center;
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.svc-wheel__count span {
+  color: var(--white);
+}
+
+/* Pantallas bajas (celular acostado): flechas y texto más compactos para que no se toquen */
+@media (max-height: 560px) {
+  .svc-wheel__controls {
+    bottom: 0.9rem;
+  }
+
+  .svc-wheel__arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .svc-wheel__text {
+    margin-top: 0.6rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+}
+
 /* textos: a la derecha del número activo, todos en la misma celda y solo uno visible */
 .svc-wheel__panels {
   position: absolute;
@@ -1212,7 +1312,9 @@ h1, h2, h3 {
   }
 
   .svc-wheel__ring,
-  .svc-wheel__list {
+  .svc-wheel__list,
+  .svc-wheel__drag,
+  .svc-wheel__controls {
     display: none;
   }
 
