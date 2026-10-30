@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectService(i);
       });
       tab.addEventListener("keydown", (e) => {
-        const next = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        const next = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1 }[e.key]; // igual que las flechas en pantalla
         if (!next) return;
         e.preventDefault();
         selectService(i + next, true);

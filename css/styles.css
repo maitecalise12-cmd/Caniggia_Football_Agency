@@ -1040,9 +1040,9 @@ h1, h2, h3 {
   position: relative;
   z-index: 2;
   flex: 0 0 clamp(320px, 34vw, 560px); /* ancho suficiente para "WHAT WE DO" en una línea */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /* 3 filas: "SERVICES" arriba, el título justo en el centro (mismo eje que la rueda) y el texto abajo */
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
   padding: 3rem 2vw 3rem 6vw;
 }
 
@@ -1051,7 +1051,12 @@ h1, h2, h3 {
   white-space: nowrap; /* "WHAT WE DO" en una sola línea */
 }
 
+.svc-home__intro .eyebrow {
+  align-self: end; /* pegado al título, desde arriba */
+}
+
 .svc-home__lead {
+  align-self: start;
   max-width: 32ch;
   margin: 1rem 0 0;
   font-size: 0.98rem;
@@ -1199,11 +1204,11 @@ h1, h2, h3 {
   transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
 }
 
-.svc-wheel__arrow--prev {
+.svc-wheel__arrow--up {
   top: calc(50% - var(--title-size) * 0.525 - 34px);
 }
 
-.svc-wheel__arrow--next {
+.svc-wheel__arrow--down {
   top: calc(50% + var(--title-size) * 0.525 + 6px);
 }
 
@@ -1212,11 +1217,11 @@ h1, h2, h3 {
   opacity: 1;
 }
 
-.svc-wheel__arrow--prev:hover {
+.svc-wheel__arrow--up:hover {
   transform: translateY(-3px);
 }
 
-.svc-wheel__arrow--next:hover {
+.svc-wheel__arrow--down:hover {
   transform: translateY(3px);
 }
 
