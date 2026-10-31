@@ -21,6 +21,11 @@
 
   <!-- ================= HEADER / MENÚ ================= -->
   <header class="header" id="header">
+    <!-- Menú hamburguesa (izquierda): despliega el panel con todas las secciones -->
+    <button class="side-toggle" id="sideToggle" type="button" aria-label="Open sections menu" aria-expanded="false" aria-controls="sideMenu">
+      <span></span><span></span><span></span>
+    </button>
+
     <div class="container header__inner">
       <!-- Logo CFA al centro de la barra -->
       <a href="#home" class="brand" aria-label="Caniggia Football Agency – Home">
@@ -40,6 +45,19 @@
     </div>
   </header>
 
+  <!-- Panel de secciones (sale desde la izquierda) -->
+  <div class="side-overlay" id="sideOverlay" hidden></div>
+  <nav class="side-menu" id="sideMenu" aria-label="Sections" aria-hidden="true">
+    <ul>
+      <li style="--n: 0"><a href="#home" class="is-current">Home</a></li>
+      <li style="--n: 1"><a href="#who-we-are">Who we are</a></li>
+      <li style="--n: 2"><a href="#about">How we work</a></li>
+      <li style="--n: 3"><a href="#caniggia">Caniggia</a></li>
+      <li style="--n: 4"><a href="#services">Services</a></li>
+      <li style="--n: 5"><a href="#contact">Let's talk</a></li>
+    </ul>
+  </nav>
+
   <main>
 
     <!-- ================= HERO =================
@@ -48,18 +66,6 @@
          (por ejemplo, al abrir el archivo con doble clic sin servidor). -->
     <section class="hero" id="home">
       <div class="hero__media" id="heroMedia" aria-hidden="true"></div>
-
-      <!-- Menú de secciones (arriba a la izquierda, solo en el hero) -->
-      <nav class="hero-menu container" aria-label="Sections">
-        <ul>
-          <li><a href="#home" class="is-current" aria-current="true">Home</a></li>
-          <li><a href="#who-we-are">Who we are</a></li>
-          <li><a href="#about">How we work</a></li>
-          <li><a href="#caniggia">Caniggia</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#contact">Let's talk</a></li>
-        </ul>
-      </nav>
 
       <div class="container hero__content">
         <h1 class="hero__title" id="heroTitle">

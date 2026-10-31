@@ -330,6 +330,144 @@ h1, h2, h3 {
 .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
 .nav-toggle.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
+/* ---------- Menú hamburguesa izquierdo + panel de secciones ---------- */
+.side-toggle {
+  position: absolute;
+  left: clamp(12px, 1.6vw, 28px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 110;
+  width: 44px;
+  height: 44px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.side-toggle span {
+  display: block;
+  height: 2px;
+  background: var(--white);
+  transition: transform 0.35s var(--ease), opacity 0.25s;
+}
+
+.side-toggle.is-open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.side-toggle.is-open span:nth-child(2) { opacity: 0; }
+.side-toggle.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* fondo oscuro detrás del panel (al tocarlo se cierra) */
+.side-overlay {
+  position: fixed;
+  inset: var(--header-h) 0 0 0;
+  z-index: 98;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.side-overlay.is-open {
+  opacity: 1;
+}
+
+/* el panel entra desde la izquierda */
+.side-menu {
+  position: fixed;
+  top: var(--header-h);
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  width: clamp(280px, 28vw, 420px);
+  padding: clamp(2rem, 6vh, 4rem) clamp(1.5rem, 3vw, 3rem);
+  background: var(--black-pure);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform 0.5s var(--ease), visibility 0.5s;
+}
+
+.side-menu.is-open {
+  transform: none;
+  visibility: visible;
+}
+
+.side-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* las opciones salen una detrás de otra */
+.side-menu li {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity 0.35s var(--ease), transform 0.45s var(--ease);
+}
+
+.side-menu.is-open li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.12s + var(--n) * 0.06s);
+}
+
+.side-menu a {
+  position: relative;
+  display: inline-block;
+  padding: 0.55rem 0 0.55rem 2.6rem; /* lugar para el [•] */
+  font-family: var(--font-title);
+  font-size: clamp(1.1rem, 1.5vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.25s;
+}
+
+/* [•] delante de la sección actual y de la que se señala */
+.side-menu a::before {
+  content: "[•]";
+  position: absolute;
+  left: 0;
+  font-size: 0.8em;
+  top: 50%;
+  translate: -6px -50%;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 0.25s, translate 0.25s;
+}
+
+.side-menu a.is-current,
+.side-menu a:hover,
+.side-menu a:focus-visible {
+  color: var(--white);
+}
+
+.side-menu a.is-current::before,
+.side-menu a:hover::before,
+.side-menu a:focus-visible::before {
+  opacity: 1;
+  translate: 0 -50%;
+}
+
+.side-menu ul:hover a.is-current:not(:hover) {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.side-menu ul:hover a.is-current:not(:hover)::before {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .side-menu {
+    width: 100%;
+    border-right: 0;
+  }
+}
+
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
@@ -363,75 +501,6 @@ h1, h2, h3 {
   position: relative;
   z-index: 1;
   padding-bottom: clamp(3rem, 9vh, 6rem);
-}
-
-/* Menú de secciones arriba a la izquierda (ref. Sport Cover).
-   La sección actual (y la que se señala con el mouse) lleva [•] delante. */
-.hero-menu {
-  position: absolute;
-  z-index: 2;
-  top: calc(var(--header-h) + clamp(0.8rem, 2.5vh, 2.2rem));
-  left: 0;
-  right: 0;
-}
-
-.hero-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.hero-menu a {
-  position: relative;
-  display: inline-block;
-  padding: 0.12rem 0 0.12rem 2.1rem; /* lugar para el [•] */
-  font-family: var(--font-title);
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-  text-decoration: none;
-  transition: color 0.25s;
-}
-
-.hero-menu a::before {
-  content: "[•]";
-  position: absolute;
-  left: 0;
-  letter-spacing: 0.08em;
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity 0.25s, transform 0.25s;
-}
-
-.hero-menu a.is-current,
-.hero-menu a:hover,
-.hero-menu a:focus-visible {
-  color: var(--white);
-}
-
-.hero-menu a.is-current::before,
-.hero-menu a:hover::before,
-.hero-menu a:focus-visible::before {
-  opacity: 1;
-  transform: none;
-}
-
-/* al señalar otra, el [•] pasa a esa */
-.hero-menu ul:hover a.is-current:not(:hover)::before {
-  opacity: 0;
-}
-
-.hero-menu ul:hover a.is-current:not(:hover) {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* en celular ya está el menú hamburguesa; en pantallas bajas chocaría con el título */
-@media (max-width: 900px), (max-height: 740px) {
-  .hero-menu {
-    display: none;
-  }
 }
 
 .hero__title {
@@ -1777,8 +1846,10 @@ h1, h2, h3 {
 
 /* Celular y tablet: menú hamburguesa y Caniggia en vertical */
 @media (max-width: 900px) {
+  /* en celular las secciones (incluidas Services y Let's talk) están en el menú
+     hamburguesa de la izquierda, así que el de la derecha no se muestra */
   .nav-toggle {
-    display: flex;
+    display: none;
   }
 
   .nav {

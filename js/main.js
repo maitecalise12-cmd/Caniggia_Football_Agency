@@ -89,6 +89,51 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeMenu();
   });
 
+  /* ---------- Menú hamburguesa izquierdo (panel de secciones) ---------- */
+  const sideToggle = document.getElementById("sideToggle");
+  const sideMenu = document.getElementById("sideMenu");
+  const sideOverlay = document.getElementById("sideOverlay");
+
+  if (sideToggle && sideMenu && sideOverlay) {
+    const setSideMenu = (open) => {
+      sideMenu.classList.toggle("is-open", open);
+      sideToggle.classList.toggle("is-open", open);
+      sideToggle.setAttribute("aria-expanded", String(open));
+      sideToggle.setAttribute("aria-label", open ? "Close sections menu" : "Open sections menu");
+      sideMenu.setAttribute("aria-hidden", String(!open));
+      if (open) {
+        sideOverlay.hidden = false;
+        requestAnimationFrame(() => sideOverlay.classList.add("is-open"));
+      } else {
+        sideOverlay.classList.remove("is-open");
+        setTimeout(() => { if (!sideMenu.classList.contains("is-open")) sideOverlay.hidden = true; }, 400);
+      }
+    };
+
+    sideToggle.addEventListener("click", () => setSideMenu(!sideMenu.classList.contains("is-open")));
+    sideOverlay.addEventListener("click", () => setSideMenu(false));
+    sideMenu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setSideMenu(false)));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setSideMenu(false);
+    });
+
+    // [•] en la sección que se está viendo
+    const sideLinks = [...sideMenu.querySelectorAll("a")];
+    const currentObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          sideLinks.forEach((a) => a.classList.toggle("is-current", a.getAttribute("href") === `#${entry.target.id}`));
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    sideLinks
+      .map((a) => document.querySelector(a.getAttribute("href")))
+      .filter(Boolean)
+      .forEach((section) => currentObserver.observe(section));
+  }
+
   /* ---------- Link activo del menú ---------- */
   const linkedSections = ["services", "contact"]
     .map((id) => document.getElementById(id))
@@ -176,11 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setupJourney();
 
     /* ---------- Links internos con el mismo desplazamiento suave ----------
-       Menú del hero, botones del hero, links de la barra y el logo.
+       Menú hamburguesa de secciones, botones del hero, links de la barra y el logo.
        Todos se mueven en un solo movimiento suave. Si en el camino está la
        sección de Caniggia, no se detienen ni recorren la línea de tiempo de
        costado: la pasan como si fuera una sección más. En celular funcionan normal. */
-    const skipLinks = document.querySelectorAll("#heroActions, .nav__link, .header .brand, .hero-menu");
+    const skipLinks = document.querySelectorAll("#heroActions, .nav__link, .header .brand, .side-menu");
     const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
     const scrollPastJourney = (e) => {
