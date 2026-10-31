@@ -350,7 +350,7 @@ h1, h2, h3 {
   bottom: 0;
   left: 0;
   /* La foto se define en hero.json (main.js la pasa en --hero-img). Esta es la de respaldo. */
-  background: var(--hero-img, url("../assests/img/editable vini.jpg")) right center / cover no-repeat, var(--black-pure);
+  background: var(--hero-img, url("../assests/img/hero este.jpg")) right center / cover no-repeat, var(--black-pure);
   animation: heroIn 1.4s var(--ease) both;
 }
 
@@ -1677,7 +1677,7 @@ h1, h2, h3 {
   .hero__media {
     background:
       linear-gradient(0deg, var(--black-pure) 5%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 100%),
-      var(--hero-img-mobile, var(--hero-img, url("../assests/img/editable vini.jpg"))) 72% center / cover no-repeat,
+      var(--hero-img-mobile, var(--hero-img, url("../assests/img/hero este.jpg"))) 72% center / cover no-repeat,
       var(--black-pure);
   }
 }
