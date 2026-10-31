@@ -175,17 +175,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.fonts) document.fonts.ready.then(setupJourney);
     setupJourney();
 
-    /* ---------- Links que saltean el recorrido horizontal ----------
-       "Services" del hero, los dos links del menú ("Our services" y "Let's talk")
-       y el logo de la barra (sube al inicio). Se mueven en un solo movimiento
-       suave: al pasar por la sección de Caniggia no se detienen ni recorren la
-       línea de tiempo de costado, la pasan como si fuera una sección más.
-       Si no hay que atravesar la línea de tiempo, o en celular, funcionan normal. */
-    const skipLinks = document.querySelectorAll("#heroActions, .nav__link, .header .brand");
+    /* ---------- Links internos con el mismo desplazamiento suave ----------
+       Menú del hero, botones del hero, links de la barra y el logo.
+       Todos se mueven en un solo movimiento suave. Si en el camino está la
+       sección de Caniggia, no se detienen ni recorren la línea de tiempo de
+       costado: la pasan como si fuera una sección más. En celular funcionan normal. */
+    const skipLinks = document.querySelectorAll("#heroActions, .nav__link, .header .brand, .hero-menu");
     const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
     const scrollPastJourney = (e) => {
-      const link = e.target.closest('a[href="#services"], a[href="#contact"], a[href="#home"]');
+      const link = e.target.closest('a[href^="#"]');
       if (!link || !journey.classList.contains("is-horizontal")) return;
       const hash = link.getAttribute("href");
       const section = document.querySelector(hash);
@@ -197,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const target = Math.max(section.getBoundingClientRect().top + window.scrollY - header.offsetHeight, 0);
       const goingDown = from < journeyStart && target > journeyEnd;
       const goingUp = from > journeyEnd && target < journeyStart;
-      if (!goingDown && !goingUp) return; // no atraviesa la línea de tiempo
+      const skip = goingDown || goingUp; // atraviesa la línea de tiempo
       e.preventDefault();
       history.replaceState(null, "", hash);
 
@@ -206,11 +205,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // recorrido "virtual": el tramo horizontal se descuenta
-      // (lo que está debajo de la línea de tiempo se corre "distance" hacia arriba)
-      const start = goingDown ? from : from - distance;
+      // recorrido "virtual": si atraviesa la línea de tiempo, ese tramo se descuenta
+      // (lo que está debajo de ella se corre "distance" hacia arriba)
+      const start = goingUp ? from - distance : from;
       const end = goingDown ? target - distance : target;
       const total = end - start;
+      if (Math.abs(total) < 1) return;
       const duration = Math.min(Math.max(Math.abs(total) * 0.4, 900), 2200);
       const t0 = performance.now();
 
@@ -220,15 +220,17 @@ document.addEventListener("DOMContentLoaded", () => {
       window.addEventListener("wheel", cancel, { once: true, passive: true });
       window.addEventListener("touchstart", cancel, { once: true, passive: true });
 
-      lockJourney = true;
-      autoScrolling = true;
-      updateJourney(); // la deja quieta en el inicio antes de que entre en pantalla
+      if (skip) {
+        lockJourney = true;
+        autoScrolling = true;
+        updateJourney(); // la deja quieta en el inicio antes de que entre en pantalla
+      }
 
       const frame = (now) => {
         const k = cancelled ? 1 : Math.min((now - t0) / duration, 1);
         if (!cancelled) {
           const v = start + total * easeInOut(k);
-          window.scrollTo({ top: v >= journeyStart ? v + distance : v, behavior: "instant" });
+          window.scrollTo({ top: skip && v >= journeyStart ? v + distance : v, behavior: "instant" });
         }
         if (k < 1) {
           requestAnimationFrame(frame);
