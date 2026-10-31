@@ -175,65 +175,67 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.fonts) document.fonts.ready.then(setupJourney);
     setupJourney();
 
-    /* ---------- Botón "Services" del hero: saltea el recorrido horizontal ----------
-       Baja en un solo movimiento suave hasta Services. Al llegar a la sección
-       de Caniggia no se detiene ni recorre la línea de tiempo de costado:
-       la pasa como si fuera una sección más. Solo para ese botón; en celular
-       (línea de tiempo vertical) baja normal. */
-    const heroButtons = document.getElementById("heroActions");
+    /* ---------- Botones que bajan salteando el recorrido horizontal ----------
+       "Services" del hero y los dos links del menú ("Our services" y "Let's talk").
+       Bajan en un solo movimiento suave: al pasar por la sección de Caniggia no
+       se detienen ni recorren la línea de tiempo de costado, la pasan como si
+       fuera una sección más. Si no hay que atravesar la línea de tiempo (por
+       ejemplo, ya se está más abajo) o en celular, el link funciona normal. */
+    const skipLinks = document.querySelectorAll('#heroActions, .nav__link');
     const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-    if (heroButtons) {
-      heroButtons.addEventListener("click", (e) => {
-        const link = e.target.closest('a[href="#services"]');
-        const services = document.getElementById("services");
-        if (!link || !services || !journey.classList.contains("is-horizontal")) return;
-        e.preventDefault();
+    const scrollPastJourney = (e) => {
+      const link = e.target.closest('a[href="#services"], a[href="#contact"]');
+      if (!link || !journey.classList.contains("is-horizontal")) return;
+      const hash = link.getAttribute("href");
+      const section = document.querySelector(hash);
+      if (!section) return;
 
-        const from = window.scrollY;
-        const journeyStart = journey.offsetTop - header.offsetHeight;
-        const target = services.getBoundingClientRect().top + window.scrollY - header.offsetHeight;
-        history.replaceState(null, "", "#services");
+      const from = window.scrollY;
+      const journeyStart = journey.offsetTop - header.offsetHeight;
+      const target = section.getBoundingClientRect().top + window.scrollY - header.offsetHeight;
+      if (from >= journeyStart || target <= journeyStart + distance) return; // no atraviesa la línea de tiempo
+      e.preventDefault();
+      history.replaceState(null, "", hash);
 
-        if (reducedMotion) {
-          window.scrollTo({ top: target, behavior: "instant" });
+      if (reducedMotion) {
+        window.scrollTo({ top: target, behavior: "instant" });
+        return;
+      }
+
+      // recorrido "virtual": el tramo horizontal se descuenta
+      const total = target - distance - from;
+      const duration = Math.min(Math.max(total * 0.4, 900), 2200);
+      const t0 = performance.now();
+
+      // si la persona scrollea a mano, se corta
+      let cancelled = false;
+      const cancel = () => { cancelled = true; };
+      window.addEventListener("wheel", cancel, { once: true, passive: true });
+      window.addEventListener("touchstart", cancel, { once: true, passive: true });
+
+      lockJourney = true;
+      autoScrolling = true;
+
+      const frame = (now) => {
+        const k = cancelled ? 1 : Math.min((now - t0) / duration, 1);
+        if (!cancelled) {
+          const v = from + total * easeInOut(k);
+          window.scrollTo({ top: v >= journeyStart ? v + distance : v, behavior: "instant" });
+        }
+        if (k < 1) {
+          requestAnimationFrame(frame);
           return;
         }
+        autoScrolling = false;
+        window.removeEventListener("wheel", cancel);
+        window.removeEventListener("touchstart", cancel);
+        updateJourney();
+      };
+      requestAnimationFrame(frame);
+    };
 
-        // recorrido "virtual": el tramo horizontal se descuenta
-        const skip = from < journeyStart ? distance : 0;
-        const total = target - skip - from;
-        const duration = Math.min(Math.max(total * 0.4, 900), 2200);
-        const t0 = performance.now();
-
-        // si la persona scrollea a mano, se corta
-        let cancelled = false;
-        const cancel = () => { cancelled = true; };
-        window.addEventListener("wheel", cancel, { once: true, passive: true });
-        window.addEventListener("touchstart", cancel, { once: true, passive: true });
-
-        lockJourney = true;
-        autoScrolling = true;
-
-        const frame = (now) => {
-          const k = cancelled ? 1 : Math.min((now - t0) / duration, 1);
-          if (!cancelled) {
-            const v = from + total * easeInOut(k);
-            const y = skip && v >= journeyStart ? v + skip : v;
-            window.scrollTo({ top: y, behavior: "instant" });
-          }
-          if (k < 1) {
-            requestAnimationFrame(frame);
-            return;
-          }
-          autoScrolling = false;
-          window.removeEventListener("wheel", cancel);
-          window.removeEventListener("touchstart", cancel);
-          updateJourney();
-        };
-        requestAnimationFrame(frame);
-      });
-    }
+    skipLinks.forEach((el) => el.addEventListener("click", scrollPastJourney));
 
     /* ---------- Caniggia: 3 fotos que se alternan ---------- */
     const photos = document.querySelectorAll(".founder__photo");
