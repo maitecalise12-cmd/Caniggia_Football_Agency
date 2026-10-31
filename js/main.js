@@ -167,6 +167,54 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.fonts) document.fonts.ready.then(setupJourney);
     setupJourney();
 
+    /* ---------- Botón "Services" del hero: salta la línea de tiempo ----------
+       Baja suave hasta justo antes de esta sección, la saltea de golpe
+       y sigue bajando suave hasta Services. Solo para ese botón. */
+    const heroButtons = document.getElementById("heroActions");
+    const waitScrollEnd = () => new Promise((resolve) => {
+      let last = -1;
+      let still = 0;
+      const tick = () => {
+        const y = window.scrollY;
+        still = Math.abs(y - last) < 0.5 ? still + 1 : 0;
+        last = y;
+        if (still > 6) resolve();
+        else requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+
+    if (heroButtons) {
+      heroButtons.addEventListener("click", async (e) => {
+        const link = e.target.closest('a[href="#services"]');
+        const services = document.getElementById("services");
+        if (!link || !services) return;
+        e.preventDefault();
+
+        // si la persona scrollea a mano en el medio, se cancela
+        let cancelled = false;
+        const cancel = () => { cancelled = true; };
+        window.addEventListener("wheel", cancel, { once: true, passive: true });
+        window.addEventListener("touchstart", cancel, { once: true, passive: true });
+
+        const smooth = reducedMotion ? "instant" : "smooth";
+        const beforeJourney = journey.offsetTop - window.innerHeight;
+        if (beforeJourney > window.scrollY) {
+          window.scrollTo({ top: beforeJourney, behavior: smooth });
+          await waitScrollEnd();
+        }
+        if (!cancelled) {
+          const afterJourney = journey.offsetTop + journey.offsetHeight - header.offsetHeight;
+          window.scrollTo({ top: afterJourney, behavior: "instant" });
+          const target = services.getBoundingClientRect().top + window.scrollY - header.offsetHeight;
+          window.scrollTo({ top: target, behavior: smooth });
+          history.replaceState(null, "", "#services");
+        }
+        window.removeEventListener("wheel", cancel);
+        window.removeEventListener("touchstart", cancel);
+      });
+    }
+
     /* ---------- Caniggia: 3 fotos que se alternan ---------- */
     const photos = document.querySelectorAll(".founder__photo");
     if (photos.length > 1 && !reducedMotion) {
