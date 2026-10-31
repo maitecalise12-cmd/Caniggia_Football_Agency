@@ -417,6 +417,8 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="5" required></textarea>
           </div>
+          <!-- campo trampa anti-spam: invisible para las personas -->
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0">
           <button type="submit" class="btn btn--primary btn--block">Send message</button>
           <p class="form__status" id="formStatus" role="status" aria-live="polite"></p>
         </form>

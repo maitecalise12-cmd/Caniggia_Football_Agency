@@ -398,19 +398,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ---------- Formulario de contacto ----------
-     Sin servidor: valida los campos y abre el cliente de correo
-     con el mensaje armado. Para enviar desde la web directamente,
-     conectar un servicio como Formspree o un backend propio.
-     Los mensajes salen en el idioma de la página (<html lang>). */
+     Envía el mensaje directo al mail de CONTACT_EMAIL usando FormSubmit
+     (servicio gratuito, sin servidor propio). La primera vez que alguien
+     lo usa, FormSubmit manda a ese mail un correo para ACTIVAR el formulario:
+     hay que abrirlo y confirmar; desde ahí llegan todos los mensajes.
+     Los mensajes de estado salen en el idioma de la página (<html lang>). */
   const form = document.getElementById("contactForm");
   const status = document.getElementById("formStatus");
   const CONTACT_EMAIL = "maitecalise12@gmail.com";
   const es = document.documentElement.lang === "es";
   const msg = es
-    ? { error: "Completá todos los campos obligatorios con datos válidos.", ok: "¡Gracias! Se va a abrir tu correo para enviar el mensaje.", subject: "Consulta desde la web" }
-    : { error: "Please complete all required fields with valid information.", ok: "Thank you! Your email app will open to send the message.", subject: "Website enquiry" };
+    ? { error: "Completá todos los campos obligatorios con datos válidos.", sending: "Enviando…", ok: "¡Gracias! Recibimos tu mensaje y te vamos a responder pronto.", fail: "No se pudo enviar el mensaje. Probá de nuevo o escribinos por Instagram.", subject: "Consulta desde la web" }
+    : { error: "Please complete all required fields with valid information.", sending: "Sending…", ok: "Thank you! We received your message and will get back to you soon.", fail: "The message could not be sent. Please try again or reach us on Instagram.", subject: "Website enquiry" };
 
-  if (form) form.addEventListener("submit", (e) => {
+  if (form) form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     let valid = true;
@@ -430,20 +431,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const data = new FormData(form);
-    const subject = `${msg.subject} – ${data.get("profile")}`;
-    const body =
-      `Name: ${data.get("name")}\n` +
-      `Email: ${data.get("email")}\n` +
-      `Club / Organization: ${data.get("organization") || "-"}\n` +
-      `Profile: ${data.get("profile")}\n\n` +
-      `${data.get("message")}`;
+    if (data.get("_honey")) return; // campo trampa: solo lo completan los robots de spam
 
-    window.location.href =
-      `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    status.textContent = msg.sending;
+    status.className = "form__status";
 
-    status.textContent = msg.ok;
-    status.className = "form__status is-ok";
-    form.reset();
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: `${msg.subject} – ${data.get("profile")}`,
+          _replyto: data.get("email"), // al tocar "Responder" le contestás a quien escribió
+          _template: "table",
+          Name: data.get("name"),
+          Email: data.get("email"),
+          "Club / Organization": data.get("organization") || "-",
+          Profile: data.get("profile"),
+          Message: data.get("message"),
+        }),
+      });
+      if (!response.ok) throw new Error(response.status);
+      status.textContent = msg.ok;
+      status.className = "form__status is-ok";
+      form.reset();
+    } catch {
+      status.textContent = msg.fail;
+      status.className = "form__status is-error";
+    } finally {
+      button.disabled = false;
+    }
   });
 
   /* ---------- Año del footer ---------- */
