@@ -89,30 +89,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeMenu();
   });
 
-  /* ---------- Menú hamburguesa izquierdo (panel de secciones) ---------- */
+  /* ---------- Menú hamburguesa izquierdo: al tocarlo bajan los nombres de las secciones ---------- */
   const sideToggle = document.getElementById("sideToggle");
   const sideMenu = document.getElementById("sideMenu");
-  const sideOverlay = document.getElementById("sideOverlay");
 
-  if (sideToggle && sideMenu && sideOverlay) {
+  if (sideToggle && sideMenu) {
     const setSideMenu = (open) => {
       sideMenu.classList.toggle("is-open", open);
       sideToggle.classList.toggle("is-open", open);
       sideToggle.setAttribute("aria-expanded", String(open));
       sideToggle.setAttribute("aria-label", open ? "Close sections menu" : "Open sections menu");
       sideMenu.setAttribute("aria-hidden", String(!open));
-      if (open) {
-        sideOverlay.hidden = false;
-        requestAnimationFrame(() => sideOverlay.classList.add("is-open"));
-      } else {
-        sideOverlay.classList.remove("is-open");
-        setTimeout(() => { if (!sideMenu.classList.contains("is-open")) sideOverlay.hidden = true; }, 400);
-      }
     };
 
     sideToggle.addEventListener("click", () => setSideMenu(!sideMenu.classList.contains("is-open")));
-    sideOverlay.addEventListener("click", () => setSideMenu(false));
     sideMenu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setSideMenu(false)));
+    // tocar en cualquier otro lado lo cierra
+    document.addEventListener("click", (e) => {
+      if (!sideMenu.contains(e.target) && !sideToggle.contains(e.target)) setSideMenu(false);
+    });
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") setSideMenu(false);
     });

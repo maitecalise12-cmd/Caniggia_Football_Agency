@@ -359,40 +359,22 @@ h1, h2, h3 {
 .side-toggle.is-open span:nth-child(2) { opacity: 0; }
 .side-toggle.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-/* fondo oscuro detrás del panel (al tocarlo se cierra) */
-.side-overlay {
-  position: fixed;
-  inset: var(--header-h) 0 0 0;
-  z-index: 98;
-  background: rgba(0, 0, 0, 0.55);
-  opacity: 0;
-  transition: opacity 0.4s var(--ease);
-}
-
-.side-overlay.is-open {
-  opacity: 1;
-}
-
-/* el panel entra desde la izquierda */
+/* Lista de secciones: baja debajo del botón, sin panel de fondo.
+   mix-blend-mode invierte el color: blanco sobre fondos oscuros, negro sobre claros. */
 .side-menu {
   position: fixed;
-  top: var(--header-h);
-  bottom: 0;
-  left: 0;
+  top: calc(var(--header-h) + clamp(0.8rem, 2.5vh, 1.6rem));
+  left: clamp(12px, 1.6vw, 28px);
   z-index: 99;
-  width: clamp(280px, 28vw, 420px);
-  padding: clamp(2rem, 6vh, 4rem) clamp(1.5rem, 3vw, 3rem);
-  background: var(--black-pure);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  overflow-y: auto;
-  transform: translateX(-100%);
+  padding-left: 10px; /* alineado con las rayitas del botón */
+  mix-blend-mode: difference;
   visibility: hidden;
-  transition: transform 0.5s var(--ease), visibility 0.5s;
+  transition: visibility 0s linear 0.5s; /* se oculta cuando terminan de irse los nombres */
 }
 
 .side-menu.is-open {
-  transform: none;
   visibility: visible;
+  transition-delay: 0s;
 }
 
 .side-menu ul {
@@ -401,71 +383,39 @@ h1, h2, h3 {
   padding: 0;
 }
 
-/* las opciones salen una detrás de otra */
+/* los nombres bajan uno detrás de otro */
 .side-menu li {
   opacity: 0;
-  transform: translateX(-24px);
-  transition: opacity 0.35s var(--ease), transform 0.45s var(--ease);
+  transform: translateY(-14px);
+  transition: opacity 0.3s var(--ease), transform 0.4s var(--ease);
+  transition-delay: calc((5 - var(--n)) * 0.04s); /* al cerrar, suben en orden inverso */
 }
 
 .side-menu.is-open li {
   opacity: 1;
   transform: none;
-  transition-delay: calc(0.12s + var(--n) * 0.06s);
+  transition-delay: calc(var(--n) * 0.06s);
 }
 
 .side-menu a {
-  position: relative;
   display: inline-block;
-  padding: 0.55rem 0 0.55rem 2.6rem; /* lugar para el [•] */
+  padding: 0.3rem 0;
   font-family: var(--font-title);
-  font-size: clamp(1.1rem, 1.5vw, 1.45rem);
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-size: clamp(0.85rem, 1vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  transition: color 0.25s;
-}
-
-/* [•] delante de la sección actual y de la que se señala */
-.side-menu a::before {
-  content: "[•]";
-  position: absolute;
-  left: 0;
-  font-size: 0.8em;
-  top: 50%;
-  translate: -6px -50%;
-  letter-spacing: 0.05em;
-  opacity: 0;
-  transition: opacity 0.25s, translate 0.25s;
-}
-
-.side-menu a.is-current,
-.side-menu a:hover,
-.side-menu a:focus-visible {
   color: var(--white);
+  transition: opacity 0.25s;
 }
 
-.side-menu a.is-current::before,
-.side-menu a:hover::before,
-.side-menu a:focus-visible::before {
-  opacity: 1;
-  translate: 0 -50%;
+.side-menu a:hover {
+  opacity: 0.7;
 }
 
-.side-menu ul:hover a.is-current:not(:hover) {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.side-menu ul:hover a.is-current:not(:hover)::before {
-  opacity: 0;
-}
-
-@media (max-width: 640px) {
-  .side-menu {
-    width: 100%;
-    border-right: 0;
-  }
+/* solo la sección en la que se está va en bold */
+.side-menu a.is-current {
+  font-weight: 700;
 }
 
 /* ---------- Hero ---------- */
