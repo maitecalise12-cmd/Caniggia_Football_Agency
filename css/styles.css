@@ -1509,8 +1509,23 @@ h1, h2, h3 {
   transition: background 0.3s;
 }
 
-.social:hover {
+.social-link:hover .social {
   background: var(--blue);
+}
+
+/* Instagram: ícono + usuario */
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: none;
+  overflow-wrap: anywhere; /* en pantallas muy angostas el usuario puede cortar */
+}
+
+.social-link .social {
+  flex-shrink: 0;
 }
 
 .social svg {

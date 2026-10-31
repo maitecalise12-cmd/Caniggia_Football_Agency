@@ -404,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
      Los mensajes salen en el idioma de la página (<html lang>). */
   const form = document.getElementById("contactForm");
   const status = document.getElementById("formStatus");
-  const CONTACT_EMAIL = "info@caniggiafootballagency.com";
+  const CONTACT_EMAIL = "maitecalise12@gmail.com";
   const es = document.documentElement.lang === "es";
   const msg = es
     ? { error: "Completá todos los campos obligatorios con datos válidos.", ok: "¡Gracias! Se va a abrir tu correo para enviar el mensaje.", subject: "Consulta desde la web" }
