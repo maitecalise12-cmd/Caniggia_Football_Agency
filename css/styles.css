@@ -1046,7 +1046,10 @@ h1, h2, h3 {
   display: flex;
   --h: clamp(460px, 82vh, 760px); /* alto de la sección (lo usa también la rueda) */
   height: var(--h);
-  background: var(--black-pure);
+  /* franjas de césped cortado, muy sutiles */
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.022) 0 clamp(90px, 9vw, 170px), transparent clamp(90px, 9vw, 170px) clamp(180px, 18vw, 340px)),
+    var(--black-pure);
   overflow: hidden;
 }
 
@@ -1101,7 +1104,22 @@ h1, h2, h3 {
   height: calc(var(--R) * 2);
   border: 2px solid var(--celeste); /* línea gruesa en celeste */
   border-radius: 50%;
+  /* luz suave dentro del círculo central */
+  background: radial-gradient(circle, rgba(117, 170, 219, 0.1), rgba(117, 170, 219, 0.03) 55%, transparent 72%);
   pointer-events: none;
+}
+
+/* Cancha: el arco es el círculo central y esta es la línea de mitad de cancha.
+   (El punto central quedaría tapado por "WHAT WE DO", por eso no se dibuja.) */
+.svc-wheel__ring::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 400vh; /* la recorta la sección */
+  transform: translate(-50%, -50%);
+  background: linear-gradient(to bottom, rgba(117, 170, 219, 0.45), rgba(117, 170, 219, 0.2) 45%, rgba(117, 170, 219, 0.2) 55%, rgba(117, 170, 219, 0.45));
 }
 
 /* cada número gira alrededor del centro según su distancia al activo.
