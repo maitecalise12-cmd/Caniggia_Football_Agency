@@ -691,12 +691,25 @@ h1, h2, h3 {
 .founder__photo--2 { background-image: url("../assests/img/caniggia-2.jpg"); }
 .founder__photo--3 { background-image: url("../assests/img/caniggia-3.jpg"); }
 
+.founder__text {
+  margin-top: 2.2rem;
+}
+
+.founder__name {
+  font-family: var(--font-title);
+  font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: none;
+  color: var(--white);
+  margin: 0 0 0.8rem;
+}
+
 .founder__bio {
   max-width: 34ch;
   font-size: clamp(0.95rem, 1.1vw, 1.05rem);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.9);
-  margin-top: 2.2rem;
 }
 
 /* Línea de tiempo */
@@ -1706,8 +1719,11 @@ h1, h2, h3 {
     max-width: 560px;
   }
 
-  .founder__bio {
+  .founder__text {
     margin-top: 0;
+  }
+
+  .founder__bio {
     max-width: 60ch;
   }
 
