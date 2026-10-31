@@ -145,10 +145,12 @@ document.addEventListener("DOMContentLoaded", () => {
       updateJourney();
     };
 
+    let lockJourney = false; // lo usa el botón Services del hero
+
     const updateJourney = () => {
       if (!journey.classList.contains("is-horizontal")) return;
       const start = journey.offsetTop - header.offsetHeight;
-      const progress = Math.min(Math.max((window.scrollY - start) / (distance || 1), 0), 1);
+      const progress = lockJourney ? 0 : Math.min(Math.max((window.scrollY - start) / (distance || 1), 0), 1);
       track.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
     };
 
@@ -167,48 +169,54 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.fonts) document.fonts.ready.then(setupJourney);
     setupJourney();
 
-    /* ---------- Botón "Services" del hero: salta la línea de tiempo ----------
-       Baja suave hasta justo antes de esta sección, la saltea de golpe
-       y sigue bajando suave hasta Services. Solo para ese botón. */
+    /* ---------- Botón "Services" del hero: saltea el recorrido horizontal ----------
+       Baja suave hasta la sección de Caniggia (se ve el fundador), saltea el
+       tramo en que la línea de tiempo se desplaza de costado y sigue bajando
+       suave hasta Services. La línea de tiempo queda quieta durante ese salto.
+       Solo para ese botón; en celular (línea vertical) baja normal. */
     const heroButtons = document.getElementById("heroActions");
     const waitScrollEnd = () => new Promise((resolve) => {
       let last = -1;
       let still = 0;
+      // revisa cada 50 ms; cuando la página deja de moverse, terminó
       const tick = () => {
         const y = window.scrollY;
         still = Math.abs(y - last) < 0.5 ? still + 1 : 0;
         last = y;
-        if (still > 6) resolve();
-        else requestAnimationFrame(tick);
+        if (still > 3) resolve();
+        else setTimeout(tick, 50);
       };
-      requestAnimationFrame(tick);
+      setTimeout(tick, 50);
     });
 
     if (heroButtons) {
       heroButtons.addEventListener("click", async (e) => {
         const link = e.target.closest('a[href="#services"]');
         const services = document.getElementById("services");
-        if (!link || !services) return;
+        if (!link || !services || !journey.classList.contains("is-horizontal")) return;
         e.preventDefault();
 
-        // si la persona scrollea a mano en el medio, se cancela
+        // si la persona scrollea a mano en el medio, se corta el recorrido automático
         let cancelled = false;
         const cancel = () => { cancelled = true; };
         window.addEventListener("wheel", cancel, { once: true, passive: true });
         window.addEventListener("touchstart", cancel, { once: true, passive: true });
 
         const smooth = reducedMotion ? "instant" : "smooth";
-        const beforeJourney = journey.offsetTop - window.innerHeight;
-        if (beforeJourney > window.scrollY) {
-          window.scrollTo({ top: beforeJourney, behavior: smooth });
+        const journeyStart = journey.offsetTop - header.offsetHeight;
+        if (journeyStart > window.scrollY) {
+          window.scrollTo({ top: journeyStart, behavior: smooth });
           await waitScrollEnd();
         }
         if (!cancelled) {
-          const afterJourney = journey.offsetTop + journey.offsetHeight - header.offsetHeight;
-          window.scrollTo({ top: afterJourney, behavior: "instant" });
+          lockJourney = true; // la línea de tiempo no se mueve mientras se saltea
+          window.scrollTo({ top: journeyStart + distance, behavior: "instant" });
           const target = services.getBoundingClientRect().top + window.scrollY - header.offsetHeight;
           window.scrollTo({ top: target, behavior: smooth });
           history.replaceState(null, "", "#services");
+          await waitScrollEnd();
+          lockJourney = false;
+          updateJourney();
         }
         window.removeEventListener("wheel", cancel);
         window.removeEventListener("touchstart", cancel);
