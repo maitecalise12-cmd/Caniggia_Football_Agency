@@ -301,6 +301,23 @@ document.addEventListener("DOMContentLoaded", () => {
     wheel.addEventListener("pointercancel", onUp);
 
     selectService(0);
+
+    /* Celular: desplegable. Se ven solo los títulos; al tocar uno se abre su texto
+       y se cierra el que estaba abierto. (Mismo corte que el CSS: 900px de ancho) */
+    const mobile = window.matchMedia("(max-width: 900px)");
+    const toggles = [...wheel.querySelectorAll(".svc-wheel__toggle")];
+
+    toggles.forEach((toggle) => {
+      toggle.addEventListener("click", () => {
+        if (!mobile.matches) return; // en escritorio el título no es desplegable
+        const panel = toggle.closest(".svc-wheel__panel");
+        const open = !panel.classList.contains("is-open");
+        panels.forEach((p) => p.classList.remove("is-open"));
+        toggles.forEach((t) => t.setAttribute("aria-expanded", "false"));
+        panel.classList.toggle("is-open", open);
+        toggle.setAttribute("aria-expanded", String(open));
+      });
+    });
   }
 
   /* ---------- Formulario de contacto ----------
