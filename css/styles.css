@@ -1045,6 +1045,7 @@ h1, h2, h3 {
   position: relative;
   display: flex;
   --h: clamp(460px, 82vh, 760px); /* alto de la sección (lo usa también la rueda) */
+  --intro-title: clamp(2rem, 3.4vw, 3.2rem); /* tamaño de "WHAT WE DO" (lo usa también la línea de la cancha) */
   height: var(--h);
   /* franjas de césped cortado, muy sutiles */
   background:
@@ -1064,7 +1065,7 @@ h1, h2, h3 {
 }
 
 .svc-home__intro .title {
-  font-size: clamp(2rem, 3.4vw, 3.2rem);
+  font-size: var(--intro-title);
   white-space: nowrap; /* "WHAT WE DO" en una sola línea */
 }
 
@@ -1093,7 +1094,7 @@ h1, h2, h3 {
     radial-gradient(ellipse 70% 90% at 25% 50%, transparent 35%, rgba(0, 0, 0, 0.6) 100%),
     /* granulado del césped */
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.6 0 0 0 -0.22'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.8;
+  opacity: 0.4;
 }
 
 /* Rueda de servicios (ref. "Wove — Wheel Menu").
@@ -1134,12 +1135,14 @@ h1, h2, h3 {
   width: 2px;
   height: 400vh; /* la recorta la sección */
   transform: translate(-50%, -50%);
-  /* se borra en el medio, donde pasa por detrás de "WHAT WE DO" y su texto */
+  /* llega hasta arriba de "SERVICES" y vuelve debajo del texto; no pasa por detrás de las letras */
+  --gap-top: calc(var(--intro-title) * 0.5 + 3.7rem);
+  --gap-bottom: calc(var(--intro-title) * 0.5 + 8.6rem);
   background: linear-gradient(to bottom,
-    rgba(117, 170, 219, 0.45) calc(50% - var(--h) * 0.4),
-    transparent calc(50% - var(--h) * 0.24),
-    transparent calc(50% + var(--h) * 0.24),
-    rgba(117, 170, 219, 0.45) calc(50% + var(--h) * 0.4));
+    rgba(117, 170, 219, 0.45) calc(50% - var(--gap-top)),
+    transparent calc(50% - var(--gap-top)),
+    transparent calc(50% + var(--gap-bottom)),
+    rgba(117, 170, 219, 0.45) calc(50% + var(--gap-bottom)));
 }
 
 /* cada número gira alrededor del centro según su distancia al activo.
