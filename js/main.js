@@ -405,7 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
      Los mensajes de estado salen en el idioma de la página (<html lang>). */
   const form = document.getElementById("contactForm");
   const status = document.getElementById("formStatus");
-  const CONTACT_EMAIL = "maitecalise@gmail.com";
+  const CONTACT_EMAIL = "caniggiaagency@gmail.com";
   const es = document.documentElement.lang === "es";
   const msg = es
     ? { error: "Completá todos los campos obligatorios con datos válidos.", sending: "Enviando…", ok: "¡Gracias! Recibimos tu mensaje y te vamos a responder pronto.", fail: "No se pudo enviar el mensaje. Probá de nuevo o escribinos por Instagram.", subject: "Consulta desde la web" }
