@@ -145,15 +145,21 @@ document.addEventListener("DOMContentLoaded", () => {
       updateJourney();
     };
 
-    let lockJourney = false; // lo usa el botón Services del hero
+    // Botón Services del hero: mientras está en true, la línea de tiempo queda quieta
+    let lockJourney = false;
+    let autoScrolling = false;
 
     const updateJourney = () => {
       if (!journey.classList.contains("is-horizontal")) return;
+      // se libera recién cuando la sección ya no se ve, así no da un salto a la vista
+      if (lockJourney && !autoScrolling) {
+        const box = journey.getBoundingClientRect();
+        if (box.bottom <= header.offsetHeight || box.top >= window.innerHeight) lockJourney = false;
+      }
       const start = journey.offsetTop - header.offsetHeight;
       const progress = lockJourney ? 0 : Math.min(Math.max((window.scrollY - start) / (distance || 1), 0), 1);
       track.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
     };
-
     let ticking = false;
     window.addEventListener("scroll", () => {
       if (ticking) return;
@@ -170,56 +176,62 @@ document.addEventListener("DOMContentLoaded", () => {
     setupJourney();
 
     /* ---------- Botón "Services" del hero: saltea el recorrido horizontal ----------
-       Baja suave hasta la sección de Caniggia (se ve el fundador), saltea el
-       tramo en que la línea de tiempo se desplaza de costado y sigue bajando
-       suave hasta Services. La línea de tiempo queda quieta durante ese salto.
-       Solo para ese botón; en celular (línea vertical) baja normal. */
+       Baja en un solo movimiento suave hasta Services. Al llegar a la sección
+       de Caniggia no se detiene ni recorre la línea de tiempo de costado:
+       la pasa como si fuera una sección más. Solo para ese botón; en celular
+       (línea de tiempo vertical) baja normal. */
     const heroButtons = document.getElementById("heroActions");
-    const waitScrollEnd = () => new Promise((resolve) => {
-      let last = -1;
-      let still = 0;
-      // revisa cada 50 ms; cuando la página deja de moverse, terminó
-      const tick = () => {
-        const y = window.scrollY;
-        still = Math.abs(y - last) < 0.5 ? still + 1 : 0;
-        last = y;
-        if (still > 3) resolve();
-        else setTimeout(tick, 50);
-      };
-      setTimeout(tick, 50);
-    });
+    const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
     if (heroButtons) {
-      heroButtons.addEventListener("click", async (e) => {
+      heroButtons.addEventListener("click", (e) => {
         const link = e.target.closest('a[href="#services"]');
         const services = document.getElementById("services");
         if (!link || !services || !journey.classList.contains("is-horizontal")) return;
         e.preventDefault();
 
-        // si la persona scrollea a mano en el medio, se corta el recorrido automático
+        const from = window.scrollY;
+        const journeyStart = journey.offsetTop - header.offsetHeight;
+        const target = services.getBoundingClientRect().top + window.scrollY - header.offsetHeight;
+        history.replaceState(null, "", "#services");
+
+        if (reducedMotion) {
+          window.scrollTo({ top: target, behavior: "instant" });
+          return;
+        }
+
+        // recorrido "virtual": el tramo horizontal se descuenta
+        const skip = from < journeyStart ? distance : 0;
+        const total = target - skip - from;
+        const duration = Math.min(Math.max(total * 0.4, 900), 2200);
+        const t0 = performance.now();
+
+        // si la persona scrollea a mano, se corta
         let cancelled = false;
         const cancel = () => { cancelled = true; };
         window.addEventListener("wheel", cancel, { once: true, passive: true });
         window.addEventListener("touchstart", cancel, { once: true, passive: true });
 
-        const smooth = reducedMotion ? "instant" : "smooth";
-        const journeyStart = journey.offsetTop - header.offsetHeight;
-        if (journeyStart > window.scrollY) {
-          window.scrollTo({ top: journeyStart, behavior: smooth });
-          await waitScrollEnd();
-        }
-        if (!cancelled) {
-          lockJourney = true; // la línea de tiempo no se mueve mientras se saltea
-          window.scrollTo({ top: journeyStart + distance, behavior: "instant" });
-          const target = services.getBoundingClientRect().top + window.scrollY - header.offsetHeight;
-          window.scrollTo({ top: target, behavior: smooth });
-          history.replaceState(null, "", "#services");
-          await waitScrollEnd();
-          lockJourney = false;
+        lockJourney = true;
+        autoScrolling = true;
+
+        const frame = (now) => {
+          const k = cancelled ? 1 : Math.min((now - t0) / duration, 1);
+          if (!cancelled) {
+            const v = from + total * easeInOut(k);
+            const y = skip && v >= journeyStart ? v + skip : v;
+            window.scrollTo({ top: y, behavior: "instant" });
+          }
+          if (k < 1) {
+            requestAnimationFrame(frame);
+            return;
+          }
+          autoScrolling = false;
+          window.removeEventListener("wheel", cancel);
+          window.removeEventListener("touchstart", cancel);
           updateJourney();
-        }
-        window.removeEventListener("wheel", cancel);
-        window.removeEventListener("touchstart", cancel);
+        };
+        requestAnimationFrame(frame);
       });
     }
 
