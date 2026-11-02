@@ -1776,14 +1776,19 @@ h1, h2, h3 {
   margin-top: 0.4rem;
 }
 
-.check {
+.field .check {
   display: flex;
   gap: 0.7rem;
   align-items: flex-start;
   cursor: pointer;
+  /* no hereda el estilo de las etiquetas de los campos (mayúsculas y espaciado) */
+  font-family: var(--font-text);
   font-size: 0.85rem;
+  letter-spacing: normal;
+  text-transform: none;
   line-height: 1.5;
   color: var(--gray);
+  margin-bottom: 0;
 }
 
 .check input {
