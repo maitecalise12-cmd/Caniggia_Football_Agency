@@ -68,6 +68,7 @@
 
   --container: 1240px;
   --header-h: 64px;
+  --edge: clamp(12px, 1.6vw, 28px); /* distancia de la hamburguesa y del menú al borde */
   --radius: 0;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -223,9 +224,15 @@ h1, h2, h3 {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
 }
 
-.header__inner {
+/* La barra ocupa todo el ancho: hamburguesa a la izquierda, logo justo al medio
+   y "Our services / Let's talk" a la derecha, a la misma distancia del borde
+   que las rayitas de la hamburguesa (--edge + los 10px de aire del botón). */
+.header .header__inner {
   position: relative;
   height: 100%;
+  max-width: none;
+  padding-left: calc(var(--edge) + 10px);
+  padding-right: calc(var(--edge) + 10px);
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -337,7 +344,7 @@ h1, h2, h3 {
 /* ---------- Menú hamburguesa izquierdo + panel de secciones ---------- */
 .side-toggle {
   position: absolute;
-  left: clamp(12px, 1.6vw, 28px);
+  left: var(--edge);
   top: 50%;
   transform: translateY(-50%);
   z-index: 110;
@@ -368,7 +375,7 @@ h1, h2, h3 {
 .side-menu {
   position: fixed;
   top: calc(var(--header-h) + clamp(0.8rem, 2.5vh, 1.6rem));
-  left: clamp(12px, 1.6vw, 28px);
+  left: var(--edge);
   z-index: 99;
   padding-left: 10px; /* alineado con las rayitas del botón */
   mix-blend-mode: difference;
