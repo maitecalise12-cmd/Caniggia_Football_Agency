@@ -691,8 +691,8 @@ h1, h2, h3 {
 
 /* ---------- Claudio Caniggia · scroll horizontal ---------- */
 .journey {
-  /* espacio que se reserva abajo para la palabra CANIGGIA (alto visible de la palabra + aire) */
-  --word-space: calc(5.8vw + 2.5rem);
+  /* espacio que se reserva abajo para la palabra CANIGGIA completa (alto de la palabra + aire) */
+  --word-space: calc(9.3vw + 2.5rem);
   position: relative;
   background: var(--black-pure);
 }
@@ -1005,7 +1005,7 @@ h1, h2, h3 {
   margin-top: 2.5rem;
 }
 
-/* "CANIGGIA" gigante, fijo, alineado a la izquierda y cortado por el borde inferior */
+/* "CANIGGIA" gigante, fijo y alineado a la izquierda. Se ve completo, sin recorte. */
 .journey__word {
   position: absolute;
   z-index: 1;
@@ -1015,15 +1015,13 @@ h1, h2, h3 {
   font-family: var(--font-title);
   font-weight: 500;
   font-size: 9.3vw;
-  line-height: 0.74;
+  line-height: 1;
   letter-spacing: 0.03em;
   text-align: left;
   text-transform: uppercase;
   color: var(--white);
   pointer-events: none;
   white-space: nowrap;
-  overflow: hidden;
-  height: 0.62em;
 }
 
 /* Modo escritorio: la sección queda fija y el contenido se desplaza en horizontal */
