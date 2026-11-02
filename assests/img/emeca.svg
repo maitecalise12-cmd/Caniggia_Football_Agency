@@ -7,6 +7,13 @@
   <rect x="514" y="695" width="41" height="320"/>
   <rect x="794" y="695" width="41" height="320"/>
   <polygon points="555,730 573,730 676,958 777,730 794,730 794,779 705,980 645,980 555,779"/>
+  <!-- E (celeste) -->
+  <g fill="#A6CBE7">
+    <rect x="913" y="695" width="43" height="320"/>
+    <rect x="913" y="695" width="173" height="36"/>
+    <rect x="956" y="836" width="116" height="36"/>
+    <rect x="913" y="980" width="173" height="35"/>
+  </g>
   <!-- CA -->
   <rect x="1086" y="695" width="514" height="35"/>
   <rect x="1086" y="980" width="630" height="35"/>
