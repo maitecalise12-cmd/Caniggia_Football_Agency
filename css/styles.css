@@ -60,8 +60,11 @@
   --line-dark: rgba(255, 255, 255, 0.12);
   --line-light: rgba(15, 15, 17, 0.1);
 
-  --font-title: "Futura CFA", "Futura PT", "Futura", "Jost", "Century Gothic", sans-serif;
-  --font-text: "Nexa CFA", "Nexa", "Mulish", "Segoe UI", sans-serif;
+  /* Mismas letras en todos los equipos: no se usan "Futura" ni "Nexa" instaladas en la computadora
+     (Mac, iPhone y iPad traen Futura y la mostraban con otras medidas, por ej. CANIGGIA salía cortada).
+     "Futura CFA" y "Nexa CFA" solo se usan si se suben los archivos con licencia a assests/fonts/. */
+  --font-title: "Futura CFA", "Jost", "Century Gothic", sans-serif;
+  --font-text: "Nexa CFA", "Mulish", "Segoe UI", sans-serif;
 
   --container: 1240px;
   --header-h: 64px;
@@ -91,6 +94,7 @@ body {
   background: var(--black-pure);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overflow-x: clip; /* en iPhone evita que la página se mueva de costado sin romper las partes fijas */
 }
 
 img {
@@ -1020,6 +1024,7 @@ h1, h2, h3 {
   position: sticky;
   top: var(--header-h);
   height: calc(100vh - var(--header-h));
+  height: calc(100dvh - var(--header-h)); /* iPad/iPhone: alto real visible, sin contar la barra del navegador */
 }
 
 .journey.is-horizontal .journey__track {

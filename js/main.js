@@ -223,6 +223,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const skipLinks = document.querySelectorAll("#heroActions, .nav__link, .header .brand, .side-menu");
     const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
+    // Salto inmediato a una posición, igual en Chrome, Safari y Firefox
+    // (Safari viejo no entiende behavior: "instant"; por eso se apaga un momento
+    // el scroll suave del CSS y se usa scrollTo(x, y))
+    const jumpTo = (y) => {
+      document.documentElement.style.scrollBehavior = "auto";
+      window.scrollTo(0, y);
+    };
+    const restoreSmooth = () => {
+      document.documentElement.style.scrollBehavior = "";
+    };
+
     const scrollPastJourney = (e) => {
       const link = e.target.closest('a[href^="#"]');
       if (!link || !journey.classList.contains("is-horizontal")) return;
@@ -241,7 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
       history.replaceState(null, "", hash);
 
       if (reducedMotion) {
-        window.scrollTo({ top: target, behavior: "instant" });
+        jumpTo(target);
+        restoreSmooth();
         return;
       }
 
@@ -270,13 +282,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const k = cancelled ? 1 : Math.min((now - t0) / duration, 1);
         if (!cancelled) {
           const v = start + total * easeInOut(k);
-          window.scrollTo({ top: skip && v >= journeyStart ? v + distance : v, behavior: "instant" });
+          jumpTo(skip && v >= journeyStart ? v + distance : v);
         }
         if (k < 1) {
           requestAnimationFrame(frame);
           return;
         }
         autoScrolling = false;
+        restoreSmooth();
         window.removeEventListener("wheel", cancel);
         window.removeEventListener("touchstart", cancel);
         updateJourney();
