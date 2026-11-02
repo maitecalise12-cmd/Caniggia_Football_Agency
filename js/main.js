@@ -459,9 +459,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let valid = true;
     form.querySelectorAll("[required]").forEach((field) => {
       const wrapper = field.closest(".field");
-      const ok = field.type === "email"
-        ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())
-        : field.value.trim() !== "";
+      const ok = field.type === "checkbox"
+        ? field.checked // consentimiento: tiene que estar marcado
+        : field.type === "email"
+          ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())
+          : field.value.trim() !== "";
       wrapper.classList.toggle("has-error", !ok);
       if (!ok) valid = false;
     });
@@ -493,6 +495,8 @@ document.addEventListener("DOMContentLoaded", () => {
           "Club / Organization": data.get("organization") || "-",
           Profile: data.get("profile"),
           Message: data.get("message"),
+          // constancia del consentimiento (queda guardada en el mail recibido)
+          "Privacy consent": `Accepted on ${new Date().toISOString()} (privacy policy of ${location.origin}${location.pathname.replace(/[^/]*$/, "")}privacy.html)`,
         }),
       });
       if (!response.ok) throw new Error(response.status);

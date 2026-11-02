@@ -429,6 +429,24 @@
           </div>
           <!-- campo trampa anti-spam: invisible para las personas -->
           <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0">
+
+          <!-- Consentimiento informado (obligatorio para enviar) -->
+          <div class="field field--check">
+            <label class="check">
+              <input type="checkbox" id="consent" name="consent" required>
+              <span>
+                I have read the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+                and I agree that Caniggia Football Agency processes my data to answer this enquiry.
+                If I am under 18, my parent or guardian is sending this form.
+              </span>
+            </label>
+          </div>
+          <p class="form__legal">
+            Data controller: Caniggia Football Agency. Purpose: to reply to your enquiry.
+            Your message is delivered by email through FormSubmit. You can access, correct or
+            delete your data at any time: <a href="privacy.html#rights">see your rights</a>.
+          </p>
+
           <button type="submit" class="btn btn--primary btn--block">Send message</button>
           <p class="form__status" id="formStatus" role="status" aria-live="polite"></p>
         </form>
@@ -444,10 +462,17 @@
         <img src="assests/img/logo.png" alt="" class="footer__logo">
         <span class="footer__name">Caniggia <small>Football Agency</small></span>
       </a>
+      <nav class="footer__legal" aria-label="Legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="#" data-cookie-settings>Cookie settings</a>
+        <a href="privacy.html#delete-data">Delete my data</a>
+      </nav>
       <p class="footer__copy">&copy; <span id="year"></span> Caniggia Football Agency. All rights reserved.</p>
     </div>
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/consent.js"></script>
 </body>
 </html>
