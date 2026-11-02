@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
        Todos se mueven en un solo movimiento suave. Si en el camino está la
        sección de Caniggia, no se detienen ni recorren la línea de tiempo de
        costado: la pasan como si fuera una sección más. En celular funcionan normal. */
-    const skipLinks = document.querySelectorAll("#heroActions, .nav__link, .header .brand, .side-menu");
+    const skipLinks = document.querySelectorAll("#heroActions, .nav__link, .header .brand, .side-menu, .footer");
     const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
     // Salto inmediato a una posición, igual en Chrome, Safari y Firefox
@@ -238,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const link = e.target.closest('a[href^="#"]');
       if (!link || !journey.classList.contains("is-horizontal")) return;
       const hash = link.getAttribute("href");
+      if (hash.length < 2) return; // links "#" (ej.: Cookie settings) no son secciones
       const section = document.querySelector(hash);
       if (!section) return;
 
@@ -246,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const journeyEnd = journeyStart + distance; // fin del tramo horizontal
       const target = Math.max(section.getBoundingClientRect().top + window.scrollY - header.offsetHeight, 0);
       const goingDown = from < journeyStart && target > journeyEnd;
-      const goingUp = from > journeyEnd && target < journeyStart;
+      const goingUp = from > journeyEnd && target <= journeyStart; // incluye subir hasta el inicio de la sección de Caniggia
       const skip = goingDown || goingUp; // atraviesa la línea de tiempo
       e.preventDefault();
       history.replaceState(null, "", hash);
@@ -282,13 +283,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const k = cancelled ? 1 : Math.min((now - t0) / duration, 1);
         if (!cancelled) {
           const v = start + total * easeInOut(k);
-          jumpTo(skip && v >= journeyStart ? v + distance : v);
+          jumpTo(skip && v > journeyStart ? v + distance : v);
         }
         if (k < 1) {
           requestAnimationFrame(frame);
           return;
         }
         autoScrolling = false;
+        if (window.scrollY <= journeyStart + 1) lockJourney = false; // quedó al inicio de Caniggia
         restoreSmooth();
         window.removeEventListener("wheel", cancel);
         window.removeEventListener("touchstart", cancel);

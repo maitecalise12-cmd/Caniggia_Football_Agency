@@ -1721,20 +1721,21 @@ h1, h2, h3 {
 
 /* ---------- Footer ---------- */
 .footer {
-  background: var(--blue);
-  padding: 2rem 0;
+  background: var(--black-pure);
+  border-top: 1px solid var(--line-dark);
+  padding: clamp(3.5rem, 9vh, 6rem) 0 2rem;
+  color: var(--white);
 }
 
-.footer__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
+/* marca a la izquierda y 3 columnas de links */
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+  gap: 2.5rem 3rem;
 }
 
 .footer__brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.8rem;
 }
@@ -1753,27 +1754,115 @@ h1, h2, h3 {
   opacity: 0.8;
 }
 
-.footer__copy {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.8);
+.footer__tagline {
+  margin-top: 1.4rem;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-/* links legales del footer */
-.footer__legal {
+.footer__social {
+  display: inline-block;
+  margin-top: 1.2rem;
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.footer__social:hover {
+  color: var(--celeste);
+}
+
+.footer__heading {
+  margin-bottom: 1.3rem;
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.footer__links a {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.25s;
+  overflow-wrap: anywhere;
+}
+
+.footer__links a:hover {
+  color: var(--white);
+}
+
+/* línea divisoria, copyright y firma de EMECA */
+.footer__bottom {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 1.4rem;
-  font-size: 0.82rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: clamp(3rem, 7vh, 4.5rem);
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line-dark);
 }
 
-.footer__legal a {
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.footer__copy {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
 }
 
-.footer__legal a:hover {
-  color: var(--white);
+.footer__credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--font-title);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.footer__emeca {
+  height: 16px;
+  width: auto;
+  aspect-ratio: 1431 / 320;
+  fill: rgba(255, 255, 255, 0.85);
+  transition: fill 0.25s;
+}
+
+.footer__credit:hover .footer__emeca {
+  fill: var(--white);
+}
+
+@media (max-width: 900px) {
+  .footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer__col--brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer__grid {
+    gap: 2.2rem 1.5rem;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 /* ---------- Formulario: consentimiento ---------- */
@@ -2094,20 +2183,6 @@ h1, h2, h3 {
   color: #5A5E6A;
 }
 
-.legal-footer {
-  background: var(--blue);
-  color: var(--white);
-  padding: 1.6rem 0;
-}
-
-.legal-footer .container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
 /* ---------- Aparición al hacer scroll ---------- */
 .reveal {
   opacity: 0;
@@ -2338,11 +2413,6 @@ h1, h2, h3 {
   .journey__timeline {
     padding-left: 16px;
     padding-right: 16px;
-  }
-
-  .footer__inner {
-    flex-direction: column;
-    text-align: center;
   }
 }
 

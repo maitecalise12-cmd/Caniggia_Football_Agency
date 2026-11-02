@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="285 695 1431 320" fill="#1E1E1C" role="img" aria-label="EMECA">
+  <!-- EM -->
+  <rect x="285" y="695" width="628" height="35"/>
+  <rect x="285" y="980" width="628" height="35"/>
+  <rect x="285" y="695" width="41" height="320"/>
+  <rect x="326" y="836" width="115" height="35"/>
+  <rect x="514" y="695" width="41" height="320"/>
+  <rect x="794" y="695" width="41" height="320"/>
+  <polygon points="555,730 573,730 676,958 777,730 794,730 794,779 705,980 645,980 555,779"/>
+  <!-- CA -->
+  <rect x="1086" y="695" width="514" height="35"/>
+  <rect x="1086" y="980" width="630" height="35"/>
+  <path d="M1424,790 A156,156 0 1 0 1424,920 L1377,920 A115,115 0 1 1 1377,790 Z"/>
+  <polygon points="1450,980 1541,730 1597,695 1603,695 1716,1015 1660,980 1577,748 1494,980"/>
+</svg>
