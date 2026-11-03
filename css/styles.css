@@ -787,9 +787,7 @@ h1, h2, h3 {
   opacity: 1;
 }
 
-.founder__photo--1 { background-image: url("../assests/img/caniggia-1.jpg"); }
-.founder__photo--2 { background-image: url("../assests/img/caniggia-2.jpg"); }
-.founder__photo--3 { background-image: url("../assests/img/caniggia-3.jpg"); }
+.founder__photo--1 { background-image: url("../assests/img/foto byn.jpeg"); }
 
 .founder__text {
   margin-top: 2.2rem;
